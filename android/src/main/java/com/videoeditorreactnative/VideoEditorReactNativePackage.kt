@@ -7,11 +7,12 @@ import com.facebook.react.uimanager.ViewManager
 
 
 class VideoEditorReactNativePackage : ReactPackage {
-  override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-    return listOf(VideoEditorReactNativeModule(reactContext))
-  }
+    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
+        val modules = mutableListOf<NativeModule>()
+        modules.add(VideoEditorReactNativeModule(reactContext))
+        return modules
+    }
 
-  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return emptyList()
-  }
+    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> =
+        emptyList()
 }

@@ -17,6 +17,42 @@ const VideoEditorReactNative = NativeModules.VideoEditorReactNative
       }
     );
 
-export function multiply(): Promise<String> {
-  return VideoEditorReactNative.multiply();
+export function openVideoEditorFromCamera(licenseToken): Promise {
+  const inputParams = { "screen": "camera" };
+  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+}
+
+export function openVideoEditorFromPip(licenseToken, pipVideo): Promise {
+  const inputParams = { "screen": "pip", "videoSources": [pipVideo] };
+  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+}
+
+export function openVideoEditorFromTrimmer(licenseToken, videoSourcesArray): Promise {
+  const inputParams = { "screen": "trimmer", "videoSources": videoSourcesArray };
+  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+}
+
+export default class VideoEditor {
+   openFromCamera(licenseToken) : Promise {
+    const inputParams = {
+      "screen" : "camera"
+    };
+    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+  }
+
+  openFromPip(licenseToken, pipVideo): Promise {
+    const inputParams = {
+        "screen": "pip",
+       "videoSources": [pipVideo]
+     };
+    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+  }
+
+  openFromTrimmer(licenseToken, videoSourcesArray): Promise {
+    const inputParams = {
+      "screen": "trimmer",
+      "videoSources": videoSourcesArray
+     };
+    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+  }
 }
