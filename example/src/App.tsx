@@ -18,10 +18,11 @@ export default class App extends Component {
   }
 
   handleVideoExport(response) {
-    let exportedVideoUri = response?.videoUri
-    let exportedPreviewUri = response?.previewUri
-    console.log('Export completed successfully: video = ' + exportedVideoUri + '; videoPreview = '
-      + exportedPreviewUri);
+    let exportedVideoSources = response?.exportedVideoSources
+    let exportedPreview = response?.exportedPreview
+    let exportedMeta = response?.exportedMeta
+     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
+      + exportedPreview + "; meta = " + exportedMeta);
   }
 
   handleSdkError(e) {

@@ -22,7 +22,7 @@ export default class VideoEditorPlugin {
     const inputParams = {
       "screen" : "camera"
     };
-    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
   openFromPip(licenseToken, pipVideo): Promise {
@@ -30,7 +30,7 @@ export default class VideoEditorPlugin {
         "screen": "pip",
        "videoSources": [pipVideo]
      };
-    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
   openFromTrimmer(licenseToken, videoSourcesArray): Promise {
@@ -38,6 +38,6 @@ export default class VideoEditorPlugin {
       "screen": "trimmer",
       "videoSources": videoSourcesArray
      };
-    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 }

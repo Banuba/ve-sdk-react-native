@@ -11,10 +11,30 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported }
+  s.platforms    = { :ios => '15.0' }
   s.source       = { :git => "https://github.com/Banuba/ve-sdk-react-native.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.resources = 'ios/Assets/*'
+
+  sdk_version = '1.35.6'
+
+  s.dependency 'BanubaARCloudSDK', sdk_version #optional
+  s.dependency 'BanubaVideoEditorSDK', sdk_version
+  s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
+  s.dependency 'BanubaSDK', sdk_version #optional
+  s.dependency 'BanubaSDKSimple', sdk_version
+  s.dependency 'BanubaSDKServicing', sdk_version
+  s.dependency 'VideoEditor', sdk_version
+  s.dependency 'BanubaUtilities', sdk_version
+  s.dependency 'BanubaVideoEditorGallerySDK', sdk_version #optional
+  s.dependency 'BanubaLicenseServicingSDK', sdk_version
+
+  s.dependency 'BNBLicenseUtils', sdk_version
+
+  s.dependency 'VEExportSDK', sdk_version
+  s.dependency 'VEEffectsSDK', sdk_version
+  s.dependency 'VEPlaybackSDK', sdk_version
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
