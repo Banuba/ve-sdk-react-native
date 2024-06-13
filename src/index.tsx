@@ -1,13 +1,13 @@
 import { NativeModules, Platform } from 'react-native';
 
-const LINKING_ERROR =
+ const LINKING_ERROR =
   `The package 'video-editor-react-native' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const VideoEditorReactNative = NativeModules.VideoEditorReactNative
-  ? NativeModules.VideoEditorReactNative
+ const VideoEditorModule = NativeModules.VideoEditorModule
+  ? NativeModules.VideoEditorModule
   : new Proxy(
       {},
       {
@@ -17,27 +17,12 @@ const VideoEditorReactNative = NativeModules.VideoEditorReactNative
       }
     );
 
-export function openVideoEditorFromCamera(licenseToken): Promise {
-  const inputParams = { "screen": "camera" };
-  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
-}
-
-export function openVideoEditorFromPip(licenseToken, pipVideo): Promise {
-  const inputParams = { "screen": "pip", "videoSources": [pipVideo] };
-  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
-}
-
-export function openVideoEditorFromTrimmer(licenseToken, videoSourcesArray): Promise {
-  const inputParams = { "screen": "trimmer", "videoSources": videoSourcesArray };
-  return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
-}
-
-export default class VideoEditor {
+export default class VideoEditorPlugin {
    openFromCamera(licenseToken) : Promise {
     const inputParams = {
       "screen" : "camera"
     };
-    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
   openFromPip(licenseToken, pipVideo): Promise {
@@ -45,7 +30,7 @@ export default class VideoEditor {
         "screen": "pip",
        "videoSources": [pipVideo]
      };
-    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
   openFromTrimmer(licenseToken, videoSourcesArray): Promise {
@@ -53,6 +38,6 @@ export default class VideoEditor {
       "screen": "trimmer",
       "videoSources": videoSourcesArray
      };
-    return VideoEditorReactNative.openVideoEditor(licenseToken, inputParams);
+    return VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 }

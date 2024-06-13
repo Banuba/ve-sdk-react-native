@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 
-import VideoEditor from 'video-editor-react-native';
+import VideoEditorPlugin from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -77,8 +77,8 @@ export default class App extends Component {
         <View style={{ marginVertical: 8 }}>
           <Button title="Open Video Editor - Default"
             onPress={async () => {
-              const sdk = new VideoEditor();
-              sdk.openFromCamera(LICENSE_TOKEN)
+              const videoEditor = new VideoEditorPlugin();
+              videoEditor.openFromCamera(LICENSE_TOKEN)
                 .then(response => { this.handleVideoExport(response); })
                 .catch(e => { this.handleSdkError(e); });
             }
@@ -101,8 +101,8 @@ export default class App extends Component {
                     let videoUri = response.uri || response.assets?.[0]?.uri;
                     console.log('# Picked video source for pip = ' + videoUri);
 
-                    const sdk = new VideoEditor();
-                    sdk.openFromPip(LICENSE_TOKEN, videoUri)
+                    const videoEditor = new VideoEditorPlugin();
+                    videoEditor.openFromPip(LICENSE_TOKEN, videoUri)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }
@@ -129,8 +129,8 @@ export default class App extends Component {
                     console.log('# Picked video source for trimmer = ' + videoUri);
                     let videoSources = [videoUri];
 
-                    const sdk = new VideoEditor();
-                    sdk.openFromTrimmer(LICENSE_TOKEN, videoSources)
+                    const videoEditor = new VideoEditorPlugin();
+                    videoEditor.openFromTrimmer(LICENSE_TOKEN, videoSources)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }

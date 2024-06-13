@@ -6,10 +6,10 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
 
-class VideoEditorReactNativePackage : ReactPackage {
+class VideoEditorPackage : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         val modules = mutableListOf<NativeModule>()
-        modules.add(VideoEditorReactNativeModule(reactContext))
+        modules.add(VideoEditorModule(reactContext))
         return modules
     }
 
