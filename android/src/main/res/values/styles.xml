@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
   <!-- Extend VideoCreationTheme style to customize Video Editor appearance for your app.
        Specify your style in AndroidManifest.xml file for VideoCreationActivity. -->
   <style name="CustomIntegrationAppTheme" parent="VideoCreationTheme">
