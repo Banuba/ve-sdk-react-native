@@ -18,14 +18,14 @@ import { NativeModules, Platform } from 'react-native';
     );
 
 export default class VideoEditorPlugin {
-   openFromCamera(licenseToken) : Promise {
+   openFromCamera(licenseToken: String) : Promise<Map<String, String>> {
     const inputParams = {
       "screen" : "camera"
     };
     return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
-  openFromPip(licenseToken, pipVideo): Promise {
+  openFromPip(licenseToken: String, pipVideo : String): Promise<Map<String, String>> {
     const inputParams = {
         "screen": "pip",
        "videoSources": [pipVideo]
@@ -33,7 +33,7 @@ export default class VideoEditorPlugin {
     return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
-  openFromTrimmer(licenseToken, videoSourcesArray): Promise {
+  openFromTrimmer(licenseToken: String, videoSourcesArray: Array<String>): Promise<Map<String, String>> {
     const inputParams = {
       "screen": "trimmer",
       "videoSources": videoSourcesArray
