@@ -77,7 +77,7 @@ source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
 
 #### Add permissions for IOS project
 
-Update your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist) with the following permissions:
+Specify the required permissions for ```VE SDK``` in your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist):
 ```
 <key>NSAppleMusicUsageDescription</key>
 <string>This app requires access to the media library</string>
