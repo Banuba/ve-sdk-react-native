@@ -11,14 +11,17 @@ We will get back to you with the trial token.
 
 Feel free to [contact us](https://www.banuba.com/faq/kb-tickets/new) if you have any questions.
 
-## Launch
-Set Banuba license token [within the app](example/src/App.tsx#L10)
-
-
-### Installation
+## Installation
+Run in Terminal to install Video Editor React Native plugin
 ```sh
 npm install video-editor-react-native
 ```
+
+## Integration guide
+Please follow our [Integration Guide](guide.md) to complete full integration.
+
+## Launch
+Set Banuba license token [within the app](example/src/App.tsx#L8)
 
 ### Android
 1. Make sure variable ```ANDROID_SDK_ROOT``` is set in your environment or configure [sdk.dir](android/local.properties#1).
@@ -28,9 +31,6 @@ npm install video-editor-react-native
 1. Install CocoaPods dependencies. Open ```ios``` directory and run in terminal ```pod install```.
 2. Open **Signing & Capabilities** tab in Target settings and select your Development Team.
 3. Run ```npm run ios``` in Terminal to launch the sample on a device or launch the app in IDE i.e. XCode, Intellij, VC, etc.
-
-## Integration guide
-Please follow our [Integration Guide](guide.md) to complete full integration.
 
 ## Dependencies
 |              | Version |

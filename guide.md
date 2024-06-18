@@ -1,17 +1,11 @@
 # Integration Guide
 
-## Installation
-
-Run this command via terminal in the root of your project:
-```
-npm install video-editor-react-native
-```
+This guide helps to complete full Video Editor SDK integration.
 
 ## Configuration
 
 ### Android
-
-#### Download Android modules
+#### Add repositories
 
 GitHub Packages is used for downloading Android Video Editor SDK modules.
 Add repositories to [gradle](example/android/app/build.gradle#L107) file.
@@ -44,7 +38,7 @@ repositories {
 }
 ```
 
-#### Add Android Activity
+#### Add Activity
 Add ```VideoCreationActivity``` in [AndroidManifest.xml](example/android/app/src/main/AndroidManifest.xml#L27) file.
 ``` xml
     <activity
@@ -58,16 +52,11 @@ Add ```VideoCreationActivity``` in [AndroidManifest.xml](example/android/app/src
 ### IOS
 
 > [!IMPORTANT]
-> Check if you have an empty Swift file and Bridge Header in you IOS project.
-
-#### Add an empty Swift file and Bridge Header
-
-Open your IOS project via Xcode and create [a new empty Swift file](example/ios/File.swift) in your project by following the path ```File -> New -> File```. Xcode will suggest you to configure an Objective-C bridging Header. Click ```Create Bridging Header```.
+> Please make sure Bridge Header file exits in ios folder.
 
 #### Add specs to Podfile
 
 Add the following specs at the top of your [Podfile](example/ios/Podfile)
-
 ```
 platform :ios, '15.0'
 source 'https://github.com/CocoaPods/Specs.git'
@@ -75,9 +64,9 @@ source 'https://github.com/Banuba/specs.git'
 source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
 ```
 
-#### Add permissions for IOS project
+#### Add permissions
 
-Specify the required permissions for ```VE SDK``` in your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist):
+Specify the required iOS permissions used by the SDK in your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist)
 ```
 <key>NSAppleMusicUsageDescription</key>
 <string>This app requires access to the media library</string>
@@ -98,7 +87,7 @@ Add beautification effect to your project.
 1. Android - copy [Beauty](example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect from example project and paste it to ```assets/bnb-resources/effects``` in your project.
 1. iOS - add the effect to resource folder ```bundleEffects```. You can drag and drop the [BeautyEffects](example/ios/bundleEffects/BeautyEffects) from [bundleEffects](example/ios/bundleEffects) folder from example project to your project's sidebar in Xcode. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes. When done correctly, the ```bundleEffects``` folder's icon will be blue and the folder itself will be present in Copy bundle resources build phase.
 
-## Add Color filters
+## Add Color effects
 Color filter previews are images(```.png``` files) used to represent texture.
 
 :exclamation: IMPORTANT
