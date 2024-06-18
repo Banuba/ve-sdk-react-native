@@ -2,6 +2,11 @@
 
 ## Installation
 
+Run this command via terminal in the root of your project:
+```
+npm install video-editor-react-native
+```
+
 ### Download Android modules
 
 GitHub Packages is used for downloading Android Video Editor SDK modules.
@@ -69,6 +74,32 @@ Preview files are in [drawable-xhdpi](example/android/app/src/main/res/drawable-
 Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolution. Additionally, you can copy paste just one set of previews if it meets your requirements.
 
 #### iOS
+
+Add the following sources and update the version of IOS to 15 in your [Podfile](example/ios/Podfile):
+```
+platform :ios, '15.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/Banuba/specs.git'
+source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
+```
+
+Open your IOS project and create [a new empty Swift file](example/ios/File.swift) in your project by following the path ```File -> New -> File```. Xcode will suggest you to configure an Objective-C bridging Header. Click ```Create Bridging Header```.
+
+Update your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist) with the following keys:
+```
+<key>NSAppleMusicUsageDescription</key>
+<string>This app requires access to the media library</string>
+<key>NSCameraUsageDescription</key>
+<string>This app requires access to the camera.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app requires access to the microphone.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+ <string>This app requires access to the photo library.</string>
+```
+
+Please make sure that [bundleEffects](example/ios/bundleEffects) is provided in your project. You can drag and drop it from [example's ios folder](example/ios/bundleEffects) in Xcode.
+
 Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
 
 ### Limit processor architectures on Android
