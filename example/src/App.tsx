@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 
-import VideoEditorPlugin from 'video-editor-react-native';
+import VideoEditorPlugin, { FeaturesConfig } from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
+import { AiCaptions, AiClipping, AudioBrowser, AudioBrowserSource, DraftConfig, DraftOption, EditorConfig, GifPickerConfig } from '../../src/FeaturesConfig';
 
 const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
+
+const featuresConfig = new FeaturesConfig.Builder()
+              // .setAiClipping(...)
+              // .setAiCaptions(...)
+              // .setAudioBrowser(...)
+              // .setDraftConfig(...)
+              // .setEditorConfig(...)
+              // .setGifPickerConfig(...)
+              .build()
 
 const videoOptions = { mediaType: 'video' };
 
@@ -79,7 +89,7 @@ export default class App extends Component {
           <Button title="Open Video Editor - Default"
             onPress={async () => {
               const videoEditor = new VideoEditorPlugin();
-              videoEditor.openFromCamera(LICENSE_TOKEN)
+              videoEditor.openFromCamera(LICENSE_TOKEN, featuresConfig)
                 .then(response => { this.handleVideoExport(response); })
                 .catch(e => { this.handleSdkError(e); });
             }

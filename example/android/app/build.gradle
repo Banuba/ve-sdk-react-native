@@ -102,6 +102,15 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+
+    packagingOptions {
+        pickFirst '**/libbanuba-ve-yuv.so'
+
+        jniLibs {
+            // ! USE INSTEAD OF REMOVED android.bundle.enableUncompressedNativeLibs=false
+            useLegacyPackaging = true
+        }
+    }
 }
 
 repositories {

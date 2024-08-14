@@ -1,5 +1,6 @@
 
 import Foundation
+import BanubaVideoEditorSDK
 
 extension VideoEditorReactNative {
     static let errInvalidParams = "ERR_INVALID_PARAMS"
@@ -9,6 +10,7 @@ extension VideoEditorReactNative {
     static let errMissingExportResult = "ERR_MISSING_EXPORT_RESULT"
     
     static let inputParamToken = "token"
+    static let inputParamFeaturesConfig = "featuresConfig"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
     
@@ -41,5 +43,48 @@ extension VideoEditorReactNative {
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully. Please try again"
     
+    static let errMessageMissingConfigParams =
+    "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
+    
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
+    
+    var emptyFeaturesConfig : FeaturesConfig {
+        return FeaturesConfig(
+            aiCaptions: nil,
+            aiClipping: nil,
+            audioBrowser: AudioBrowser(
+                source: "local",
+                params: nil
+            ),
+            editorConfig: EditorConfig(
+                enableVideoAspectFill: true
+            ),
+            draftConfig: DraftConfig(
+                option: "enable"
+            ),
+            gifPickerConfig: nil
+        )
+    }
+}
+
+extension VideoEditorConfig {
+    // Tag
+    static let featuresConfigTag = "Features Config"
+    
+    // Features config params
+    static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
+    static let featuresConfigAudioBrowserSourceMubert = "mubert"
+    static let featuresConfigAudioBrowserSourceLocal = "local"
+
+    // Draft Configs
+    static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
+    static let featuresConfigDraftConfigOptionСloseOnSave = "closeOnSave"
+    static let featuresConfigDraftConfigOptionAuto = "auto"
+    static let featuresConfigDraftConfigOptionDisabled = "disabled"
+    
+    //Editor Configs
+    static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"
+    
+    // Unknown params
+    static let featuresConfigUnknownParams = "Undefined"
 }
