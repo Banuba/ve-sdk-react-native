@@ -29,9 +29,7 @@ class VideoEditorModule: VideoEditor {
             debugPrint("Video Editor SDK is already initialized")
             return true
         }
-        
-        print("### \(featuresConfig)")
-        
+                
         var config = VideoEditorConfig()
         
         config.applyFeatureConfig(featuresConfig)

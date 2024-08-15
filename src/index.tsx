@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import { FeaturesConfig } from './FeaturesConfig';
-export { FeaturesConfig } from './FeaturesConfig';
+export * from './FeaturesConfig';
 
  const LINKING_ERROR =
   `The package 'video-editor-react-native' doesn't seem to be linked. Make sure: \n\n` +

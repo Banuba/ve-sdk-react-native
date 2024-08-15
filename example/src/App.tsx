@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 
-import VideoEditorPlugin, { FeaturesConfig } from 'video-editor-react-native';
+import VideoEditorPlugin, { FeaturesConfig, AiCaptions, AiClipping, AudioBrowser, AudioBrowserSource, DraftConfig, DraftOption, EditorConfig, GifPickerConfig } from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
-import { AiCaptions, AiClipping, AudioBrowser, AudioBrowserSource, DraftConfig, DraftOption, EditorConfig, GifPickerConfig } from '../../src/FeaturesConfig';
 
 const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
 
