@@ -12,8 +12,8 @@ class VideoEditorReactNative: NSObject {
     
     let videoEditor = VideoEditorModule()
     
-    @objc (openVideoEditor:rawConfigParams:inputParams:resolver:rejecter:)
-    func openVideoEditor(_ token: String, rawConfigParams: String?, _inputParams: NSDictionary, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+    @objc (openVideoEditor:inputParams:resolver:rejecter:)
+    func openVideoEditor(_ token: String, _inputParams: NSDictionary, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
         
         guard let args = _inputParams as? Dictionary<String, Any> else {
             debugPrint("# Input params not set")
@@ -21,7 +21,7 @@ class VideoEditorReactNative: NSObject {
             return
         }
         
-        let featuresConfig = parseFeatureConfig(rawConfigParams)
+        let featuresConfig = parseFeatureConfig(args[VideoEditorReactNative.inputParamFeaturesConfig] as? String)
         
         if (!videoEditor.initVideoEditor(token: token, featuresConfig: featuresConfig)) {
             debugPrint("# Cannot initialize video editor")

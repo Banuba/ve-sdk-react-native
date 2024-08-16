@@ -1,24 +1,46 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 
-import VideoEditorPlugin, { FeaturesConfig, AiCaptions, AiClipping, AudioBrowser, AudioBrowserSource, DraftConfig, DraftOption, EditorConfig, GifPickerConfig } from 'video-editor-react-native';
+import VideoEditorPlugin, {
+  AiClipping,
+  AiCaptions,
+  AudioBrowser,
+  AudioBrowserSource,
+  DraftConfig,
+  DraftOption,
+  EditorConfig,
+  FeaturesConfig,
+  GifPickerConfig,
+} from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
 const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
 
-const featuresConfig = new FeaturesConfig.Builder()
-              // .setAiClipping(...)
-              // .setAiCaptions(...)
-              // .setAudioBrowser(...)
-              // .setDraftConfig(...)
-              // .setEditorConfig(...)
-              // .setGifPickerConfig(...)
-              .build()
-
 const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
+  private featuresConfig = new FeaturesConfig({
+    aiClipping: new AiClipping({
+      audioDataUrl: ...,
+      audioTracksUrl: ...,
+    }),
+    aiCaptions: new AiCaptions({
+      uploadUrl: ...,
+      transcribeUrl: ...,
+      apiKey: ...,
+    }),
+    audioBrowser: AudioBrowser.fromSource({
+      source: ...,
+      params: ...,
+    }),
+    draftConfig: ...,
+    editorConfig: ...,
+    gifPickerConfig: new GifPickerConfig({
+      giphyApiKey: ...,
+    }),
+  });
+
   constructor() {
     super();
     this.state = {
@@ -88,7 +110,7 @@ export default class App extends Component {
           <Button title="Open Video Editor - Default"
             onPress={async () => {
               const videoEditor = new VideoEditorPlugin();
-              videoEditor.openFromCamera(LICENSE_TOKEN, featuresConfig)
+              videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
                 .then(response => { this.handleVideoExport(response); })
                 .catch(e => { this.handleSdkError(e); });
             }

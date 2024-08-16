@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import { FeaturesConfig } from './FeaturesConfig';
+
 export * from './FeaturesConfig';
 
  const LINKING_ERROR =
@@ -20,26 +21,48 @@ export * from './FeaturesConfig';
     );
 
 export default class VideoEditorPlugin {
-   openFromCamera(licenseToken: String, featuresConfig: FeaturesConfig) : Promise<Map<String, String>> {
+  openFromCamera(
+    licenseToken: String,
+    featuresConfig: FeaturesConfig
+  ): Promise<Map<String, String>> {
     const inputParams = {
-      "screen" : "camera"
+      screen: 'camera',
+      featuresConfig: JSON.stringify(featuresConfig),
     };
-    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, JSON.stringify(featuresConfig), inputParams) : VideoEditorModule.openVideoEditor(licenseToken, JSON.stringify(featuresConfig), inputParams);
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
-  openFromPip(licenseToken: String, pipVideo : String): Promise<Map<String, String>> {
+  openFromPip(
+    licenseToken: String,
+    pipVideo: String
+  ): Promise<Map<String, String>> {
     const inputParams = {
-        "screen": "pip",
-       "videoSources": [pipVideo]
-     };
-    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+      screen: 'pip',
+      videoSources: [pipVideo],
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(
+          licenseToken,
+          inputParams
+        )
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
-  openFromTrimmer(licenseToken: String, videoSourcesArray: Array<String>): Promise<Map<String, String>> {
+  openFromTrimmer(
+    licenseToken: String,
+    videoSourcesArray: Array<String>
+  ): Promise<Map<String, String>> {
     const inputParams = {
-      "screen": "trimmer",
-      "videoSources": videoSourcesArray
-     };
-    return Platform.OS === 'ios' ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams) : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+      screen: 'trimmer',
+      videoSources: videoSourcesArray,
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(
+          licenseToken,
+          inputParams
+        )
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 }

@@ -95,7 +95,6 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun openVideoEditor(
         licenseToken: String,
-        rawConfigParams: String,
         inputParams: ReadableMap,
         promise: Promise
     ) {
@@ -113,7 +112,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        val featuresConfig = parseFeaturesConfig(rawConfigParams)
+        val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
 
         initialize(licenseToken, featuresConfig) {
             val hostActivity = currentActivity
