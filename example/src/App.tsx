@@ -11,6 +11,7 @@ import VideoEditorPlugin, {
   EditorConfig,
   FeaturesConfig,
   GifPickerConfig,
+  FeaturesConfigBuilder,
 } from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -20,26 +21,15 @@ const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
 const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
-  private featuresConfig = new FeaturesConfig({
-    aiClipping: new AiClipping({
-      audioDataUrl: ...,
-      audioTracksUrl: ...,
-    }),
-    aiCaptions: new AiCaptions({
-      uploadUrl: ...,
-      transcribeUrl: ...,
-      apiKey: ...,
-    }),
-    audioBrowser: AudioBrowser.fromSource({
-      source: ...,
-      params: ...,
-    }),
-    draftConfig: ...,
-    editorConfig: ...,
-    gifPickerConfig: new GifPickerConfig({
-      giphyApiKey: ...,
-    }),
-  });
+  private featuresConfig = new FeaturesConfigBuilder()
+    .setAiCaptions(
+      new AiCaptions({
+        uploadUrl: ...,
+        transcribeUrl: ...,
+        apiKey: ...,
+      })
+    )
+    .build();
 
   constructor() {
     super();

@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import { FeaturesConfig } from './FeaturesConfig';
+import type { FeaturesConfig } from './FeaturesConfig';
 
 export * from './FeaturesConfig';
 

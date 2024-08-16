@@ -1,13 +1,4 @@
-interface FeaturesConfigParams {
-  aiClipping?: AiClipping | null;
-  aiCaptions?: AiCaptions | null;
-  audioBrowser?: AudioBrowser;
-  draftConfig?: DraftConfig;
-  editorConfig?: EditorConfig;
-  gifPickerConfig?: GifPickerConfig | null;
-}
-
-export class FeaturesConfig {
+class FeaturesConfig {
   readonly aiClipping: AiClipping | null;
   readonly aiCaptions: AiCaptions | null;
   readonly audioBrowser: AudioBrowser;
@@ -15,17 +6,14 @@ export class FeaturesConfig {
   readonly draftConfig: DraftConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
 
-  constructor({
-    aiClipping = null,
-    aiCaptions = null,
-    audioBrowser = AudioBrowser.fromSource({
-      source: AudioBrowserSource.local,
-      params: null,
-    }),
-    editorConfig = new EditorConfig({ enableVideoAspectFill: false }),
-    draftConfig = DraftConfig.fromOption({ option: DraftOption.askToSave }),
-    gifPickerConfig = null,
-  }: FeaturesConfigParams = {}) {
+  constructor(
+    aiClipping: AiClipping | null,
+    aiCaptions: AiCaptions | null,
+    audioBrowser: AudioBrowser,
+    editorConfig: EditorConfig,
+    draftConfig: DraftConfig,
+    gifPickerConfig: GifPickerConfig | null
+  ) {
     this.aiClipping = aiClipping;
     this.aiCaptions = aiCaptions;
     this.audioBrowser = audioBrowser;
@@ -34,6 +22,65 @@ export class FeaturesConfig {
     this.gifPickerConfig = gifPickerConfig;
   }
 }
+
+export class FeaturesConfigBuilder {
+  private aiClipping: AiClipping | null = null;
+  private aiCaptions: AiCaptions | null = null;
+  private audioBrowser: AudioBrowser = AudioBrowser.fromSource({
+    source: AudioBrowserSource.local,
+    params: null,
+  });
+  private editorConfig: EditorConfig = new EditorConfig({
+    enableVideoAspectFill: false,
+  });
+  private draftConfig: DraftConfig = DraftConfig.fromOption({
+    option: DraftOption.askToSave,
+  });
+  private gifPickerConfig: GifPickerConfig | null = null;
+
+  setAiClipping(aiClipping: AiClipping | null): this {
+    this.aiClipping = aiClipping;
+    return this;
+  }
+
+  setAiCaptions(aiCaptions: AiCaptions | null): this {
+    this.aiCaptions = aiCaptions;
+    return this;
+  }
+
+  setAudioBrowser(audioBrowser: AudioBrowser): this {
+    this.audioBrowser = audioBrowser;
+    return this;
+  }
+
+  setEditorConfig(editorConfig: EditorConfig): this {
+    this.editorConfig = editorConfig;
+    return this;
+  }
+
+  setDraftConfig(draftConfig: DraftConfig): this {
+    this.draftConfig = draftConfig;
+    return this;
+  }
+
+  setGifPickerConfig(gifPickerConfig: GifPickerConfig | null): this {
+    this.gifPickerConfig = gifPickerConfig;
+    return this;
+  }
+
+  build(): FeaturesConfig {
+    return new FeaturesConfig(
+      this.aiClipping,
+      this.aiCaptions,
+      this.audioBrowser,
+      this.editorConfig,
+      this.draftConfig,
+      this.gifPickerConfig
+    );
+  }
+}
+
+export type { FeaturesConfig };
 
 export enum AudioBrowserSource {
   soundstripe = 'soundstripe',
