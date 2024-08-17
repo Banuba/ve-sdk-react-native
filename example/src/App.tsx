@@ -9,7 +9,6 @@ import VideoEditorPlugin, {
   DraftConfig,
   DraftOption,
   EditorConfig,
-  FeaturesConfig,
   GifPickerConfig,
   FeaturesConfigBuilder,
 } from 'video-editor-react-native';
@@ -22,13 +21,12 @@ const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
   private featuresConfig = new FeaturesConfigBuilder()
-    .setAiCaptions(
-      new AiCaptions({
-        uploadUrl: ...,
-        transcribeUrl: ...,
-        apiKey: ...,
-      })
-    )
+    .setAudioBrowser(...)
+    .setAiCaptions(...)
+    .setEditorConfig(...)
+    .setDraftConfig(...)
+    .setAiClipping(...)
+    .setGifPickerConfig(...)
     .build();
 
   constructor() {
@@ -42,7 +40,7 @@ export default class App extends Component {
     let exportedVideoSources = response?.exportedVideoSources
     let exportedPreview = response?.exportedPreview
     let exportedMeta = response?.exportedMeta
-     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
+    console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
       + exportedPreview + "; meta = " + exportedMeta);
   }
 
@@ -124,7 +122,7 @@ export default class App extends Component {
                     console.log('# Picked video source for pip = ' + videoUri);
 
                     const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromPip(LICENSE_TOKEN, videoUri)
+                    videoEditor.openFromPip(LICENSE_TOKEN, this.featuresConfig, videoUri)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }
@@ -152,7 +150,7 @@ export default class App extends Component {
                     let videoSources = [videoUri];
 
                     const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromTrimmer(LICENSE_TOKEN, videoSources)
+                    videoEditor.openFromTrimmer(LICENSE_TOKEN, this.featuresConfig, videoSources)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }

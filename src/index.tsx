@@ -36,10 +36,12 @@ export default class VideoEditorPlugin {
 
   openFromPip(
     licenseToken: String,
+    featuresConfig: FeaturesConfig,
     pipVideo: String
   ): Promise<Map<String, String>> {
     const inputParams = {
       screen: 'pip',
+      featuresConfig: JSON.stringify(featuresConfig),
       videoSources: [pipVideo],
     };
     return Platform.OS === 'ios'
@@ -52,10 +54,12 @@ export default class VideoEditorPlugin {
 
   openFromTrimmer(
     licenseToken: String,
+    featuresConfig: FeaturesConfig,
     videoSourcesArray: Array<String>
   ): Promise<Map<String, String>> {
     const inputParams = {
       screen: 'trimmer',
+      featuresConfig: JSON.stringify(featuresConfig),
       videoSources: videoSourcesArray,
     };
     return Platform.OS === 'ios'
