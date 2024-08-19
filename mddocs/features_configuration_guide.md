@@ -8,9 +8,9 @@ Pass the ```FeaturesConfig``` instance to any Video Editor [start method](../exa
 
 ```typescript
   private featuresConfig = new FeaturesConfigBuilder()
-    .setAudioBrowser(AudioBrowser.fromSource({ 
-        source: AudioBrowserSource.local, 
-        params: null 
+    .setAudioBrowser(AudioBrowser.fromSource({
+        source: AudioBrowserSource.local,
+        params: null
         })
     )
     .build();
@@ -29,5 +29,5 @@ videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
 2. [AI Clipping](ai_clipping_guide.md)
 3. [Audio Browser](audio_browser_guide.md)
 4. [Editor screen](editor_screen_guide.md)
-5. [Draft](draft_guide.md)
+5. [Draft](drafts_guide)
 6. [Stickers](stickers_guide.md)

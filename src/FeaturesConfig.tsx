@@ -3,7 +3,7 @@ class FeaturesConfig {
   readonly aiCaptions: AiCaptions | null;
   readonly audioBrowser: AudioBrowser;
   readonly editorConfig: EditorConfig;
-  readonly draftConfig: DraftConfig;
+  readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
 
   constructor(
@@ -11,14 +11,14 @@ class FeaturesConfig {
     aiCaptions: AiCaptions | null,
     audioBrowser: AudioBrowser,
     editorConfig: EditorConfig,
-    draftConfig: DraftConfig,
+    draftsConfig: DraftsConfig,
     gifPickerConfig: GifPickerConfig | null
   ) {
     this.aiClipping = aiClipping;
     this.aiCaptions = aiCaptions;
     this.audioBrowser = audioBrowser;
     this.editorConfig = editorConfig;
-    this.draftConfig = draftConfig;
+    this.draftsConfig = draftsConfig;
     this.gifPickerConfig = gifPickerConfig;
   }
 }
@@ -33,8 +33,8 @@ export class FeaturesConfigBuilder {
   private editorConfig: EditorConfig = new EditorConfig({
     enableVideoAspectFill: false,
   });
-  private draftConfig: DraftConfig = DraftConfig.fromOption({
-    option: DraftOption.askToSave,
+  private draftsConfig: DraftsConfig = DraftsConfig.fromOption({
+    option: DraftsOption.askToSave,
   });
   private gifPickerConfig: GifPickerConfig | null = null;
 
@@ -58,8 +58,8 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
-  setDraftConfig(draftConfig: DraftConfig): this {
-    this.draftConfig = draftConfig;
+  setDraftsConfig(draftsConfig: DraftsConfig): this {
+    this.draftsConfig = draftsConfig;
     return this;
   }
 
@@ -74,7 +74,7 @@ export class FeaturesConfigBuilder {
       this.aiCaptions,
       this.audioBrowser,
       this.editorConfig,
-      this.draftConfig,
+      this.draftsConfig,
       this.gifPickerConfig
     );
   }
@@ -158,22 +158,22 @@ export class EditorConfig {
   }
 }
 
-export enum DraftOption {
+export enum DraftsOption {
   askToSave = 'askToSave',
   closeOnSave = 'closeOnSave',
   auto = 'auto',
   disabled = 'disabled',
 }
 
-export class DraftConfig {
-  option: DraftOption;
+export class DraftsConfig {
+  option: DraftsOption;
 
-  private constructor({ option }: { option: DraftOption }) {
+  private constructor({ option }: { option: DraftsOption }) {
     this.option = option;
   }
 
-  static fromOption({ option }: { option: DraftOption }): DraftConfig {
-    return new DraftConfig({ option });
+  static fromOption({ option }: { option: DraftsOption }): DraftsConfig {
+    return new DraftsConfig({ option });
   }
 }
 

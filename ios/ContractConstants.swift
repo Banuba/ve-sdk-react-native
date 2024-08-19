@@ -59,7 +59,7 @@ extension VideoEditorReactNative {
             editorConfig: EditorConfig(
                 enableVideoAspectFill: true
             ),
-            draftConfig: DraftConfig(
+            draftsConfig: DraftsConfig(
                 option: "enable"
             ),
             gifPickerConfig: nil
@@ -77,10 +77,10 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceLocal = "local"
 
     // Draft Configs
-    static let featuresConfigDraftConfigOptionAskToSave = "askToSave"
-    static let featuresConfigDraftConfigOptionСloseOnSave = "closeOnSave"
-    static let featuresConfigDraftConfigOptionAuto = "auto"
-    static let featuresConfigDraftConfigOptionDisabled = "disabled"
+    static let featuresConfigDraftsConfigOptionAskToSave = "askToSave"
+    static let featuresConfigDraftsConfigOptionСloseOnSave = "closeOnSave"
+    static let featuresConfigDraftsConfigOptionAuto = "auto"
+    static let featuresConfigDraftsConfigOptionDisabled = "disabled"
     
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"

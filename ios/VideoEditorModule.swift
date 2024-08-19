@@ -119,11 +119,17 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: trimmerLaunchConfig, resolve, reject)
     }
     
-    func checkLicenseAndStartVideoEditor(with config: VideoEditorLaunchConfig,
-                                         _ resolve: @escaping RCTPromiseResolveBlock,
-                                         _ reject: @escaping RCTPromiseRejectBlock) {
+    func checkLicenseAndStartVideoEditor(
+        with config: VideoEditorLaunchConfig,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
         if videoEditorSDK == nil {
-            reject(VideoEditorReactNative.errSdkNotInitialized, VideoEditorReactNative.errMessageSdkNotInitialized, nil)
+            reject(
+                VideoEditorReactNative.errSdkNotInitialized,
+                VideoEditorReactNative.errMessageSdkNotInitialized,
+                nil
+            )
             return
         }
         
@@ -325,17 +331,8 @@ extension VideoEditorConfig {
         }
 
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
-
-        switch featuresConfig.draftConfig.option{
-            case VideoEditorConfig.featuresConfigDraftConfigOptionAuto:
-                self.featureConfiguration.draftsConfig = .enabledSaveToDraftsByDefault
-            case VideoEditorConfig.featuresConfigDraftConfigOptionСloseOnSave:
-                self.featureConfiguration.draftsConfig = .enabledAskIfSaveNotExport
-            case VideoEditorConfig.featuresConfigDraftConfigOptionDisabled:
-                self.featureConfiguration.draftsConfig = .disabled
-            default:
-                self.featureConfiguration.draftsConfig = .enabled
-        }
+        
+        self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
         
         if let gifPickerConfig = featuresConfig.gifPickerConfig {
             self.gifPickerConfiguration.giphyAPIKey = gifPickerConfig.giphyApiKey

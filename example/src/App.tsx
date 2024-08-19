@@ -6,8 +6,8 @@ import VideoEditorPlugin, {
   AiCaptions,
   AudioBrowser,
   AudioBrowserSource,
-  DraftConfig,
-  DraftOption,
+  DraftsConfig,
+  DraftsOption,
   EditorConfig,
   GifPickerConfig,
   FeaturesConfigBuilder,
@@ -21,15 +21,10 @@ const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
 
-  // Specify your Config params in the builder below
-
   private featuresConfig = new FeaturesConfigBuilder()
-    .setAudioBrowser(...)
-    .setAiCaptions(...)
-    .setEditorConfig(...)
-    .setDraftConfig(...)
-    .setAiClipping(...)
-    .setGifPickerConfig(...)
+    // Specify your Config params in the builder below
+    //.setAudioBrowser(...)
+    //...
     .build();
 
   constructor() {

@@ -1,11 +1,12 @@
 import Foundation
+import BanubaVideoEditorSDK
 
 struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
     let editorConfig: EditorConfig
-    let draftConfig: DraftConfig
+    let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
 }
 
@@ -34,8 +35,21 @@ struct EditorConfig: Codable {
     let enableVideoAspectFill: Bool
 }
 
-struct DraftConfig: Codable {
+struct DraftsConfig: Codable {
     let option: String
+
+    func value() -> DraftsFeatureConfig {
+        switch self.option {
+            case VideoEditorConfig.featuresConfigDraftsConfigOptionAuto:
+                return .enabledSaveToDraftsByDefault
+            case VideoEditorConfig.featuresConfigDraftsConfigOptionСloseOnSave:
+                return .enabledAskIfSaveNotExport
+            case VideoEditorConfig.featuresConfigDraftsConfigOptionDisabled:
+                return .disabled
+            default:
+                return .enabled
+        }
+    }
 }
 
 struct GifPickerConfig: Codable {

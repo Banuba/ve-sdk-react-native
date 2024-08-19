@@ -1,6 +1,7 @@
 package com.videoeditorreactnative
 
 import org.json.JSONObject
+import com.banuba.sdk.core.domain.DraftConfig
 
 internal data class FeaturesConfig(
     val aiClipping: AiClipping? = null,
@@ -41,8 +42,17 @@ internal val defaultEditorConfig = EditorConfig(
 )
 
 internal data class DraftsConfig(
-    val option: String
-)
+  val option: String
+) {
+  internal fun value(): DraftConfig {
+    return when (this.option) {
+      FEATURES_CONFIG_DRAFTS_CONFIG_AUTO -> DraftConfig.ENABLED_SAVE_BY_DEFAULT
+      FEATURES_CONFIG_DRAFTS_CONFIG_CLOSE_ON_SAVE -> DraftConfig.ENABLED_ASK_IF_SAVE_NOT_EXPORT
+      FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED -> DraftConfig.DISABLED
+      else -> DraftConfig.ENABLED_ASK_TO_SAVE
+    }
+  }
+}
 
 internal val defaultDraftsConfig = DraftsConfig(
     option = "askToSave"
