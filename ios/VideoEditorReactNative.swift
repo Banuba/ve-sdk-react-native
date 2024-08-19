@@ -21,7 +21,9 @@ class VideoEditorReactNative: NSObject {
             return
         }
         
-        if (!videoEditor.initVideoEditor(token: token)) {
+        let featuresConfig = parseFeatureConfig(args[VideoEditorReactNative.inputParamFeaturesConfig] as? String)
+        
+        if (!videoEditor.initVideoEditor(token: token, featuresConfig: featuresConfig)) {
             debugPrint("# Cannot initialize video editor")
             reject(VideoEditorReactNative.errSdkNotInitialized, VideoEditorReactNative.errMessageSdkNotInitialized, nil)
             return

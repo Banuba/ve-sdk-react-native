@@ -18,6 +18,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
+import org.json.JSONObject
+import org.json.JSONException
 import java.io.File
 
 class VideoEditorModule(reactContext: ReactApplicationContext) :
@@ -110,7 +112,9 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        initialize(licenseToken) {
+        val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
+
+        initialize(licenseToken, featuresConfig) {
             val hostActivity = currentActivity
 
             if (hostActivity == null) {
@@ -125,7 +129,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         hostActivity,
                         PipConfig(video = Uri.EMPTY, openPipSettings = false),
                         null,
-                        null
+                        null,
+                        extras = prepareExtras(featuresConfig)
                     )
                 }
 
@@ -154,7 +159,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         pictureInPictureConfig = PipConfig(
                             video = videoUri,
                             openPipSettings = false
-                        )
+                        ),
+                        extras = prepareExtras(featuresConfig)
                     )
                 }
 
@@ -180,7 +186,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         audioTrackData = null,
                         // set Trimmer video configuration
                         predefinedVideos = videoSources.map { prepareVideoUri(it) }
-                            .toTypedArray()
+                            .toTypedArray(),
+                        extras = prepareExtras(featuresConfig)
                     )
                 }
 
@@ -202,6 +209,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
     private fun initialize(
         token: String,
+        featuresConfig: FeaturesConfig,
         block: () -> Unit
     ) {
         val activity = currentActivity
@@ -228,7 +236,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorKoinModule().apply {
-                initialize(activity.application)
+                initialize(activity.application, featuresConfig)
             }
         }
 

@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, Platform } from 'react-native';
 
-import VideoEditorPlugin from 'video-editor-react-native';
+import VideoEditorPlugin, {
+  AiClipping,
+  AiCaptions,
+  AudioBrowser,
+  AudioBrowserSource,
+  DraftsConfig,
+  DraftsOption,
+  EditorConfig,
+  GifPickerConfig,
+  FeaturesConfigBuilder,
+} from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -10,6 +20,13 @@ const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
 const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
+
+  private featuresConfig = new FeaturesConfigBuilder()
+    // Specify your Config params in the builder below
+    //.setAudioBrowser(...)
+    //...
+    .build();
+
   constructor() {
     super();
     this.state = {
@@ -21,7 +38,7 @@ export default class App extends Component {
     let exportedVideoSources = response?.exportedVideoSources
     let exportedPreview = response?.exportedPreview
     let exportedMeta = response?.exportedMeta
-     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
+    console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
       + exportedPreview + "; meta = " + exportedMeta);
   }
 
@@ -79,7 +96,7 @@ export default class App extends Component {
           <Button title="Open Video Editor - Default"
             onPress={async () => {
               const videoEditor = new VideoEditorPlugin();
-              videoEditor.openFromCamera(LICENSE_TOKEN)
+              videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
                 .then(response => { this.handleVideoExport(response); })
                 .catch(e => { this.handleSdkError(e); });
             }
@@ -103,7 +120,7 @@ export default class App extends Component {
                     console.log('# Picked video source for pip = ' + videoUri);
 
                     const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromPip(LICENSE_TOKEN, videoUri)
+                    videoEditor.openFromPip(LICENSE_TOKEN, this.featuresConfig, videoUri)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }
@@ -131,7 +148,7 @@ export default class App extends Component {
                     let videoSources = [videoUri];
 
                     const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromTrimmer(LICENSE_TOKEN, videoSources)
+                    videoEditor.openFromTrimmer(LICENSE_TOKEN, this.featuresConfig, videoSources)
                       .then(response => { this.handleVideoExport(response); })
                       .catch(e => { this.handleSdkError(e); });
                   }

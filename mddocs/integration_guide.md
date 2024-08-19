@@ -8,7 +8,7 @@ This guide helps to complete full Video Editor SDK integration.
 #### Add repositories
 
 GitHub Packages is used for downloading Android Video Editor SDK modules.
-Add repositories to [gradle](example/android/app/build.gradle#L107) file.
+Add repositories to [gradle](../example/android/app/build.gradle#L107) file.
 ```groovy
 repositories {
   maven {
@@ -39,7 +39,7 @@ repositories {
 ```
 
 #### Add Activity
-Add ```VideoCreationActivity``` in [AndroidManifest.xml](example/android/app/src/main/AndroidManifest.xml#L27) file.
+Add ```VideoCreationActivity``` in [AndroidManifest.xml](../example/android/app/src/main/AndroidManifest.xml#L27) file.
 ``` xml
     <activity
         android:name="com.banuba.sdk.ve.flow.VideoCreationActivity"
@@ -56,7 +56,7 @@ Add ```VideoCreationActivity``` in [AndroidManifest.xml](example/android/app/src
 
 #### Add specs to Podfile
 
-Add the following specs at the top of your [Podfile](example/ios/Podfile)
+Add the following specs at the top of your [Podfile](../example/ios/Podfile)
 ```
 platform :ios, '15.0'
 source 'https://github.com/CocoaPods/Specs.git'
@@ -66,7 +66,7 @@ source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
 
 #### Add permissions
 
-Specify the required iOS permissions used by the SDK in your [Info.plist](example/ios/VideoEditorReactNativeExample/Info.plist)
+Specify the required iOS permissions used by the SDK in your [Info.plist](../example/ios/VideoEditorReactNativeExample/Info.plist)
 ```
 <key>NSAppleMusicUsageDescription</key>
 <string>This app requires access to the media library</string>
@@ -84,8 +84,8 @@ Specify the required iOS permissions used by the SDK in your [Info.plist](exampl
 :exclamation: IMPORTANT
 Add beautification effect to your project.
 
-1. Android - copy [Beauty](example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect from example project and paste it to ```assets/bnb-resources/effects``` in your project.
-1. iOS - add the effect to resource folder ```bundleEffects```. You can drag and drop the [BeautyEffects](example/ios/bundleEffects/BeautyEffects) from [bundleEffects](example/ios/bundleEffects) folder from example project to your project's sidebar in Xcode. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes. When done correctly, the ```bundleEffects``` folder's icon will be blue and the folder itself will be present in Copy bundle resources build phase.
+1. Android - copy [Beauty](../example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect from example project and paste it to ```assets/bnb-resources/effects``` in your project.
+1. iOS - add the effect to resource folder ```bundleEffects```. You can drag and drop the [BeautyEffects](../example/ios/bundleEffects/BeautyEffects) from [bundleEffects](../example/ios/bundleEffects) folder from example project to your project's sidebar in Xcode. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes. When done correctly, the ```bundleEffects``` folder's icon will be blue and the folder itself will be present in Copy bundle resources build phase.
 
 ## Add Color effects
 Color filter previews are images(```.png``` files) used to represent texture.
@@ -94,8 +94,8 @@ Color filter previews are images(```.png``` files) used to represent texture.
 Previews files are not part of plugin by default since these resources add extra MBs to your app.
 
 ### Android
-Preview files are in [drawable-xhdpi](example/android/app/src/main/res/drawable-xhdpi),
-[drawable-xxhdpi](example/android/app/src/main/res/drawable-xxhdpi), [drawable-xxxhdpi](example/android/app/src/main/res/drawable-xxxhdpi) folders.
+Preview files are in [drawable-xhdpi](../example/android/app/src/main/res/drawable-xhdpi),
+[drawable-xxhdpi](../example/android/app/src/main/res/drawable-xxhdpi), [drawable-xxxhdpi](../example/android/app/src/main/res/drawable-xxxhdpi) folders.
 Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolution. Additionally, you can copy paste just one set of previews if it meets your requirements.
 
 ### iOS
