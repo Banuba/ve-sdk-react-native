@@ -7,7 +7,7 @@ internal data class FeaturesConfig(
     val aiCaptions: AiCaptions? = null,
     val audioBrowser: AudioBrowser = defaultAudioBrowser,
     val editorConfig: EditorConfig = defaultEditorConfig,
-    val draftConfig: DraftConfig = defaultDraftConfig,
+    val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
 )
 
@@ -40,11 +40,11 @@ internal val defaultEditorConfig = EditorConfig(
     enableVideoAspectFill = true
 )
 
-internal data class DraftConfig(
+internal data class DraftsConfig(
     val option: String
 )
 
-internal val defaultDraftConfig = DraftConfig(
+internal val defaultDraftsConfig = DraftsConfig(
     option = "askToSave"
 )
 

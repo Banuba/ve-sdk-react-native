@@ -120,17 +120,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
     }
 
     factory<DraftConfig> {
-      when (featuresConfig.draftConfig.option) {
-        FEATURES_CONFIG_DRAFT_CONFIG_AUTO ->
-          DraftConfig.ENABLED_SAVE_BY_DEFAULT
-        FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE ->
-          DraftConfig.ENABLED_ASK_IF_SAVE_NOT_EXPORT
-        FEATURES_CONFIG_DRAFT_CONFIG_DISABLED ->
-          DraftConfig.DISABLED
-        else -> {
-          DraftConfig.ENABLED_ASK_TO_SAVE
-        }
-      }
+      featuresConfig.draftsConfig.value()
     }
 
     featuresConfig.gifPickerConfig?.let { params ->

@@ -20,6 +20,9 @@ const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
 const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
+
+  // Specify your Config params in the builder below
+
   private featuresConfig = new FeaturesConfigBuilder()
     .setAudioBrowser(...)
     .setAiCaptions(...)

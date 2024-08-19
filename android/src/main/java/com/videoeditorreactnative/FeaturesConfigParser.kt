@@ -15,7 +15,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAiCaptions(),
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractEditorConfig(),
-                featuresConfigObject.extractDraftConfig(),
+                featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig()
             )
         } catch (e: JSONException) {
@@ -79,17 +79,17 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
         defaultEditorConfig
     } ?: defaultEditorConfig
 
-private fun JSONObject.extractDraftConfig(): DraftConfig =
+private fun JSONObject.extractDraftsConfig(): DraftsConfig =
     try {
-        this.optJSONObject(FEATURES_CONFIG_DRAFT_CONFIG)?.let { json ->
-            DraftConfig(
-                option = json.optString(FEATURES_CONFIG_DRAFT_CONFIG_OPTION)
+        this.optJSONObject(FEATURES_CONFIG_DRAFTS_CONFIG)?.let { json ->
+            DraftsConfig(
+                option = json.optString(FEATURES_CONFIG_DRAFTS_CONFIG_OPTION)
             )
         }
     } catch (e: JSONException) {
         Log.w(TAG, "Missing Draft Config params", e)
-        defaultDraftConfig
-    } ?: defaultDraftConfig
+        defaultDraftsConfig
+    } ?: defaultDraftsConfig
 
 private fun JSONObject.extractGifPickerConfig(): GifPickerConfig? {
     return try {

@@ -3,6 +3,7 @@ package com.videoeditorreactnative
 import androidx.core.os.bundleOf
 import android.os.Bundle
 import com.banuba.sdk.veui.data.captions.CaptionsApiService
+import com.banuba.sdk.core.domain.DraftConfig
 import android.util.Log
 
 // Tags
@@ -49,13 +50,13 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertTo
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"
 
-internal const val FEATURES_CONFIG_DRAFT_CONFIG = "draftConfig"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_OPTION = "option"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftConfig"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"
 
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_ASK_TO_SAVE = "askToSave"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_AUTO = "auto"
-internal const val FEATURES_CONFIG_DRAFT_CONFIG_DISABLED = "disabled"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_ASK_TO_SAVE = "askToSave"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_CLOSE_ON_SAVE = "closeOnSave"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_AUTO = "auto"
+internal const val FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
@@ -110,6 +111,16 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
   }
   return bundle
+}
+
+// Value DraftConfigs
+internal fun DraftsConfig.value(): DraftConfig {
+  return when (this.option) {
+    FEATURES_CONFIG_DRAFTS_CONFIG_AUTO -> DraftConfig.ENABLED_SAVE_BY_DEFAULT
+    FEATURES_CONFIG_DRAFTS_CONFIG_CLOSE_ON_SAVE -> DraftConfig.ENABLED_ASK_IF_SAVE_NOT_EXPORT
+    FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED -> DraftConfig.DISABLED
+    else -> DraftConfig.ENABLED_ASK_TO_SAVE
+  }
 }
 
 //Empty Feature Config
