@@ -41,44 +41,49 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         override fun onActivityResult(
             activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?
         ) {
-            if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
-                when {
-                    resultCode == Activity.RESULT_OK -> {
-                        val exportResult = data?.getParcelableExtra<ExportResult.Success>(
-                            EXTRA_EXPORTED_SUCCESS
-                        )
-
-                        val videoSources =
-                            exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
-                        val previewUri = exportResult?.preview
-                        val metaUri = exportResult?.metaUri
-
-                        if (videoSources.isEmpty()) {
-                            Log.w(TAG, "Missing export result")
-                            resultPromise?.reject(
-                                ERR_MISSING_EXPORT_RESULT,
-                                ERR_MESSAGE_MISSING_EXPORT_RESULT
+            try {
+                if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
+                    when {
+                        resultCode == Activity.RESULT_OK -> {
+                            val exportResult = data?.getParcelableExtra<ExportResult.Success>(
+                                EXTRA_EXPORTED_SUCCESS
                             )
-                        } else {
-                            // Send video export results to React
-                            val arguments: WritableMap = Arguments.createMap()
-                            val videoSourcesArray = Arguments.createArray()
-                            videoSources.onEach { videoSourcesArray.pushString(it) }
 
-                            arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
-                            arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
-                            arguments.putString(EXPORTED_META, metaUri?.toString())
-                            Log.d(TAG, "Send video export results to React")
-                            resultPromise?.resolve(arguments)
+                            val videoSources =
+                                exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
+                            val previewUri = exportResult?.preview
+                            val metaUri = exportResult?.metaUri
+
+                            if (videoSources.isEmpty()) {
+                                Log.w(TAG, "Missing export result")
+                                resultPromise?.reject(
+                                    ERR_MISSING_EXPORT_RESULT,
+                                    ERR_MESSAGE_MISSING_EXPORT_RESULT
+                                )
+                            } else {
+                                // Send video export results to React
+                                val arguments: WritableMap = Arguments.createMap()
+                                val videoSourcesArray = Arguments.createArray()
+                                videoSources.onEach { videoSourcesArray.pushString(it) }
+
+                                arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
+                                arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
+                                arguments.putString(EXPORTED_META, metaUri?.toString())
+                                Log.d(TAG, "Send video export results to React")
+                                resultPromise?.resolve(arguments)
+                            }
                         }
-                    }
 
-                    resultCode == Activity.RESULT_CANCELED -> resultPromise?.reject(
-                        ERR_VIDEO_EXPORT_CANCEL,
-                        ERR_MESSAGE_VIDEO_EXPORT_CANCEL
-                    )
-                }
+                        resultCode == Activity.RESULT_CANCELED -> resultPromise?.reject(
+                            ERR_VIDEO_EXPORT_CANCEL,
+                            ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+                        )
+                    }
                 resultPromise = null
+            }
+            } finally {
+                videoEditorModule?.releaseVideoEditor()
+                videoEditorModule = null
             }
         }
 
@@ -147,7 +152,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         return@initialize
                     }
 
-                    val videoUri = prepareVideoUri(videoSources.first())
+                    val videoUri = Uri.parse(videoSources.first())
                     Log.d(TAG, "Start video editor in pip mode with video = $videoUri")
                     VideoCreationActivity.startFromCamera(
                         context = hostActivity,
@@ -185,7 +190,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         // set TrackData object if you open VideoCreationActivity with preselected music track
                         audioTrackData = null,
                         // set Trimmer video configuration
-                        predefinedVideos = videoSources.map { prepareVideoUri(it) }
+                        predefinedVideos = videoSources.map { Uri.parse(it) }
                             .toTypedArray(),
                         extras = prepareExtras(featuresConfig)
                     )
@@ -269,14 +274,5 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             values.add(rawArray.getString(i))
         }
         return values
-    }
-
-    private fun prepareVideoUri(path: String): Uri {
-        val simpleVideoUri = Uri.parse(path)
-        return if (simpleVideoUri.isFileUrl) {
-            simpleVideoUri
-        } else {
-            Uri.fromFile(File(path))
-        }
     }
 }
