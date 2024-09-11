@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button, Platform } from 'react-native';
+import { StyleSheet, View, Text, Button, TouchableOpacity, Platform } from 'react-native';
 
 import VideoEditorPlugin, {
   AiClipping,
@@ -77,86 +77,84 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ padding: 16, textAlign: 'center', fontSize: 18 }}>
-          Sample integration of Banuba Video and Photo Editor into React Native
-        </Text>
-
-        <Text
-          style={{
-            padding: 16,
-            textAlign: 'center',
-            color: '#ff0000',
-            fontSize: 16,
-            fontWeight: '800',
-          }}>
-          {this.state.errorText}
-        </Text>
-
-        <View style={{ marginVertical: 8 }}>
-          <Button title="Open Video Editor - Default"
-            onPress={async () => {
-              const videoEditor = new VideoEditorPlugin();
-              videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
-                .then(response => { this.handleVideoExport(response); })
-                .catch(e => { this.handleSdkError(e); });
-            }
-            }
-          />
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>
+            Sample integration of Banuba Video into React Native project
+          </Text>
         </View>
+        <View style={styles.buttonsWrapper}>
+          <View style={styles.buttonsContainer}>
+            {this.state.errorText ? (
+              <Text style={styles.errorText}>{this.state.errorText}</Text>
+            ) : null}
 
-        <View style={{ marginVertical: 8 }}>
-          <Button title="Open Video Editor - PIP"
-            onPress={async () => {
-              launchImageLibrary(
-                videoOptions,
-                (response) => {
-                  console.log('Response = ', response);
-                  if (response.didCancel) {
-                    console.warn('User cancelled photo picker');
-                  } else if (response.error) {
-                    console.warn('ImagePicker Error: ', response.error);
-                  } else {
-                    let videoUri = response.uri || response.assets?.[0]?.uri;
-                    console.log('# Picked video source for pip = ' + videoUri);
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                const videoEditor = new VideoEditorPlugin();
+                videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
+                  .then(response => this.handleVideoExport(response))
+                  .catch(e => this.handleSdkError(e));
+              }}
+            >
+              <Text style={styles.buttonText}>Open Video Editor - Default</Text>
+            </TouchableOpacity>
 
-                    const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromPip(LICENSE_TOKEN, this.featuresConfig, videoUri)
-                      .then(response => { this.handleVideoExport(response); })
-                      .catch(e => { this.handleSdkError(e); });
-                  }
-                },
-              );
-            }
-            }
-          />
-        </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                launchImageLibrary(
+                  videoOptions,
+                  (response) => {
+                    console.log('Response = ', response);
+                    if (response.didCancel) {
+                      console.warn('User cancelled photo picker');
+                    } else if (response.error) {
+                      console.warn('ImagePicker Error: ', response.error);
+                    } else {
+                      let videoUri = response.uri || response.assets?.[0]?.uri;
+                      console.log('# Picked video source for pip = ' + videoUri);
 
-        <View style={{ marginVertical: 8 }}>
-          <Button title="Open Video Editor - Trimmer"
-            onPress={async () => {
-              launchImageLibrary(
-                videoOptions,
-                (response) => {
-                  console.log('Response = ', response);
-                  if (response.didCancel) {
-                    console.warn('User cancelled photo picker');
-                  } else if (response.error) {
-                    console.warn('ImagePicker Error: ', response.error);
-                  } else {
-                    let videoUri = response.uri || response.assets?.[0]?.uri;
-                    console.log('# Picked video source for trimmer = ' + videoUri);
-                    let videoSources = [videoUri];
+                      const videoEditor = new VideoEditorPlugin();
+                      videoEditor.openFromPip(LICENSE_TOKEN, this.featuresConfig, videoUri)
+                        .then(response => { this.handleVideoExport(response); })
+                        .catch(e => { this.handleSdkError(e); });
+                    }
+                  },
+                );
+              }}
+            >
+              <Text style={styles.buttonText}>Open Video Editor - PIP</Text>
+            </TouchableOpacity>
 
-                    const videoEditor = new VideoEditorPlugin();
-                    videoEditor.openFromTrimmer(LICENSE_TOKEN, this.featuresConfig, videoSources)
-                      .then(response => { this.handleVideoExport(response); })
-                      .catch(e => { this.handleSdkError(e); });
-                  }
-                },
-              );
-            }
-            }
-          />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                launchImageLibrary(
+                  videoOptions,
+                  (response) => {
+                    console.log('Response = ', response);
+                    if (response.didCancel) {
+                      console.warn('User cancelled photo picker');
+                    } else if (response.error) {
+                      console.warn('ImagePicker Error: ', response.error);
+                    } else {
+                      let videoUri = response.uri || response.assets?.[0]?.uri;
+                      console.log('# Picked video source for trimmer = ' + videoUri);
+                      let videoSources = [videoUri];
+
+                      const videoEditor = new VideoEditorPlugin();
+                      videoEditor.openFromTrimmer(LICENSE_TOKEN, this.featuresConfig, videoSources)
+                        .then(response => { this.handleVideoExport(response); })
+                        .catch(e => { this.handleSdkError(e); });
+                    }
+                  },
+                );
+              }}
+            >
+              <Text style={styles.buttonText}>Open Video Editor - Trimmer</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -165,14 +163,57 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  headerContainer: {
+    height: '33%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  title: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  buttonsWrapper: {
+    position: 'absolute',
+    top: 50,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  buttonsContainer: {
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 300,
+  },
+  errorText: {
+    color: '#ff0000',
+    fontSize: 16,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 12,
+    borderRadius: 30,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    width: '100%',
+    marginVertical: 8,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
