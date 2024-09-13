@@ -86,6 +86,7 @@ export enum AudioBrowserSource {
   soundstripe = 'soundstripe',
   local = 'local',
   mubert = 'mubert',
+  banubaFm = 'banubaFm'
 }
 
 export class AudioBrowser {

@@ -7,6 +7,8 @@ This guide helps to complete full Video Editor SDK integration.
 ### Android
 #### Add repositories
 
+Deprecated
+```
 GitHub Packages is used for downloading Android Video Editor SDK modules.
 Add repositories to [gradle](../example/android/app/build.gradle#L107) file.
 ```groovy

@@ -3,7 +3,8 @@ package com.videoeditorreactnative
 import com.banuba.sdk.core.data.TrackData
 import androidx.fragment.app.Fragment
 import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
-import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
+import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
+import com.banuba.sdk.audiobrowser.feedfm.BanubaMusicProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
 import org.json.JSONObject
@@ -35,6 +36,7 @@ internal data class AudioBrowser(
     internal fun value(): ContentFeatureProvider<TrackData, Fragment> {
         return when (this.source) {
             FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBAFM -> BanubaMusicProvider()
             else -> {
                 AudioBrowserMusicProvider()
             }
