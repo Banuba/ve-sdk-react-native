@@ -68,6 +68,7 @@ internal const val ERR_MISSING_HOST = "ERR_MISSING_HOST"
 internal const val ERR_INVALID_PARAMS = "ERR_INVALID_PARAMS"
 internal const val ERR_MISSING_EXPORT_RESULT = "ERR_MISSING_EXPORT_RESULT"
 internal const val ERR_VIDEO_EXPORT_CANCEL = "ERR_VIDEO_EXPORT_CANCEL"
+internal const val ERR_UNKNOWN_REQUEST_CODE = "ERR_UNKNOWN_REQUEST_CODE"
 
 internal const val ERR_MESSAGE_SDK_NOT_INITIALIZED = """
     Failed to initialize SDK!!!
@@ -101,6 +102,8 @@ internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
 internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start video editor"
 
 internal const val ERR_MESSAGE_VIDEO_EXPORT_CANCEL = "The user has canceled video editing flow!"
+
+internal const val ERR_MESSAGE_UNKNOWN_REQUEST_CODE = "Unknown request code"
 
 //Prepare Extras from AiCaptions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {

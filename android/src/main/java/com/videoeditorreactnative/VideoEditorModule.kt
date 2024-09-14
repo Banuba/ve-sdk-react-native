@@ -41,47 +41,52 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         override fun onActivityResult(
             activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?
         ) {
-            try {
-                if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
-                    when {
-                        resultCode == Activity.RESULT_OK -> {
-                            val exportResult = data?.getParcelableExtra<ExportResult.Success>(
-                                EXTRA_EXPORTED_SUCCESS
-                            )
-
-                            val videoSources =
-                                exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
-                            val previewUri = exportResult?.preview
-                            val metaUri = exportResult?.metaUri
-
-                            if (videoSources.isEmpty()) {
-                                Log.w(TAG, "Missing export result")
-                                resultPromise?.reject(
-                                    ERR_MISSING_EXPORT_RESULT,
-                                    ERR_MESSAGE_MISSING_EXPORT_RESULT
-                                )
-                            } else {
-                                // Send video export results to React
-                                val arguments: WritableMap = Arguments.createMap()
-                                val videoSourcesArray = Arguments.createArray()
-                                videoSources.onEach { videoSourcesArray.pushString(it) }
-
-                                arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
-                                arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
-                                arguments.putString(EXPORTED_META, metaUri?.toString())
-                                Log.d(TAG, "Send video export results to React")
-                                resultPromise?.resolve(arguments)
-                            }
-                        }
-
-                        resultCode == Activity.RESULT_CANCELED -> resultPromise?.reject(
-                            ERR_VIDEO_EXPORT_CANCEL,
-                            ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+            if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
+                when {
+                    resultCode == Activity.RESULT_OK -> {
+                        val exportResult = data?.getParcelableExtra<ExportResult.Success>(
+                            EXTRA_EXPORTED_SUCCESS
                         )
+
+                        val videoSources =
+                            exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
+                        val previewUri = exportResult?.preview
+                        val metaUri = exportResult?.metaUri
+
+                        if (videoSources.isEmpty()) {
+                            Log.w(TAG, "Missing export result")
+                            resultPromise?.reject(
+                                ERR_MISSING_EXPORT_RESULT,
+                                ERR_MESSAGE_MISSING_EXPORT_RESULT
+                            )
+                        } else {
+                                // Send video export results to React
+                            val arguments: WritableMap = Arguments.createMap()
+                            val videoSourcesArray = Arguments.createArray()
+                            videoSources.onEach { videoSourcesArray.pushString(it) }
+
+                            arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
+                            arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
+                            arguments.putString(EXPORTED_META, metaUri?.toString())
+                            Log.d(TAG, "Send video export results to React")
+                            resultPromise?.resolve(arguments)
+                        }
                     }
+
+                    resultCode == Activity.RESULT_CANCELED -> resultPromise?.reject(
+                        ERR_VIDEO_EXPORT_CANCEL,
+                        ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+                    )
+                }
                 resultPromise = null
-            }
-            } finally {
+            } else {
+                Log.e(TAG, "Unhandled request code = $requestCode")
+                resultPromise?.reject(
+                    ERR_UNKNOWN_REQUEST_CODE,
+                    ERR_MESSAGE_UNKNOWN_REQUEST_CODE
+                )
+            }.also {
+                Log.d(TAG, "Video Editor released")
                 videoEditorModule?.releaseVideoEditor()
                 videoEditorModule = null
             }
