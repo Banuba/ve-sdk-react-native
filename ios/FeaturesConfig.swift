@@ -34,7 +34,7 @@ struct AudioBrowser: Codable {
                 return .localStorageWithMyFiles
             case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert:
                 return .mubert
-            case VideoEditorConfig.featuresConfigAudioBrowserSourceBanubaFm:
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceBanubaMusic:
                 return .banubaMusic
             default:
                 return .allSources

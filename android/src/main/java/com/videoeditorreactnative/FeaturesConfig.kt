@@ -36,7 +36,7 @@ internal data class AudioBrowser(
     internal fun value(): ContentFeatureProvider<TrackData, Fragment> {
         return when (this.source) {
             FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
-            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBAFM -> BanubaMusicProvider()
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> BanubaMusicProvider()
             else -> {
                 AudioBrowserMusicProvider()
             }
