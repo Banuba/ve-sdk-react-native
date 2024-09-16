@@ -161,7 +161,7 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
-        let progressView = ProgressViewController.makeViewController()
+        let progressView = createProgressViewController()
 
         progressView.cancelHandler = { [weak self] in
             self?.videoEditorSDK?.stopExport()
@@ -271,6 +271,12 @@ extension VideoEditorModule {
         }
 
         return topController
+    }
+    
+    func createProgressViewController() -> ProgressViewController {
+        let progressViewController = ProgressViewController.makeViewController()
+        progressViewController.message = NSLocalizedString("com.banuba.alert.progressView.exportingVideo", comment: "")
+        return progressViewController
     }
 }
 
