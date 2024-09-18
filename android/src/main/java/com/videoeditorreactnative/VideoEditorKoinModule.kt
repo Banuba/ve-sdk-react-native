@@ -17,12 +17,11 @@ import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
-import com.banuba.sdk.audiobrowser.autocut.AutoCutTrackLoaderSoundstripe
+import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
-import com.banuba.sdk.audiobrowser.domain.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -30,7 +29,11 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.koin.core.module.Module
 import android.util.Log
+import com.banuba.sdk.core.EditorUtilityManager
+import com.banuba.sdk.ve.ext.VideoEditorUtils.getKoin
 import org.json.JSONException
+import org.koin.core.context.stopKoin
+import org.koin.core.error.InstanceCreationException
 
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig) {
@@ -59,6 +62,22 @@ class VideoEditorKoinModule {
       )
     }
   }
+
+    fun releaseVideoEditor() {
+      releaseUtilityManager()
+      stopKoin()
+    }
+
+    private fun releaseUtilityManager() {
+      val utilityManager = try {
+          getKoin().getOrNull<EditorUtilityManager>()
+      } catch (e: InstanceCreationException) {
+          Log.w(TAG, "EditorUtilityManager was not initialized!", e)
+          null
+      }
+
+      utilityManager?.release()
+    }
 }
 
 /**
@@ -87,12 +106,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
     this.single<ContentFeatureProvider<TrackData, Fragment>>(
       named("musicTrackProvider")
     ) {
-      when (featuresConfig.audioBrowser.source) {
-        FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
-        else -> {
-          AudioBrowserMusicProvider()
-        }
-      }
+        featuresConfig.audioBrowser.value()
     }
 
     if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
@@ -107,7 +121,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
         )
       }
       this.single<AutoCutTrackLoader> {
-        AutoCutTrackLoaderSoundstripe(
+        AutoCutSoundstripeTrackLoader(
           soundstripeApi = get()
         )
       }

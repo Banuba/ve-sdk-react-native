@@ -1,5 +1,6 @@
 import Foundation
 import BanubaVideoEditorSDK
+import BanubaAudioBrowserSDK
 
 struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
@@ -24,6 +25,21 @@ struct AiCaptions: Codable {
 struct AudioBrowser: Codable {
     let source: String
     let params: Params?
+
+    public func value() -> AudioBrowserMusicSource{
+        switch source {
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceSoundstripe:
+                return .soundstripe
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceLocal:
+                return .localStorageWithMyFiles
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceMubert:
+                return .mubert
+            case VideoEditorConfig.featuresConfigAudioBrowserSourceBanubaMusic:
+                return .banubaMusic
+            default:
+                return .allSources
+        }
+    }
 }
 
 struct Params: Codable {

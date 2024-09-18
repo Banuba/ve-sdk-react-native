@@ -42,6 +42,7 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS = "params"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC = "banubaMusic"
 
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
@@ -67,6 +68,7 @@ internal const val ERR_MISSING_HOST = "ERR_MISSING_HOST"
 internal const val ERR_INVALID_PARAMS = "ERR_INVALID_PARAMS"
 internal const val ERR_MISSING_EXPORT_RESULT = "ERR_MISSING_EXPORT_RESULT"
 internal const val ERR_VIDEO_EXPORT_CANCEL = "ERR_VIDEO_EXPORT_CANCEL"
+internal const val ERR_UNKNOWN_REQUEST_CODE = "ERR_UNKNOWN_REQUEST_CODE"
 
 internal const val ERR_MESSAGE_SDK_NOT_INITIALIZED = """
     Failed to initialize SDK!!!
@@ -100,6 +102,8 @@ internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
 internal const val ERR_MESSAGE_MISSING_HOST = "Missing host Activity to start video editor"
 
 internal const val ERR_MESSAGE_VIDEO_EXPORT_CANCEL = "The user has canceled video editing flow!"
+
+internal const val ERR_MESSAGE_UNKNOWN_REQUEST_CODE = "Unknown request code"
 
 //Prepare Extras from AiCaptions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {

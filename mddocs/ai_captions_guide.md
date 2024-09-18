@@ -8,6 +8,7 @@ Over 80% of videos played on mobile devices don’t have sound turned on. This m
 
 ## Supported languages
 
+- Arabic
 - English
 - Mandarin
 - Spanish
@@ -25,8 +26,8 @@ Specify instance of ```AiCaptions``` in ```FeaturesConfig``` builder:
   private featuresConfig = new FeaturesConfigBuilder()
     .setAiCaptions(
       new AiCaptions({
-        uploadUrl: "https://internal.transcribe.banuba.net", 
-        transcribeUrl: "https://rest.internal.transcribe.banuba.net/transcribe/v1/status", 
+        uploadUrl: "https://internal.transcribe.banuba.net",
+        transcribeUrl: "https://rest.internal.transcribe.banuba.net/transcribe/v1/status",
         apiKey: "CheiYaaphoK6eungecheec4eingeik9shaijiech"
       })
     )
