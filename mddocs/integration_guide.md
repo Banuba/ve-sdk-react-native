@@ -5,40 +5,6 @@ This guide helps to complete full Video Editor SDK integration.
 ## Configuration
 
 ### Android
-#### Add repositories
-
-Deprecated
-```
-GitHub Packages is used for downloading Android Video Editor SDK modules.
-Add repositories to [gradle](../example/android/app/build.gradle#L107) file.
-```groovy
-repositories {
-  maven {
-    name = "GitHubPackages"
-    url = uri("https://maven.pkg.github.com/Banuba/banuba-ve-sdk")
-    credentials {
-      username = "Banuba"
-      password = "\u0038\u0036\u0032\u0037\u0063\u0035\u0031\u0030\u0033\u0034\u0032\u0063\u0061\u0033\u0065\u0061\u0031\u0032\u0034\u0064\u0065\u0066\u0039\u0062\u0034\u0030\u0063\u0063\u0037\u0039\u0038\u0063\u0038\u0038\u0066\u0034\u0031\u0032\u0061\u0038"
-    }
-  }
-  maven {
-    name = "ARCloudPackages"
-    url = uri("https://github.com/Banuba/banuba-ar")
-    credentials {
-      username = "Banuba"
-      password = "\u0038\u0036\u0032\u0037\u0063\u0035\u0031\u0030\u0033\u0034\u0032\u0063\u0061\u0033\u0065\u0061\u0031\u0032\u0034\u0064\u0065\u0066\u0039\u0062\u0034\u0030\u0063\u0063\u0037\u0039\u0038\u0063\u0038\u0038\u0066\u0034\u0031\u0032\u0061\u0038"
-    }
-  }
-  maven {
-    name = "GitHubPackagesEffectPlayer"
-    url = "https://maven.pkg.github.com/sdk-banuba/banuba-sdk-android"
-    credentials {
-      username = "sdk-banuba"
-      password = "\u0067\u0068\u0070\u005f\u004a\u0067\u0044\u0052\u0079\u0049\u0032\u006d\u0032\u004e\u0055\u0059\u006f\u0033\u0033\u006b\u0072\u0034\u0049\u0069\u0039\u0049\u006f\u006d\u0077\u0034\u0052\u0057\u0043\u0064\u0030\u0052\u0078\u006d\u0045\u0069"
-    }
-  }
-}
-```
 
 #### Add Activity
 Add ```VideoCreationActivity``` in [AndroidManifest.xml](../example/android/app/src/main/AndroidManifest.xml#L27) file.
@@ -83,17 +49,8 @@ Specify the required iOS permissions used by the SDK in your [Info.plist](../exa
 ## Add AR effects
 [Banuba Face AR SDK](https://www.banuba.com/facear-sdk/face-filters) product is used on camera and editor screens for applying various AR effects while making video content.
 
-:exclamation: IMPORTANT
-Add beautification effect to your project.
-
-1. Android - copy [Beauty](../example/android/app/src/main/assets/bnb-resources/effects/Beauty) effect from example project and paste it to ```assets/bnb-resources/effects``` in your project.
-1. iOS - add the effect to resource folder ```bundleEffects```. You can drag and drop the [BeautyEffects](../example/ios/bundleEffects/BeautyEffects) from [bundleEffects](../example/ios/bundleEffects) folder from example project to your project's sidebar in Xcode. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes. When done correctly, the ```bundleEffects``` folder's icon will be blue and the folder itself will be present in Copy bundle resources build phase.
-
-## Add Color effects
-Color filter previews are images(```.png``` files) used to represent texture.
-
-:exclamation: IMPORTANT
-Previews files are not part of plugin by default since these resources add extra MBs to your app.
+1. Android - add effects to the project by the path [android/app/src/main/assets/bnb-resources/effects](../example/android/app/src/main/).
+2. iOS - add the effect to resource folder ```bundleEffects```. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes while adding effects to the ```bundleEffects``` folder.
 
 ### Android
 Preview files are in [drawable-xhdpi](../example/android/app/src/main/res/drawable-xhdpi),
