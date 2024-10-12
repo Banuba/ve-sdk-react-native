@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
     if (rawConfigParams.isNullOrEmpty()) {
-        emptyFeaturesConfig
+        defaultFeaturesConfig
     } else {
         try {
             val featuresConfigObject = JSONObject(rawConfigParams)
@@ -19,7 +19,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractGifPickerConfig()
             )
         } catch (e: JSONException) {
-            emptyFeaturesConfig
+            defaultFeaturesConfig
         }
     }
 

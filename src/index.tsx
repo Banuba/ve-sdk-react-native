@@ -1,7 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
 import type { FeaturesConfig } from './FeaturesConfig';
+import type { ExportData } from './ExportData';
 
 export * from './FeaturesConfig';
+export * from './ExportData';
 
  const LINKING_ERROR =
   `The package 'video-editor-react-native' doesn't seem to be linked. Make sure: \n\n` +
@@ -23,11 +25,13 @@ export * from './FeaturesConfig';
 export default class VideoEditorPlugin {
   openFromCamera(
     licenseToken: String,
-    featuresConfig: FeaturesConfig
+    featuresConfig: FeaturesConfig,
+    exportData?: ExportData | null
   ): Promise<Map<String, String>> {
     const inputParams = {
       screen: 'camera',
       featuresConfig: JSON.stringify(featuresConfig),
+      exportData: JSON.stringify(exportData),
     };
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
@@ -37,12 +41,14 @@ export default class VideoEditorPlugin {
   openFromPip(
     licenseToken: String,
     featuresConfig: FeaturesConfig,
-    pipVideo: String
+    pipVideo: String,
+    exportData?: ExportData | null
   ): Promise<Map<String, String>> {
     const inputParams = {
       screen: 'pip',
       featuresConfig: JSON.stringify(featuresConfig),
       videoSources: [pipVideo],
+      exportData: JSON.stringify(exportData),
     };
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.openVideoEditor(
@@ -55,11 +61,13 @@ export default class VideoEditorPlugin {
   openFromTrimmer(
     licenseToken: String,
     featuresConfig: FeaturesConfig,
-    videoSourcesArray: Array<String>
+    videoSourcesArray: Array<String>,
+    exportData?: ExportData | null
   ): Promise<Map<String, String>> {
     const inputParams = {
       screen: 'trimmer',
       featuresConfig: JSON.stringify(featuresConfig),
+      exportData: JSON.stringify(exportData),
       videoSources: videoSourcesArray,
     };
     return Platform.OS === 'ios'

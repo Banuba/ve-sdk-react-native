@@ -6,7 +6,7 @@ import VEExportSDK
 import React
 
 protocol VideoEditor {
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool
 
     func openVideoEditorDefault(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
@@ -18,13 +18,15 @@ protocol VideoEditor {
 class VideoEditorModule: VideoEditor {
 
     private var videoEditorSDK: BanubaVideoEditor?
+    private var exportData: ExportData?
+    private var currentController: UIViewController?
     private var currentResolve: RCTPromiseResolveBlock?
     private var currentReject: RCTPromiseRejectBlock?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
 
-    func initVideoEditor(token: String, featuresConfig: FeaturesConfig) -> Bool {
+    func initVideoEditor(token: String, featuresConfig: FeaturesConfig, exportData: ExportData) -> Bool {
         guard videoEditorSDK == nil else {
             debugPrint("Video Editor SDK is already initialized")
             return true
@@ -46,6 +48,8 @@ class VideoEditorModule: VideoEditor {
         if videoEditorSDK == nil {
             return false
         }
+
+        self.exportData = exportData
 
         videoEditorSDK?.delegate = self
         return true
@@ -70,6 +74,8 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
+        
+        self.currentController = controller
 
         let config = VideoEditorLaunchConfig(
             entryPoint: .camera,
@@ -87,6 +93,8 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
+        
+        self.currentController = controller
 
         let pipLaunchConfig = VideoEditorLaunchConfig(
             entryPoint: .pip,
@@ -107,6 +115,8 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
+        
+        self.currentController = controller
 
         let trimmerLaunchConfig = VideoEditorLaunchConfig(
             entryPoint: .trimmer,
@@ -161,6 +171,12 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
+        
+        guard let exportData, let currentController else {
+            print("❌ Export Config is not set")
+            return
+        }
+        
         let progressView = createProgressViewController()
 
         progressView.cancelHandler = { [weak self] in
@@ -169,39 +185,14 @@ extension VideoEditorModule {
 
         getTopViewController()?.present(progressView, animated: true)
 
-        let manager = FileManager.default
-        // File name
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
-
-        let previewURL = manager.temporaryDirectory.appendingPathComponent("export_preview.png")
-
-        // TODO handle multiple exported video files
-        let firstFileURL = manager.temporaryDirectory.appendingPathComponent("export_\(dateFormatter.string(from: Date())).mov")
-        if manager.fileExists(atPath: firstFileURL.path) {
-            try? manager.removeItem(at: firstFileURL)
-        }
-
-        // Video configuration
-        let exportVideoConfigurations: [ExportVideoConfiguration] = [
-            ExportVideoConfiguration(
-                fileURL: firstFileURL,
-                quality: .auto,
-                useHEVCCodecIfPossible: true,
-                watermarkConfiguration: nil
-            )
-        ]
-
-        // Set up export
-        let exportConfiguration = ExportConfiguration(
-            videoConfigurations: exportVideoConfigurations,
-            isCoverEnabled: true,
-            gifSettings: nil
-        )
+        debugPrint("Add Export Param with params: \(exportData)")
+                
+        let watermarkConfiguration = exportData.watermark?.watermarkConfigurationValue(controller: currentController)
+                
+        let exportProvider = ExportProvider(exportData: exportData, watermarkConfiguration: watermarkConfiguration)
 
         videoEditorSDK?.export(
-            using: exportConfiguration,
+            using: exportProvider.provideExportConfiguration(),
             exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
         ) { [weak self] (error, coverImage) in
             // Export Callback
@@ -223,7 +214,13 @@ extension VideoEditorModule {
                     }
 
                     // TODO 1. simplify method
-                    self?.completeExport(videoUrls: [firstFileURL], metaUrl: metadataUrl, previewUrl: previewURL, error: error, previewImage: coverImage?.coverImage)
+                    self?.completeExport(
+                        videoUrls: Array(exportProvider.fileUrls.values),
+                        metaUrl: metadataUrl,
+                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png"),
+                        error: error,
+                        previewImage: coverImage?.coverImage
+                    )
                 }
             }
         }
@@ -301,7 +298,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
 extension VideoEditorConfig {
     mutating func applyFeatureConfig(_ featuresConfig: FeaturesConfig) {
 
-        print("\(VideoEditorConfig.featuresConfigTag): Add Features Config with params: \(featuresConfig)")
+        print("Add Features Config with params: \(featuresConfig)")
 
         AudioBrowserConfig.shared.musicSource = featuresConfig.audioBrowser.value()
 

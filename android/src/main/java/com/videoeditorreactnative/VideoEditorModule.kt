@@ -126,7 +126,9 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
         val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
 
-        initialize(licenseToken, featuresConfig) {
+        val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
+
+        initialize(licenseToken, featuresConfig, exportData) {
             val hostActivity = currentActivity
 
             if (hostActivity == null) {
@@ -222,6 +224,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     private fun initialize(
         token: String,
         featuresConfig: FeaturesConfig,
+        exportData: ExportData?,
         block: () -> Unit
     ) {
         val activity = currentActivity
@@ -248,7 +251,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorKoinModule().apply {
-                initialize(activity.application, featuresConfig)
+                initialize(activity.application, featuresConfig, exportData)
             }
         }
 
