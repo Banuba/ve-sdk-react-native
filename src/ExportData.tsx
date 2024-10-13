@@ -1,12 +1,12 @@
 export class ExportData {
-  exportedVideos: [ExportedVideo];
+  exportedVideos: ExportedVideo[];
   watermark: Watermark | null;
 
   constructor({
     exportedVideos,
     watermark = null,
   }: {
-    exportedVideos: [ExportedVideo];
+    exportedVideos: ExportedVideo[];
     watermark?: Watermark | null;
   }) {
     this.exportedVideos = exportedVideos;

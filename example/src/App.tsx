@@ -32,20 +32,24 @@ export default class App extends Component {
     //...
     .build();
 
-//   Export Data example
+  //   Export Data example
 
-//   private exportData = new ExportData({
-//     exportedVideos: [
-//       new ExportedVideo({
-//         fileName: 'export_FullHD',
-//         videoResolution: VideoResolution.fhd1080p,
-//       }),
-//     ],
-//     watermark: new Watermark({
-//       imagePath: 'watermark.png',
-//       alignment: WatermarkAlignment.topLeft,
-//     }),
-//   });
+  // private exportData = new ExportData({
+  //   exportedVideos: [
+  //     new ExportedVideo({
+  //       fileName: 'export_hd',
+  //       videoResolution: VideoResolution.fhd1080p,
+  //     }),
+  //     new ExportedVideo({
+  //       fileName: 'export_auto',
+  //       videoResolution: VideoResolution.auto,
+  //     }),
+  //   ],
+  //   watermark: new Watermark({
+  //     imagePath: 'watermark.png',
+  //     alignment: WatermarkAlignment.topLeft,
+  //   }),
+  // });
 
   constructor() {
     super();
