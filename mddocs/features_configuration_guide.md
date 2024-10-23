@@ -4,7 +4,7 @@
 
 Create instance of the ```FeaturesConfig``` to apply various Video Editor configurations.
 
-Pass the ```FeaturesConfig``` instance to any Video Editor [start method](../example/src/App.tsx#L102-105). For example:
+Pass the ```FeaturesConfig``` instance to any Video Editor [start method](../example/src/App.tsx#L119-121). For example:
 
 ```typescript
   private featuresConfig = new FeaturesConfigBuilder()

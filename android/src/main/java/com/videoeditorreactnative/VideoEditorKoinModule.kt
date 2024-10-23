@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.banuba.sdk.effectplayer.adapter.BanubaEffectPlayerKoinModule
 import com.banuba.sdk.export.di.VeExportKoinModule
+import com.banuba.sdk.export.data.ExportParamsProvider
+import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
 import com.banuba.sdk.gallery.di.GalleryKoinModule
 import com.banuba.sdk.playback.di.VePlaybackSdkKoinModule
 import com.banuba.sdk.ve.di.VeSdkKoinModule
@@ -36,7 +38,7 @@ import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
 
 class VideoEditorKoinModule {
-  internal fun initialize(application: Context, featuresConfig: FeaturesConfig) {
+  internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
     startKoin {
       androidContext(application)
       allowOverride(true)
@@ -58,7 +60,7 @@ class VideoEditorKoinModule {
         GalleryKoinModule().module,
 
         // Sample integration module
-        SampleIntegrationVeKoinModule(featuresConfig).module,
+        SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
       )
     }
   }
@@ -86,7 +88,7 @@ class VideoEditorKoinModule {
  * Some dependencies has no default implementations. It means that
  * these classes fully depends on your requirements
  */
-private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
+private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportData: ExportData?) {
 
   val module = module {
     single<ArEffectsRepositoryProvider>(createdAtStart = true) {
@@ -100,6 +102,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
       "Add $INPUT_PARAM_FEATURES_CONFIG with params: ${featuresConfig}"
     )
     this.applyFeaturesConfig(featuresConfig)
+
+    this.addExportData(exportData)
   }
 
   private fun Module.applyFeaturesConfig(featuresConfig: FeaturesConfig) {
@@ -178,6 +182,33 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig) {
     } else {
       Log.w(TAG, "Missing Params in AudioBrowser")
       return
+    }
+  }
+
+  private fun Module.addExportData(exportData: ExportData?) {
+    if (exportData == null) {
+      Log.d(TAG, MESSAGE_MISSING_EXPORT_DATA)
+    } else {
+      Log.d(
+        TAG,
+        "add $INPUT_PARAM_EXPORT_DATA with params: ${exportData}"
+      )
+      val watermarkImagePath = exportData.watermark?.imagePath
+      if (watermarkImagePath != null) {
+        this.factory<WatermarkProvider> {
+          CustomWatermarkProvider(get(), watermarkImagePath)
+        }
+      } else {
+        Log.d(TAG, MESSAGE_MISSING_WATERMARK_IMAGE_PATH)
+      }
+
+      this.factory<ExportParamsProvider> {
+        CustomExportParamsProvider(
+          exportDir = get(named("exportDir")),
+          watermarkBuilder = get(),
+          exportData = exportData
+        )
+      }
     }
   }
 }

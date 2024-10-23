@@ -31,7 +31,7 @@ export class FeaturesConfigBuilder {
     params: null,
   });
   private editorConfig: EditorConfig = new EditorConfig({
-    enableVideoAspectFill: false,
+    enableVideoAspectFill: true,
   });
   private draftsConfig: DraftsConfig = DraftsConfig.fromOption({
     option: DraftsOption.askToSave,
@@ -106,24 +106,24 @@ export class AudioBrowser {
 
   static fromSource({
     source,
-    params,
+    params = null,
   }: {
     source: AudioBrowserSource;
-    params: { [key: string]: any } | null;
+    params?: { [key: string]: any } | null;
   }): AudioBrowser {
     return new AudioBrowser({ source, params });
   }
 }
 
 export class AiClipping {
-  audioDataUrl: String;
-  audioTracksUrl: String;
+  audioDataUrl: string;
+  audioTracksUrl: string;
 
   constructor({
     audioDataUrl,
     audioTracksUrl,
   }: {
-    audioDataUrl: String;
+    audioDataUrl: string;
     audioTracksUrl: string;
   }) {
     this.audioDataUrl = audioDataUrl;
@@ -132,18 +132,18 @@ export class AiClipping {
 }
 
 export class AiCaptions {
-  uploadUrl: String;
-  transcribeUrl: String;
-  apiKey: String;
+  uploadUrl: string;
+  transcribeUrl: string;
+  apiKey: string;
 
   constructor({
     uploadUrl,
     transcribeUrl,
     apiKey,
   }: {
-    uploadUrl: String;
-    transcribeUrl: String;
-    apiKey: String;
+    uploadUrl: string;
+    transcribeUrl: string;
+    apiKey: string;
   }) {
     this.uploadUrl = uploadUrl;
     this.transcribeUrl = transcribeUrl;
@@ -152,9 +152,13 @@ export class AiCaptions {
 }
 
 export class EditorConfig {
-  enableVideoAspectFill: Boolean;
+  enableVideoAspectFill: boolean | null;
 
-  constructor({ enableVideoAspectFill }: { enableVideoAspectFill: Boolean }) {
+  constructor({
+    enableVideoAspectFill = null,
+  }: {
+    enableVideoAspectFill?: boolean | null;
+  }) {
     this.enableVideoAspectFill = enableVideoAspectFill;
   }
 }
@@ -179,9 +183,9 @@ export class DraftsConfig {
 }
 
 export class GifPickerConfig {
-  giphyApiKey: String;
+  giphyApiKey: string;
 
-  constructor({ giphyApiKey }: { giphyApiKey: String }) {
+  constructor({ giphyApiKey }: { giphyApiKey: string }) {
     this.giphyApiKey = giphyApiKey;
   }
 }

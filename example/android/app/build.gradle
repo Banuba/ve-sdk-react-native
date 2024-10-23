@@ -90,6 +90,13 @@ android {
             keyPassword 'android'
         }
     }
+
+    sourceSets {
+        main {
+            assets.srcDirs += 'src/main/assets'
+        }
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug

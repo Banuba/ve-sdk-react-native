@@ -11,6 +11,7 @@ extension VideoEditorReactNative {
 
     static let inputParamToken = "token"
     static let inputParamFeaturesConfig = "featuresConfig"
+    static let inputParamExportData = "exportData"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
 
@@ -45,10 +46,12 @@ extension VideoEditorReactNative {
 
     static let errMessageMissingConfigParams =
     "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
+        static let errMessageMissingExportData =
+    "❌ Missing or invalid config: \(inputParamExportData)"
 
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
 
-    var emptyFeaturesConfig : FeaturesConfig {
+    var defaultFeaturesConfig : FeaturesConfig {
         return FeaturesConfig(
             aiCaptions: nil,
             aiClipping: nil,
@@ -65,12 +68,24 @@ extension VideoEditorReactNative {
             gifPickerConfig: nil
         )
     }
+
+    // Default Export Config
+    var defaultExportData : ExportData {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
+        
+        return ExportData(exportedVideos: [
+            ExportedVideo(
+            fileName: "export_\(dateFormatter.string(from: Date()))",
+            videoResolution: "auto",
+            useHevcIfPossible: true
+        )
+        ],
+        watermark: nil)
+    }
 }
 
 extension VideoEditorConfig {
-    // Tag
-    static let featuresConfigTag = "Features Config"
-
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
@@ -89,3 +104,23 @@ extension VideoEditorConfig {
     // Unknown params
     static let featuresConfigUnknownParams = "Undefined"
 }
+
+extension ExportData {    
+    // Video Resolutions
+    static let exportedVideoVideoResolutionsHD720p = "hd720p"
+    static let exportedVideoVideoResolutionsVGA360p = "vga360p"
+    static let exportedVideoVideoResolutionsVGA480p = "vga480p"
+    static let exportedVideoVideoResolutionsQHD540p = "qhd540p"
+    static let exportedVideoVideoResolutionsFHD1080p = "fhd1080p"
+    static let exportedVideoVideoResolutionsQHD1440p = "qhd1440p"
+    static let exportedVideoVideoResolutionsUHD2160p = "uhd2160p"
+    static let exportedVideoVideoResolutionsAuto = "auto"
+    static let exportedVideoVideoResolutionsOriginal = "original"
+    
+    // Watermark Alignment
+    static let exportDataWatermarkAlignmentTopLeft = "topLeft"
+    static let exportDataWatermarkAlignmentTopRight = "topRight"
+    static let exportDataWatermarkAlignmentBottomLeft = "bottomLeft"
+    static let exportDataWatermarkAlignmentBottomRight = "bottomRight"
+}
+
