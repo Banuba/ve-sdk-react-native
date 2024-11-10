@@ -74,7 +74,7 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-        
+
         self.currentController = controller
 
         let config = VideoEditorLaunchConfig(
@@ -93,7 +93,7 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-        
+
         self.currentController = controller
 
         let pipLaunchConfig = VideoEditorLaunchConfig(
@@ -115,7 +115,7 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-        
+
         self.currentController = controller
 
         let trimmerLaunchConfig = VideoEditorLaunchConfig(
@@ -171,12 +171,12 @@ class VideoEditorModule: VideoEditor {
 // MARK: - Export flow
 extension VideoEditorModule {
     func exportVideo() {
-        
+
         guard let exportData, let currentController else {
             print("❌ Export Config is not set")
             return
         }
-        
+
         let progressView = createProgressViewController()
 
         progressView.cancelHandler = { [weak self] in
@@ -186,9 +186,9 @@ extension VideoEditorModule {
         getTopViewController()?.present(progressView, animated: true)
 
         debugPrint("Add Export Param with params: \(exportData)")
-                
+
         let watermarkConfiguration = exportData.watermark?.watermarkConfigurationValue(controller: currentController)
-                
+
         let exportProvider = ExportProvider(exportData: exportData, watermarkConfiguration: watermarkConfiguration)
 
         videoEditorSDK?.export(
@@ -269,7 +269,7 @@ extension VideoEditorModule {
 
         return topController
     }
-    
+
     func createProgressViewController() -> ProgressViewController {
         let progressViewController = ProgressViewController.makeViewController()
         progressViewController.message = NSLocalizedString("com.banuba.alert.progressView.exportingVideo", comment: "")
@@ -319,9 +319,15 @@ extension VideoEditorConfig {
         }
 
 
-        if let aiClipping = featuresConfig.aiClipping {
+        if let aiClipping = featuresConfig.aiClipping, let audioTracksUrl = URL(string: aiClipping.audioTracksUrl) {
             self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
-            self.autoCutConfiguration.musicApiSelectedTracksUrl = aiClipping.audioTracksUrl
+            self.autoCutConfiguration.musicProvider =
+                switch featuresConfig.audioBrowser.value() {
+                    case .banubaMusic:
+                        .banubaMusic(tracksURL: audioTracksUrl)
+                    default:
+                        .soundstripe(tracksURL: audioTracksUrl)
+                }
         }
 
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
