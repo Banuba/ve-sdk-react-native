@@ -10,12 +10,20 @@ Here is how users can interact with it:
 4. User exports, edits, or regenerates the clip. Upon completion, users have the flexibility to export the video as is, make further edits, or regenerate the clip for a fresh perspective.
 5. Regardless of the user’s editing skills, with the help of Auto Cut, everyone can get a stunning video within seconds.
 
+## Supported music providers
+
+1. [Soundstripe](audio_browser_guide.md#soundstripe)
+2. [Banuba Music](audio_browser_guide.md#banuba-music)
+
+> [!NOTE]
+> Please contact Banuba representatives to know more about using the ```Banuba music``` with ```AI Clipping```.
+
 ## Usage
 
 Specify instance of ```AiClipping``` in ```FeaturesConfig``` builder:
 
 > [!IMPORTANT]
-> A trial option for AI Clipping
+> A trial option for AI Clipping with ```Soundstripe``` music provider.
 > Please contact Banuba representatives before use in production.
 
 ```typescript
