@@ -20,6 +20,7 @@ import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
 import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
+import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
@@ -125,9 +126,18 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         )
       }
       this.single<AutoCutTrackLoader> {
-        AutoCutSoundstripeTrackLoader(
-          soundstripeApi = get()
-        )
+        when (featuresConfig.audioBrowser.source) {
+          FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> {
+            AutoCutBanubaTrackLoader(
+              contentProvider = get()
+            )
+          }
+          else -> {
+            AutoCutSoundstripeTrackLoader(
+              soundstripeApi = get()
+            )
+          }
+        }
       }
     }
 
