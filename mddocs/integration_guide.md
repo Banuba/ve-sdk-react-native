@@ -61,6 +61,41 @@ Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolut
 
 Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
 
+## Disable Face AR SDK
+
+### Android
+
+Set the ```ENABLE_FACE_AR``` flag to the [gradle.properties](../example/android/gradle.properties#L42):
+
+```diff
+...
+newArchEnabled=true
+
+# Use this property to enable or disable the Hermes JS engine.
+# If set to false, you will be using JSC instead.
+hermesEnabled=true
++ ENABLE_FACE_AR=false
+```
+
+### IOS
+
+Set the environment ```ENABLE_FACE_AR``` flag the the [PodFile](../example/ios/Podfile#L15):
+
+```diff
+...
+
+prepare_react_native_project!
+
++ ENV['ENABLE_FACE_AR'] = 'false'
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+...
+```
+
 ## Limit processor architectures on Android
 Banuba Video Editor on Android supports the following processor architectures - ```arm64-v8a```, ```armeabi-v7a```, ```x86-64```.
 Please keep in mind that each architecture adds extra MBs to your app.
