@@ -8,7 +8,6 @@ import android.content.res.AssetManager
 import android.util.Log
 import android.net.Uri
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
-import com.banuba.sdk.utils.ContextProvider.getAssets
 import java.io.FileNotFoundException
 
 class CustomWatermarkProvider(private val context: Context, private val imagePath: String) : WatermarkProvider {
@@ -22,6 +21,6 @@ class CustomWatermarkProvider(private val context: Context, private val imagePat
         } catch (e: FileNotFoundException) {
             Log.w(TAG, "File not found: $imagePath", e)
             null
-        } 
+        }
     }
 }

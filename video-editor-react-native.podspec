@@ -19,10 +19,12 @@ Pod::Spec.new do |s|
 
   sdk_version = '1.39.0'
 
+  ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
+
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
-  s.dependency 'BanubaSDK', sdk_version #optional
+  s.dependency 'BanubaSDK', sdk_version if ENABLE_FACE_AR
   s.dependency 'BanubaSDKSimple', sdk_version
   s.dependency 'BanubaSDKServicing', sdk_version
   s.dependency 'VideoEditor', sdk_version
