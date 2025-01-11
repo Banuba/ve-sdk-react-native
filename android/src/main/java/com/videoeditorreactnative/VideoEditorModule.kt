@@ -49,18 +49,16 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                               EXTRA_EXPORTED_SUCCESS
                           )
 
-                          val videoSources =
-                              exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
-                          val previewUri = exportResult?.preview
-                          val metaUri = exportResult?.metaUri
-
-                          if (videoSources.isEmpty()) {
+                          if (exportResult == null) {
                               Log.w(TAG, "Missing export result")
                               resultPromise?.reject(
                                   ERR_MISSING_EXPORT_RESULT,
                                   ERR_MESSAGE_MISSING_EXPORT_RESULT
                               )
                           } else {
+                              val videoSources = exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
+                              val previewUri = exportResult?.preview
+                              val metaUri = exportResult?.metaUri
                               // Send video export results to React
                               val arguments: WritableMap = Arguments.createMap()
                               val videoSourcesArray = Arguments.createArray()

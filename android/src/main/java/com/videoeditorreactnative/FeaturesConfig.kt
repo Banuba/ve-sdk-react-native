@@ -16,6 +16,7 @@ internal data class FeaturesConfig(
     val editorConfig: EditorConfig = defaultEditorConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
+    val processPictureExternally: Boolean = false,
 )
 
 internal data class AiClipping(

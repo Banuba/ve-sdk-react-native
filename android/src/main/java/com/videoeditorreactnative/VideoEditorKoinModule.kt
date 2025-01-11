@@ -25,6 +25,11 @@ import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
+import com.banuba.sdk.core.domain.MediaNavigationProcessor
+import com.banuba.sdk.export.data.ExportResult
+import com.banuba.sdk.ve.flow.VideoCreationActivity
+import com.banuba.sdk.export.data.ExportSessionHelper
+import com.banuba.sdk.ve.flow.session.FlowExportSessionHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
@@ -36,6 +41,13 @@ import com.banuba.sdk.ve.ext.VideoEditorUtils.getKoin
 import org.json.JSONException
 import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
+import android.app.Activity
+import android.net.Uri
+import android.os.Bundle
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.Date
 
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
@@ -171,6 +183,43 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         )
       }
     }
+
+    this.single<ExportSessionHelper> {
+      FlowExportSessionHelper(
+        draftManager = get()
+      )
+    }
+
+    if (featuresConfig.processPictureExternally){
+      this.single<MediaNavigationProcessor> {
+        object : MediaNavigationProcessor {
+          override fun process(activity: Activity, mediaList: List<Uri>): Boolean {
+            val pngs = mediaList.filter { media ->
+              media.path?.let { path ->
+                path.contains(".png") || path.contains("external/images")
+              } ?: false
+            }
+            return if (pngs.isEmpty()) {
+              true
+            } else {
+              // Cache image before clearing sessing
+              val savedImage = saveImageToCache(activity, pngs.first())
+              val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
+              sessionKoin?.cleanSessionData()
+              (activity as? VideoCreationActivity)?.closeWithResult(
+                ExportResult.Success(
+                  emptyList(),
+                  savedImage,
+                  Uri.EMPTY,
+                  Bundle()
+                )
+              )
+              false
+            }
+          }
+        }
+      }
+    }
   }
 
   private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
@@ -233,6 +282,23 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         )
       }
     }
+  }
+
+  fun saveImageToCache(context: Context, uri: Uri): Uri {
+    try {
+      val contentResolver = context.contentResolver
+      val cacheFile = File(context.cacheDir, "${dateTimeFormatter.format(Date())}.png")
+
+      contentResolver.openInputStream(uri)?.use { inputStream ->
+        FileOutputStream(cacheFile).use { outputStream ->
+          inputStream.copyTo(outputStream)
+        }
+      }
+      return Uri.fromFile(cacheFile)
+    } catch (e: IOException) {
+      Log.w(TAG, "Failed to cache an image: ${e.printStackTrace()}")
+    }
+    return Uri.EMPTY
   }
 }
 
