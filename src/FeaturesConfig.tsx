@@ -5,6 +5,7 @@ class FeaturesConfig {
   readonly editorConfig: EditorConfig;
   readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
+  readonly processPictureExternally: boolean;
 
   constructor(
     aiClipping: AiClipping | null,
@@ -12,7 +13,8 @@ class FeaturesConfig {
     audioBrowser: AudioBrowser,
     editorConfig: EditorConfig,
     draftsConfig: DraftsConfig,
-    gifPickerConfig: GifPickerConfig | null
+    gifPickerConfig: GifPickerConfig | null,
+    processPictureExternally: boolean
   ) {
     this.aiClipping = aiClipping;
     this.aiCaptions = aiCaptions;
@@ -20,6 +22,7 @@ class FeaturesConfig {
     this.editorConfig = editorConfig;
     this.draftsConfig = draftsConfig;
     this.gifPickerConfig = gifPickerConfig;
+    this.processPictureExternally = processPictureExternally;
   }
 }
 
@@ -37,6 +40,7 @@ export class FeaturesConfigBuilder {
     option: DraftsOption.askToSave,
   });
   private gifPickerConfig: GifPickerConfig | null = null;
+  private processPictureExternally: boolean = false;
 
   setAiClipping(aiClipping: AiClipping | null): this {
     this.aiClipping = aiClipping;
@@ -68,6 +72,11 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
+  setProcessPictureExternally(processPictureExternally: boolean): this {
+    this.processPictureExternally = processPictureExternally
+    return this;
+  }
+
   build(): FeaturesConfig {
     return new FeaturesConfig(
       this.aiClipping,
@@ -75,7 +84,8 @@ export class FeaturesConfigBuilder {
       this.audioBrowser,
       this.editorConfig,
       this.draftsConfig,
-      this.gifPickerConfig
+      this.gifPickerConfig,
+      this.processPictureExternally
     );
   }
 }

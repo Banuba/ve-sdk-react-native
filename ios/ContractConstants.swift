@@ -65,7 +65,8 @@ extension VideoEditorReactNative {
             draftsConfig: DraftsConfig(
                 option: "enable"
             ),
-            gifPickerConfig: nil
+            gifPickerConfig: nil,
+            processPictureExternally: false
         )
     }
 
