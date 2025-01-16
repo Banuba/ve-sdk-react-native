@@ -18,6 +18,8 @@ import VideoEditorPlugin, {
   WatermarkAlignment,
 } from 'video-editor-react-native';
 
+import PhotoEditorPlugin from 'pe-sdk-react-native';
+
 import { launchImageLibrary } from 'react-native-image-picker';
 
 const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
@@ -30,6 +32,7 @@ export default class App extends Component {
     // Specify your Config params in the builder below
     //.setAudioBrowser(...)
     //...
+    .setProcessPictureExternally(true)
     .build();
 
   //   Export Data example
@@ -58,13 +61,36 @@ export default class App extends Component {
     };
   }
 
-  handleVideoExport(response) {
+  handleVideoExport = async(response) => {
     let exportedVideoSources = response?.exportedVideoSources
     let exportedPreview = response?.exportedPreview
     let exportedMeta = response?.exportedMeta
     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
       + exportedPreview + "; meta = " + exportedMeta);
+
+    // exportedVideoSource is an empty Array in case of exporting the photo from the Video Editor
+
+    if (Array.isArray(exportedVideoSources) && exportedVideoSources.length === 0) {
+
+      // Open Photo Editor after Video Editor export
+      await this.openPhotoEditorWithImagePath(response?.exportedPreview)
+
+    }
   }
+
+  handlePhotoExport(response) {
+    let exportedPhotoSource = response?.exportedPhotoSource;
+    this.setState({ imageUri: `file://${exportedPhotoSource}` });
+    console.log('Export completed successfully: photo = ' + imageUri);
+  }
+
+  openPhotoEditorWithImagePath = async (photoUri: string) => {
+        const photoEditor = new PhotoEditorPlugin();
+        photoEditor
+          .openFromEditor(LICENSE_TOKEN, photoUri)
+          .then((response) => this.handlePhotoExport(response))
+          .catch((e) => this.handleSdkError(e));
+      };
 
   handleSdkError(e) {
     console.log('handle sdk error = ' + e.code);
@@ -83,6 +109,8 @@ export default class App extends Component {
         message = "Missing host Activity to start video editor";
       case 'ERR_VIDEO_EXPORT_CANCEL':
         message = "The user has canceled video editing flow!";
+      case 'ERR_PHOTO_EXPORT_CANCEL':
+        message = 'The user has canceled photo editing flow!';
       case 'ERR_INVALID_PARAMS':
         message = e.message;
       default:
