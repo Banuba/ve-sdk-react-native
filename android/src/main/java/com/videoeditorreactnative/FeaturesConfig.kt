@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
 import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.feedfm.BanubaMusicProvider
+import com.banuba.sdk.core.ui.SimpleMusicTrackProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
 import org.json.JSONObject
@@ -16,6 +17,8 @@ internal data class FeaturesConfig(
     val editorConfig: EditorConfig = defaultEditorConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
+    val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
+    val enableEditorV2: Boolean = false,
     val processPictureExternally: Boolean = false,
 )
 
@@ -38,6 +41,7 @@ internal data class AudioBrowser(
         return when (this.source) {
             FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE -> SoundstripeProvider()
             FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC -> BanubaMusicProvider()
+            FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> SimpleMusicTrackProvider()
             else -> {
                 AudioBrowserMusicProvider()
             }
@@ -77,4 +81,13 @@ internal val defaultDraftsConfig = DraftsConfig(
 
 internal data class GifPickerConfig(
     val giphyApiKey: String
+)
+
+internal data class VideoDurationConfig(
+  val maxTotalVideoDuration: Long,
+  val videoDurations: List<Long>,
+)
+internal val defaultVideoDurationConfig = VideoDurationConfig(
+  maxTotalVideoDuration = 120000,
+  videoDurations = listOf(60000, 30000, 15000),
 )

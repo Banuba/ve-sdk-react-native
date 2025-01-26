@@ -3,8 +3,7 @@ import AVKit
 import BanubaAudioBrowserSDK
 import React
 import BanubaVideoEditorSDK
-import VideoEditor
-import VEExportSDK
+import BanubaVideoEditorCore
 import AVKit
 
 @objc(VideoEditorReactNative)

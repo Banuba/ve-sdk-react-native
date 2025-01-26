@@ -17,26 +17,21 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.resources = 'ios/Assets/*'
 
-  sdk_version = '1.39.7'
+  sdk_version = '1.40.0'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
   s.dependency 'BanubaARCloudSDK', sdk_version #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
-  s.dependency 'BanubaSDK', sdk_version if ENABLE_FACE_AR
+  if ENABLE_FACE_AR
+    puts "!!! BANUBA FACE AR IS ENABLED !!!"
+    s.dependency 'BanubaSDK', sdk_version
+  else
+    puts "!!! BANUBA FACE AR IS DISABLED !!!"
+  end
   s.dependency 'BanubaSDKSimple', sdk_version
-  s.dependency 'BanubaSDKServicing', sdk_version
-  s.dependency 'VideoEditor', sdk_version
-  s.dependency 'BanubaUtilities', sdk_version
-  s.dependency 'BanubaVideoEditorGallerySDK', sdk_version #optional
-  s.dependency 'BanubaLicenseServicingSDK', sdk_version
-
-  s.dependency 'BNBLicenseUtils', sdk_version
-
-  s.dependency 'VEExportSDK', sdk_version
-  s.dependency 'VEEffectsSDK', sdk_version
-  s.dependency 'VEPlaybackSDK', sdk_version
+  s.dependency 'BanubaVideoEditorCore', sdk_version
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.

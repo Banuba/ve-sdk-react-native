@@ -15,7 +15,7 @@ Specify instance of ```GifPickerConfig``` in ```FeaturesConfig```:
 > To use stickers in your project you need to request personal [Giphy API key](https://support.giphy.com/hc/en-us/articles/360020283431-Request-A-GIPHY-API-Key)
 
 ```typescript
-private config = new FeaturesConfigBuilder()
+private featuresConfig = new FeaturesConfigBuilder()
     .setGifPickerConfig(new GifPickerConfig({ giphyApiKey: ... }))
     ...
     .build();

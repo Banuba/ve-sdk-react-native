@@ -66,6 +66,11 @@ extension VideoEditorReactNative {
                 option: "enable"
             ),
             gifPickerConfig: nil,
+            videoDurationConfig: VideoDurationConfig(
+                maxTotalVideoDuration: 120.0,
+                videoDurations: [60.0, 30.0, 15.0]
+            ),
+            enableEditorV2: false,
             processPictureExternally: false
         )
     }
@@ -74,7 +79,7 @@ extension VideoEditorReactNative {
     var defaultExportData : ExportData {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss.SSS"
-        
+
         return ExportData(exportedVideos: [
             ExportedVideo(
             fileName: "export_\(dateFormatter.string(from: Date()))",
@@ -92,6 +97,7 @@ extension VideoEditorConfig {
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
     static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
+    static let featuresConfigAudioBrowserSourceDisabled = "disabled"
 
     // Draft Configs
     static let featuresConfigDraftsConfigOptionAskToSave = "askToSave"
@@ -106,7 +112,7 @@ extension VideoEditorConfig {
     static let featuresConfigUnknownParams = "Undefined"
 }
 
-extension ExportData {    
+extension ExportData {
     // Video Resolutions
     static let exportedVideoVideoResolutionsHD720p = "hd720p"
     static let exportedVideoVideoResolutionsVGA360p = "vga360p"
@@ -117,7 +123,7 @@ extension ExportData {
     static let exportedVideoVideoResolutionsUHD2160p = "uhd2160p"
     static let exportedVideoVideoResolutionsAuto = "auto"
     static let exportedVideoVideoResolutionsOriginal = "original"
-    
+
     // Watermark Alignment
     static let exportDataWatermarkAlignmentTopLeft = "topLeft"
     static let exportDataWatermarkAlignmentTopRight = "topRight"

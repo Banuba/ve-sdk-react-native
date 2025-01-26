@@ -7,7 +7,7 @@ Drafts are enabled by default, asks the user to save a draft before leave any Vi
 Specify instance of ```DraftsConfig``` in ```FeaturesConfig``` builder to change drafts configuration:
 
 ```typescript
-private config = new FeaturesConfigBuilder()
+private featuresConfig = new FeaturesConfigBuilder()
     .setDraftsConfig(DraftsConfig.fromOption({ option: DraftsOption.auto }))
     ...
     .build();

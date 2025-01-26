@@ -5,6 +5,8 @@ class FeaturesConfig {
   readonly editorConfig: EditorConfig;
   readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
+  readonly videoDurationConfig: VideoDurationConfig;
+  readonly enableEditorV2: boolean;
   readonly processPictureExternally: boolean;
 
   constructor(
@@ -14,6 +16,8 @@ class FeaturesConfig {
     editorConfig: EditorConfig,
     draftsConfig: DraftsConfig,
     gifPickerConfig: GifPickerConfig | null,
+    videoDurationConfig: VideoDurationConfig,
+    enableEditorV2: boolean,
     processPictureExternally: boolean
   ) {
     this.aiClipping = aiClipping;
@@ -22,6 +26,8 @@ class FeaturesConfig {
     this.editorConfig = editorConfig;
     this.draftsConfig = draftsConfig;
     this.gifPickerConfig = gifPickerConfig;
+    this.videoDurationConfig = videoDurationConfig;
+    this.enableEditorV2 = enableEditorV2;
     this.processPictureExternally = processPictureExternally;
   }
 }
@@ -40,6 +46,8 @@ export class FeaturesConfigBuilder {
     option: DraftsOption.askToSave,
   });
   private gifPickerConfig: GifPickerConfig | null = null;
+  private videoDurationConfig: VideoDurationConfig = new VideoDurationConfig();
+  private enableEditorV2: boolean = false;
   private processPictureExternally: boolean = false;
 
   setAiClipping(aiClipping: AiClipping | null): this {
@@ -72,8 +80,18 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
+  setVideoDurationConfig(videoDurationConfig: VideoDurationConfig): this {
+    this.videoDurationConfig = videoDurationConfig;
+    return this;
+  }
+
+  setEditorV2(enableEditorV2: boolean): this {
+    this.enableEditorV2 = enableEditorV2;
+    return this;
+  }
+
   setProcessPictureExternally(processPictureExternally: boolean): this {
-    this.processPictureExternally = processPictureExternally
+    this.processPictureExternally = processPictureExternally;
     return this;
   }
 
@@ -85,6 +103,8 @@ export class FeaturesConfigBuilder {
       this.editorConfig,
       this.draftsConfig,
       this.gifPickerConfig,
+      this.videoDurationConfig,
+      this.enableEditorV2,
       this.processPictureExternally
     );
   }
@@ -97,6 +117,7 @@ export enum AudioBrowserSource {
   local = 'local',
   mubert = 'mubert',
   banubaMusic = 'banubaMusic',
+  disabled = 'disabled',
 }
 
 export class AudioBrowser {
@@ -197,5 +218,21 @@ export class GifPickerConfig {
 
   constructor({ giphyApiKey }: { giphyApiKey: string }) {
     this.giphyApiKey = giphyApiKey;
+  }
+}
+
+export class VideoDurationConfig {
+  maxTotalVideoDuration?: number;
+  videoDurations?: number[];
+
+  constructor({
+    maxTotalVideoDuration = 120.0,
+    videoDurations = [60.0, 30.0, 15.0],
+  }: {
+    maxTotalVideoDuration?: number;
+    videoDurations?: number[];
+  } = {}) {
+    this.maxTotalVideoDuration = maxTotalVideoDuration;
+    this.videoDurations = videoDurations;
   }
 }

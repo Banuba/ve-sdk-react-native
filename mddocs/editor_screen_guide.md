@@ -5,7 +5,7 @@
 Specify instance of ```EditorConfig``` in ```FeaturesConfig``` builder:
 
 ```typescript
-final config = new FeaturesConfigBuilder()
+final featuresConfig = new FeaturesConfigBuilder()
     .setEditorConfig(new EditorConfig({ enableVideoAspectFill: false }))
     ...
     .build()

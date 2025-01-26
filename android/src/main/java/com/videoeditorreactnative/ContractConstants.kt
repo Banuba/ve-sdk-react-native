@@ -45,6 +45,7 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC = "banubaMusic"
+internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
@@ -62,6 +63,15 @@ internal const val FEATURES_CONFIG_DRAFTS_CONFIG_DISABLED = "disabled"
 
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG = "gifPickerConfig"
 internal const val FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY = "giphyApiKey"
+
+// Video Duration Config
+internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG = "videoDurationConfig"
+internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_MAX_TOTAL_VIDEO_DURATION = "maxTotalVideoDuration"
+internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_VIDEO_DURATIONS = "videoDurations"
+
+// Editor V2 Config
+internal const val FEATURES_CONFIG_ENABLE_EDITOR_V2 = "enableEditorV2"
+internal const val FEATURES_CONFIG_EXTRA_USE_EDITOR_V2 = "EXTRA_USE_EDITOR_V2"
 
 internal const val FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY = "processPictureExternally"
 
@@ -150,6 +160,7 @@ internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
     bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
     bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
   }
+  bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_EDITOR_V2, featuresConfig.enableEditorV2)
   return bundle
 }
 

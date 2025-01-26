@@ -27,7 +27,7 @@ Specify instance of ```AiClipping``` in ```FeaturesConfig``` builder:
 > Please contact Banuba representatives before use in production.
 
 ```typescript
-private config = new FeaturesConfigBuilder()
+private featuresConfig = new FeaturesConfigBuilder()
     .setAiClipping(new AiClipping({
       audioDataUrl: "https://ve-autocut-v2-ap-south-1.s3.ap-south-1.amazonaws.com/index.zip",
       audioTracksUrl: "https://soundstripe-proxy.banuba.net/v1/songs"

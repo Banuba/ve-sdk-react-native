@@ -64,6 +64,9 @@ export default class VideoEditorPlugin {
     videoSourcesArray: Array<String>,
     exportData?: ExportData | null
   ): Promise<Map<String, String>> {
+    if (featuresConfig.enableEditorV2 === true) {
+      console.log('Editor V2 is not available from Trimmer screen');
+    }
     const inputParams = {
       screen: 'trimmer',
       featuresConfig: JSON.stringify(featuresConfig),
