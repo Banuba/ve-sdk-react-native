@@ -25,9 +25,11 @@ videoEditor.openFromCamera(LICENSE_TOKEN, this.featuresConfig)
 
 ## Configurations
 
-1. [AI Captions](ai_captions_guide.md)
-2. [AI Clipping](ai_clipping_guide.md)
-3. [Audio Browser](audio_browser_guide.md)
-4. [Editor screen](editor_screen_guide.md)
-5. [Draft](drafts_guide.md)
-6. [Stickers](stickers_guide.md)
+1. [Editor V2](editor_v2_guide.md)
+2. [AI Captions](ai_captions_guide.md)
+3. [AI Clipping](ai_clipping_guide.md)
+4. [Audio Browser](audio_browser_guide.md)
+5. [Editor screen](editor_screen_guide.md)
+6. [Draft](drafts_guide.md)
+7. [Stickers](stickers_guide.md)
+8. [Video Duration](video_duration_guide.md)

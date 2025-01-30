@@ -17,6 +17,8 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
+                featuresConfigObject.extractVideoDurationConfig(),
+                featuresConfigObject.optBoolean(FEATURES_CONFIG_ENABLE_EDITOR_V2),
                 featuresConfigObject.optBoolean(FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY)
             )
         } catch (e: JSONException) {
@@ -104,3 +106,24 @@ private fun JSONObject.extractGifPickerConfig(): GifPickerConfig? {
         null
     }
 }
+
+private fun JSONObject.extractVideoDurationConfig(): VideoDurationConfig =
+  try {
+    this.optJSONObject(FEATURES_CONFIG_VIDEO_DURATION_CONFIG)?.let { json ->
+      VideoDurationConfig(
+        maxTotalVideoDuration = (json.optDouble(
+          FEATURES_CONFIG_VIDEO_DURATION_CONFIG_MAX_TOTAL_VIDEO_DURATION
+        ) * 1000).toLong(),
+        videoDurations = json.optJSONArray(
+          FEATURES_CONFIG_VIDEO_DURATION_CONFIG_VIDEO_DURATIONS
+        )?.let { jsonArray ->
+          (0 until jsonArray.length()).map { index ->
+            (jsonArray.optDouble(index) * 1000).toLong()
+          }
+        } ?: defaultVideoDurationConfig.videoDurations,
+      )
+    }
+  } catch (e: JSONException) {
+    Log.w(TAG, "Missing Video Duration Config params", e)
+    defaultVideoDurationConfig
+  } ?: defaultVideoDurationConfig

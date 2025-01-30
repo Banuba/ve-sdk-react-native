@@ -22,6 +22,9 @@ import com.banuba.sdk.audiobrowser.soundstripe.AutoCutSoundstripeTrackLoader
 import com.banuba.sdk.audiobrowser.feedfm.AutoCutBanubaTrackLoader
 import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.core.domain.DraftConfig
+import com.banuba.sdk.cameraui.data.CameraConfig
+import com.banuba.sdk.veui.data.EditorConfig
+import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import com.banuba.sdk.ve.data.autocut.AutoCutConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
@@ -139,8 +142,9 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         featuresConfig.audioBrowser.value()
     }
 
-    if (featuresConfig.audioBrowser.source == FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT) {
-      this.addMubertParams(featuresConfig)
+    when (featuresConfig.audioBrowser.source){
+      FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT -> this.addMubertParams(featuresConfig)
+      FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> this.applyDisabledMusicConfig(featuresConfig)
     }
 
     featuresConfig.aiClipping?.let { params ->
@@ -182,6 +186,19 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
           giphyApiKey = params.giphyApiKey
         )
       }
+    }
+
+    single<CameraConfig> {
+      CameraConfig(
+        maxRecordedTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+        videoDurations = featuresConfig.videoDurationConfig.videoDurations,
+        supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED
+      )
+    }
+    single <EditorConfig>{
+      EditorConfig(
+        maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+      )
     }
 
     this.single<ExportSessionHelper> {
@@ -254,6 +271,12 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
     } else {
       Log.w(TAG, "Missing Params in AudioBrowser")
       return
+    }
+  }
+
+  private fun Module.applyDisabledMusicConfig(featuresConfig: FeaturesConfig) {
+    this.single<MusicEditorConfig>{
+      MusicEditorConfig(supportsExternalMusic = false)
     }
   }
 

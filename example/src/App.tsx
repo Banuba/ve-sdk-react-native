@@ -16,6 +16,7 @@ import VideoEditorPlugin, {
   Watermark,
   VideoResolution,
   WatermarkAlignment,
+  VideoDurationConfig,
 } from 'video-editor-react-native';
 
 import { launchImageLibrary } from 'react-native-image-picker';

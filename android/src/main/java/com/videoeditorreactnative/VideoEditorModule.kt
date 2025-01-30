@@ -140,9 +140,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     VideoCreationActivity.startFromCamera(
                         hostActivity,
                         PipConfig(video = Uri.EMPTY, openPipSettings = false),
-                        null,
-                        null,
-                        extras = prepareExtras(featuresConfig)
+                        extras = prepareExtras(featuresConfig),
                     )
                 }
 

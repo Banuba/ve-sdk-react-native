@@ -1,17 +1,16 @@
 import Foundation
-import VEExportSDK
-import VideoEditor
+import BanubaVideoEditorCore
 
 struct ExportData: Codable {
     let exportedVideos: [ExportedVideo]
-    let watermark: Watermark? 
+    let watermark: Watermark?
 }
 
 struct ExportedVideo: Codable {
     let fileName: String
     let videoResolution: String
     let useHevcIfPossible: Bool?
-    
+
     public func qualityValue() -> ExportQuality {
         switch videoResolution {
             case ExportData.exportedVideoVideoResolutionsVGA360p:
@@ -39,10 +38,10 @@ struct ExportedVideo: Codable {
 struct Watermark: Codable {
     let imagePath: String?
     let alignment: String?
-    
+
     public func watermarkConfigurationValue(controller: UIViewController) -> WatermarkConfiguration? {
         guard let imageName = imagePath?.components(separatedBy: "/").last?.replacingOccurrences(of: ".png", with: "") else {return nil}
-        
+
         guard let watermarkImage = UIImage(named: imageName) else {return nil}
 
         return WatermarkConfiguration(
@@ -52,7 +51,7 @@ struct Watermark: Codable {
             position: watermarkAligmentValue()
         )
     }
-    
+
     private func watermarkAligmentValue() -> WatermarkConfiguration.WatermarkPosition{
         switch alignment {
             case ExportData.exportDataWatermarkAlignmentTopLeft:
