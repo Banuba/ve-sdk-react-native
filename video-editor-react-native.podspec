@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.resources = 'ios/Assets/*'
 
-  sdk_version = '1.40.1'
+  sdk_version = '1.40.2'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
