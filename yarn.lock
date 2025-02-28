@@ -5796,6 +5796,11 @@ path-type@^3.0.0:
 path-type@^4.0.0:
   version "4.0.0"
 
+pe-sdk-react-native@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/pe-sdk-react-native/-/pe-sdk-react-native-0.0.1.tgz"
+  integrity sha512-B80H70lTShagZOuVc1M0nkIqN7Kx5sthHt+Ajscb9xo5u6EHlA7Cf6VE82UCh0dvCysheu42vdnlnrsRTpNVFA==
+
 picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.0.1"
 
