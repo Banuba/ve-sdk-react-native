@@ -21,6 +21,7 @@ internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
 internal const val EXPORTED_PREVIEW = "exportedPreview"
 internal const val EXPORTED_META = "exportedMeta"
+internal const val EXPORTED_AUDIO_META = "exportedAudioMeta"
 
 // Screens
 internal const val SCREEN_CAMERA = "camera"

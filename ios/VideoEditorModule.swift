@@ -215,12 +215,19 @@ extension VideoEditorModule {
                             print("Error during metadata saving: \(error)")
                         }
                     }
+                    var audioMetaJSON: String?
+                    if let jsonData = try? JSONEncoder().encode(AudioMeta.getAudioMeta(tracks: self?.videoEditorSDK?.musicMetadata?.tracks)),
+                        let jsonString = String(data: jsonData, encoding: .utf8) {
+                      audioMetaJSON = jsonString.replacingOccurrences(of: "\\/", with: "/")
+                    }
 
                     // TODO 1. simplify method
                     self?.completeExport(
                         videoUrls: Array(exportProvider.fileUrls.values),
                         metaUrl: metadataUrl,
-                        previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("export_preview.png"),
+                        previewUrl: FileManager.default.temporaryDirectory
+                          .appendingPathComponent("export_preview.png"),
+                        audioMetaJSON: audioMetaJSON,
                         error: error,
                         previewImage: coverImage?.coverImage
                     )
@@ -229,11 +236,18 @@ extension VideoEditorModule {
         }
     }
 
-    private func completeExport(videoUrls: [URL], metaUrl: URL?, previewUrl: URL, error: Error?, previewImage: UIImage?) {
+    private func completeExport(
+        videoUrls: [URL],
+        metaUrl: URL?,
+        previewUrl: URL,
+        audioMetaJSON: String?,
+        error: Error?,
+        previewImage: UIImage?
+    ) {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
             let success = error == nil
             if success {
-                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), preview = \(previewUrl))")
+                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), , audio metadata = \(String(describing: audioMetaJSON)), preview = \(previewUrl))")
 
                 let previewImageData = previewImage?.pngData()
 
@@ -242,7 +256,8 @@ extension VideoEditorModule {
                 self.currentResolve?([
                     VideoEditorReactNative.argExportedVideoSources: videoUrls.compactMap { $0.path },
                     VideoEditorReactNative.argExportedPreview: previewUrl.path,
-                    VideoEditorReactNative.argExportedMeta : metaUrl?.path
+                    VideoEditorReactNative.argExportedMeta : metaUrl?.path,
+                    VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON
                 ])
             } else {
                 print("Error while exporting video = \(String(describing: error))")
@@ -321,7 +336,10 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                   self.completeExport(
                       videoUrls: [],
                       metaUrl: nil,
-                      previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent("\(dateFormatter.string(from: Date())).png"),
+                      previewUrl: FileManager.default.temporaryDirectory.appendingPathComponent(
+                        "\(dateFormatter.string(from: Date())).png"
+                      ),
+                      audioMetaJSON: nil,
                       error: nil,
                       previewImage: resultImage
                   )

@@ -10,6 +10,7 @@ import com.banuba.sdk.core.license.BanubaVideoEditor
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
 import com.banuba.sdk.ve.flow.VideoCreationActivity
+import com.banuba.sdk.ve.flow.export.ExportBundleHelper
 import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
@@ -20,6 +21,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import org.json.JSONObject
 import org.json.JSONException
+import org.json.JSONArray
 import java.io.File
 
 class VideoEditorModule(reactContext: ReactApplicationContext) :
@@ -67,6 +69,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                               arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
                               arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
                               arguments.putString(EXPORTED_META, metaUri?.toString())
+                              arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult))
                               Log.d(TAG, "Send video export results to React")
                               resultPromise?.resolve(arguments)
                           }
@@ -215,6 +218,23 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
             hostActivity.startActivityForResult(intent, OPEN_VIDEO_EDITOR_REQUEST_CODE)
         }
+    }
+
+    private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {
+        val audioEffects = ExportBundleHelper.getExportedMusicEffect(result.additionalExportData)
+
+        if (audioEffects.isEmpty()) return null
+
+        val jsonArray = JSONArray().apply {
+            for (effect in audioEffects) {
+                put(JSONObject().apply {
+                    put("title", effect.title)
+                    put("url", effect.uri.toString())
+                    put("type", effect.type)
+                })
+            }
+        }
+        return jsonArray.toString().replace("\\", "")
     }
 
     private fun initialize(
