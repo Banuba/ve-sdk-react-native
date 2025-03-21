@@ -80,4 +80,19 @@ export default class VideoEditorPlugin {
         )
       : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
+
+  openFromAiClipping(
+    licenseToken: String,
+    featuresConfig: FeaturesConfig,
+    exportData?: ExportData | null
+  ): Promise<Map<String, String>> {
+    const inputParams = {
+      screen: 'aiClipping',
+      featuresConfig: JSON.stringify(featuresConfig),
+      exportData: JSON.stringify(exportData),
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+  }
 }

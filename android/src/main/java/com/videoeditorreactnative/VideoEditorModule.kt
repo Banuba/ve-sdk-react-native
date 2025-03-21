@@ -204,6 +204,15 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_AICLIPPING -> {
+                    Log.d(TAG, "Start video editor from AI Clipping screen")
+                    VideoCreationActivity.startFromAiClipping(
+                        context = hostActivity,
+                        additionalExportData = null,
+                        extras = prepareExtras(featuresConfig)
+                    )
+                }
+
                 else -> {
                     Log.w(TAG, "Unknown screen = $screen")
                     null

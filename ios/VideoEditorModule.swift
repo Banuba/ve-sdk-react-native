@@ -132,6 +132,24 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: trimmerLaunchConfig, resolve, reject)
     }
 
+    func openVideoEditorAiClipping(
+        fromViewController controller: UIViewController,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .aiClipping,
+            hostController: controller,
+            animated: true
+    )
+    checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+  }
+
     func checkLicenseAndStartVideoEditor(
         with config: VideoEditorLaunchConfig,
         _ resolve: @escaping RCTPromiseResolveBlock,
@@ -379,8 +397,8 @@ extension VideoEditorConfig {
 
 
         if let aiClipping = featuresConfig.aiClipping, let audioTracksUrl = URL(string: aiClipping.audioTracksUrl) {
-            self.autoCutConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
-            self.autoCutConfiguration.musicProvider =
+            self.aiClippingConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
+            self.aiClippingConfiguration.musicProvider =
                 switch featuresConfig.audioBrowser.value() {
                     case .banubaMusic:
                         .banubaMusic(tracksURL: audioTracksUrl)

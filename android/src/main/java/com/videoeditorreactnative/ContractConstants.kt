@@ -27,6 +27,7 @@ internal const val EXPORTED_AUDIO_META = "exportedAudioMeta"
 internal const val SCREEN_CAMERA = "camera"
 internal const val SCREEN_PIP = "pip"
 internal const val SCREEN_TRIMMER = "trimmer"
+internal const val SCREEN_AICLIPPING = "aiClipping"
 
 // Features config params
 internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
