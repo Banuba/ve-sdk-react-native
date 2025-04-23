@@ -7,4 +7,11 @@ module.exports = {
       root: path.join(__dirname, '..'),
     },
   },
+  project: {
+    reactNativePath: './node_modules/react-native',
+    android: {
+      packageName: 'com.videoeditorreactnativeexample', 
+    },
+    ios: {},
+  },
 };
