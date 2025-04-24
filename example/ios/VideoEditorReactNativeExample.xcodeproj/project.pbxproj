@@ -10,10 +10,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		881BC8462C9488E5005EC916 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 881BC8452C9488E5005EC916 /* en.lproj */; };
-		8C1B9DD32DB67EEC003F9F9F /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 8C1B9DD22DB67EEC003F9F9F /* main.jsbundle */; };
-		8C9DF4392DB666D600B5F151 /* File.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C9DF4382DB666D600B5F151 /* File.txt */; };
+		884429A32DBAABF100337888 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 884429A22DBAABF100337888 /* main.jsbundle */; };
 		8CB7BCBA2DB56863009AF047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7BCB92DB56863009AF047 /* AppDelegate.swift */; };
-		CAD5B28F9D1F6FBD4E4FA9F4 /* libPods-VideoEditorReactNativeExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59491627E86FAE8433B7E63B /* libPods-VideoEditorReactNativeExample.a */; };
 		D75B32394D5527C55121B627 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -23,13 +21,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = VideoEditorReactNativeExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = VideoEditorReactNativeExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3171C7F513D76FA9DD770D37 /* Pods-VideoEditorReactNativeExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditorReactNativeExample.release.xcconfig"; path = "Target Support Files/Pods-VideoEditorReactNativeExample/Pods-VideoEditorReactNativeExample.release.xcconfig"; sourceTree = "<group>"; };
-		59491627E86FAE8433B7E63B /* libPods-VideoEditorReactNativeExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VideoEditorReactNativeExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = VideoEditorReactNativeExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		881BC8452C9488E5005EC916 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
-		8C1B9DD22DB67EEC003F9F9F /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		8C9DF4382DB666D600B5F151 /* File.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = File.txt; sourceTree = "<group>"; };
+		884429A22DBAABF100337888 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		8CB7BCB92DB56863009AF047 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8CD3EFC22DB65FBB009A2449 /* main.jsbundle.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = main.jsbundle.js; sourceTree = "<group>"; };
 		D0B49B97DB1E723420B5E2AA /* Pods-VideoEditorReactNativeExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoEditorReactNativeExample.debug.xcconfig"; path = "Target Support Files/Pods-VideoEditorReactNativeExample/Pods-VideoEditorReactNativeExample.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -39,7 +34,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAD5B28F9D1F6FBD4E4FA9F4 /* libPods-VideoEditorReactNativeExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +49,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
-				8C9DF4382DB666D600B5F151 /* File.txt */,
+				884429A22DBAABF100337888 /* main.jsbundle */,
 			);
 			name = VideoEditorReactNativeExample;
 			sourceTree = "<group>";
@@ -63,9 +57,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8CD3EFC22DB65FBB009A2449 /* main.jsbundle.js */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				59491627E86FAE8433B7E63B /* libPods-VideoEditorReactNativeExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,7 +72,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8C1B9DD22DB67EEC003F9F9F /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* VideoEditorReactNativeExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -169,12 +160,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C1B9DD32DB67EEC003F9F9F /* main.jsbundle in Resources */,
+				884429A32DBAABF100337888 /* main.jsbundle in Resources */,
 				881BC8462C9488E5005EC916 /* en.lproj in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				D75B32394D5527C55121B627 /* PrivacyInfo.xcprivacy in Resources */,
-				8C9DF4392DB666D600B5F151 /* File.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +264,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CQAJT5B3K8;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = VideoEditorReactNativeExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -288,7 +278,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lexkirik.react;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.--PRODUCT-NAME-rfc1034identifier-";
 				PRODUCT_NAME = VideoEditorReactNativeExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -303,7 +293,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CQAJT5B3K8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = VideoEditorReactNativeExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -316,7 +306,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lexkirik.react;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.--PRODUCT-NAME-rfc1034identifier-";
 				PRODUCT_NAME = VideoEditorReactNativeExample;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -396,11 +386,8 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
+				OTHER_LDFLAGS = "$(inherited)  ";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
@@ -472,11 +459,8 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
+				OTHER_LDFLAGS = "$(inherited)  ";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;

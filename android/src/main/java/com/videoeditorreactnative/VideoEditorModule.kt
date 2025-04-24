@@ -306,7 +306,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
         val values = mutableListOf<String>()
         for (i in 0 until rawArray.size()) {
-            values.add(rawArray.getString(i))
+            rawArray.getString(i)?.let { values.add(it) }
         }
         return values
     }

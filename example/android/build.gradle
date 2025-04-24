@@ -1,9 +1,3 @@
-ext {
-    REACT_NATIVE_NODE_MODULES_DIR = new File(rootDir, "../node_modules")
-    REACT_NATIVE_DIR = new File(REACT_NATIVE_NODE_MODULES_DIR, "react-native")
-    REACT_NATIVE_REACT_ANDROID_DIR = new File(REACT_NATIVE_DIR, "ReactAndroid")
-}
-
 buildscript {
     ext {
         buildToolsVersion = "35.0.0"
