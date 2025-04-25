@@ -52,8 +52,15 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED = "disabled"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
 
+internal const val FEATURES_CONFIG_CAMERA_CONFIG = "cameraConfig"
+internal const val FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_BEAUTY = "supportsBeauty"
+internal const val FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_COLOR_EFFECTS = "supportsColorEffects"
+internal const val FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_MASKS = "supportsMasks"
+
 internal const val FEATURES_CONFIG_EDITOR_CONFIG = "editorConfig"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "enableVideoAspectFill"
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_COLOR_EFFECTS = "supportsColorEffects"
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS = "supportsVisualEffects"
 
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftsConfig"
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"

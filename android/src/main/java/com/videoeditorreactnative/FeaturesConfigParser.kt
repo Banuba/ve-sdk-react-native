@@ -14,6 +14,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAiClipping(),
                 featuresConfigObject.extractAiCaptions(),
                 featuresConfigObject.extractAudioBrowser(),
+                featuresConfigObject.extractCameraConfig(),
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
@@ -68,12 +69,38 @@ private fun JSONObject.extractAudioBrowser(): AudioBrowser =
         defaultAudioBrowser
     } ?: defaultAudioBrowser
 
+private fun JSONObject.extractCameraConfig(): CameraConfig =
+    try {
+        this.optJSONObject(FEATURES_CONFIG_CAMERA_CONFIG)?.let { json ->
+            CameraConfig(
+                supportsBeauty = json.optBoolean(
+                    FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_BEAUTY
+                ),
+                supportsColorEffects = json.optBoolean(
+                    FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_COLOR_EFFECTS
+                ),
+                supportsMasks = json.optBoolean(
+                    FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_MASKS
+                )
+            )
+        }
+    } catch (e: JSONException) {
+        Log.w(TAG, "Missing Editor Config params", e)
+        defaultCameraConfig
+    } ?: defaultCameraConfig
+
 private fun JSONObject.extractEditorConfig(): EditorConfig =
     try {
         this.optJSONObject(FEATURES_CONFIG_EDITOR_CONFIG)?.let { json ->
             EditorConfig(
                 enableVideoAspectFill = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL
+                ),
+                supportsColorEffects = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_COLOR_EFFECTS
+                ),
+                supportsVisualEffects = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS
                 )
             )
         }

@@ -6,6 +6,7 @@ struct FeaturesConfig: Codable {
     let aiCaptions: AiCaptions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
+    let cameraConfig: CameraConfig
     let editorConfig: EditorConfig
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
@@ -48,8 +49,16 @@ struct Params: Codable {
     let mubertToken: String?
 }
 
+struct CameraConfig: Codable {
+    let supportsBeauty: Bool
+    let supportsColorEffects: Bool
+    let supportsMasks: Bool
+}
+
 struct EditorConfig: Codable {
     let enableVideoAspectFill: Bool
+    let supportsVisualEffects: Bool
+    let supportsColorEffects: Bool
 }
 
 struct DraftsConfig: Codable {
