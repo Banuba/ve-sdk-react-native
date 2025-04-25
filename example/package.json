@@ -1,7 +1,7 @@
 {
   "name": "video-editor-react-native-example",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "scripts": {
     "android": "react-native run-android",
     "start": "react-native start",
@@ -25,7 +25,7 @@
     "@react-native/metro-config": "0.78.2",
     "@react-native/typescript-config": "0.78.2",
     "@types/react": "^19.0.0",
-    "react-native-builder-bob": "^0.40.6"
+    "react-native-builder-bob": "0.39.0"
   },
   "engines": {
     "node": ">=18"

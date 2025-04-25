@@ -1,7 +1,7 @@
 {
   "name": "video-editor-react-native",
   "version": "0.15.0",
-  "private": true,
+  "private": false,
   "description": "Banuba Video Editor React Native plugin",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -73,8 +73,8 @@
     "prettier": "^3.0.3",
     "react": "19.0.0",
     "react-native": "0.78.2",
-    "react-native-builder-bob": "^0.40.6",
-    "release-it": "^17.10.0",
+    "react-native-builder-bob": "0.39.0",
+    "release-it": "^19.0.1",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
   },
