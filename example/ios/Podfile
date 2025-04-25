@@ -38,3 +38,4 @@ target 'VideoEditorReactNativeExample' do
     )
   end
 end
+
