@@ -2,6 +2,7 @@ class FeaturesConfig {
   readonly aiClipping: AiClipping | null;
   readonly aiCaptions: AiCaptions | null;
   readonly audioBrowser: AudioBrowser;
+  readonly cameraConfig: CameraConfig;
   readonly editorConfig: EditorConfig;
   readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
@@ -13,6 +14,7 @@ class FeaturesConfig {
     aiClipping: AiClipping | null,
     aiCaptions: AiCaptions | null,
     audioBrowser: AudioBrowser,
+    cameraConfig: CameraConfig,
     editorConfig: EditorConfig,
     draftsConfig: DraftsConfig,
     gifPickerConfig: GifPickerConfig | null,
@@ -23,6 +25,7 @@ class FeaturesConfig {
     this.aiClipping = aiClipping;
     this.aiCaptions = aiCaptions;
     this.audioBrowser = audioBrowser;
+    this.cameraConfig = cameraConfig;
     this.editorConfig = editorConfig;
     this.draftsConfig = draftsConfig;
     this.gifPickerConfig = gifPickerConfig;
@@ -39,8 +42,15 @@ export class FeaturesConfigBuilder {
     source: AudioBrowserSource.local,
     params: null,
   });
+  private cameraConfig: CameraConfig = new CameraConfig({
+    supportsBeauty: true,
+    supportsColorEffects: true,
+    supportsMasks: true,
+  });
   private editorConfig: EditorConfig = new EditorConfig({
     enableVideoAspectFill: true,
+    supportsVisualEffects: true,
+    supportsColorEffects: true,
   });
   private draftsConfig: DraftsConfig = DraftsConfig.fromOption({
     option: DraftsOption.askToSave,
@@ -62,6 +72,11 @@ export class FeaturesConfigBuilder {
 
   setAudioBrowser(audioBrowser: AudioBrowser): this {
     this.audioBrowser = audioBrowser;
+    return this;
+  }
+
+  setCameraConfig(cameraConfig: CameraConfig): this {
+    this.cameraConfig = cameraConfig;
     return this;
   }
 
@@ -100,6 +115,7 @@ export class FeaturesConfigBuilder {
       this.aiClipping,
       this.aiCaptions,
       this.audioBrowser,
+      this.cameraConfig,
       this.editorConfig,
       this.draftsConfig,
       this.gifPickerConfig,
@@ -182,15 +198,43 @@ export class AiCaptions {
   }
 }
 
+export class CameraConfig {
+  supportsBeauty: boolean | null;
+  supportsColorEffects: boolean | null;
+  supportsMasks: boolean | null;
+
+  constructor({
+    supportsBeauty = null,
+    supportsColorEffects = null,
+    supportsMasks = null,
+  }: {
+    supportsBeauty?: boolean | null;
+    supportsColorEffects?: boolean | null;
+    supportsMasks?: boolean | null;
+  }) {
+    this.supportsBeauty = supportsBeauty;
+    this.supportsColorEffects = supportsColorEffects;
+    this.supportsMasks = supportsMasks;
+  }
+}
+
 export class EditorConfig {
   enableVideoAspectFill: boolean | null;
+  supportsVisualEffects: boolean | null;
+  supportsColorEffects: boolean | null;
 
   constructor({
     enableVideoAspectFill = null,
+    supportsVisualEffects = null,
+    supportsColorEffects = null,
   }: {
     enableVideoAspectFill?: boolean | null;
+    supportsVisualEffects?: boolean | null;
+    supportsColorEffects?: boolean | null;
   }) {
     this.enableVideoAspectFill = enableVideoAspectFill;
+    this.supportsVisualEffects = supportsVisualEffects;
+    this.supportsColorEffects = supportsColorEffects;
   }
 }
 

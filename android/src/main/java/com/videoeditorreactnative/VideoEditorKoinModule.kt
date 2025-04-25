@@ -200,12 +200,16 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
       CameraConfig(
         maxRecordedTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
         videoDurations = featuresConfig.videoDurationConfig.videoDurations,
-        supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED
+        supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED, 
+        banubaMasksAssetsPath = if (featuresConfig.cameraConfig.supportsMasks) "effects" else null,
+        banubaColorEffectsAssetsPath = if (featuresConfig.cameraConfig.supportsColorEffects) "luts" else null,
       )
     }
     single <EditorConfig>{
       EditorConfig(
         maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
+        editorSupportsVisualEffects = featuresConfig.editorConfig.supportsVisualEffects,
+        editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
       )
     }
 

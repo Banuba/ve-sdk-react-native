@@ -14,6 +14,7 @@ internal data class FeaturesConfig(
     val aiClipping: AiClipping? = null,
     val aiCaptions: AiCaptions? = null,
     val audioBrowser: AudioBrowser = defaultAudioBrowser,
+    val cameraConfig: CameraConfig = defaultCameraConfig,
     val editorConfig: EditorConfig = defaultEditorConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
@@ -54,12 +55,28 @@ internal val defaultAudioBrowser = AudioBrowser(
     params = null
 )
 
+internal data class CameraConfig(
+    val supportsBeauty: Boolean,
+    val supportsColorEffects: Boolean,
+    val supportsMasks: Boolean
+)
+
+internal val defaultCameraConfig = CameraConfig(
+    supportsBeauty = true,
+    supportsColorEffects = true,
+    supportsMasks = true
+)
+
 internal data class EditorConfig(
-    val enableVideoAspectFill: Boolean
+    val enableVideoAspectFill: Boolean,
+    val supportsColorEffects: Boolean,
+    val supportsVisualEffects: Boolean
 )
 
 internal val defaultEditorConfig = EditorConfig(
-    enableVideoAspectFill = true
+    enableVideoAspectFill = true,
+    supportsColorEffects = true,
+    supportsVisualEffects = true
 )
 
 internal data class DraftsConfig(
