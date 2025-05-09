@@ -179,22 +179,26 @@ export class AiClipping {
 }
 
 export class AiCaptions {
-  uploadUrl: string;
-  transcribeUrl: string;
-  apiKey: string;
+  uploadUrl: string | null;
+  transcribeUrl: string | null;
+  apiKey: string | null;
+  apiV2Key: string | null;
 
   constructor({
-    uploadUrl,
-    transcribeUrl,
-    apiKey,
+    uploadUrl = null,
+    transcribeUrl = null,
+    apiKey = null,
+    apiV2Key = null,
   }: {
-    uploadUrl: string;
-    transcribeUrl: string;
-    apiKey: string;
+    uploadUrl?: string | null;
+    transcribeUrl?: string | null;
+    apiKey?: string | null;
+    apiV2Key?: string | null;
   }) {
     this.uploadUrl = uploadUrl;
     this.transcribeUrl = transcribeUrl;
     this.apiKey = apiKey;
+    this.apiV2Key = apiV2Key;
   }
 }
 

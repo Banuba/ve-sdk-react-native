@@ -393,6 +393,7 @@ extension VideoEditorConfig {
             self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
             self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
             self.captionsConfiguration.apiKey = aiCaptions.apiKey
+            self.captionsConfiguration.apiV2Key = aiCaptions.apiV2Key
         }
 
 
