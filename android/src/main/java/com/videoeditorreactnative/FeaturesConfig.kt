@@ -29,9 +29,10 @@ internal data class AiClipping(
 )
 
 internal data class AiCaptions(
-    val uploadUrl: String,
-    val transcribeUrl: String,
-    val apiKey: String
+    val uploadUrl: String?,
+    val transcribeUrl: String?,
+    val apiKey: String?,
+    val apiV2Key: String?
 )
 
 internal data class AudioBrowser(

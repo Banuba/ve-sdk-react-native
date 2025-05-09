@@ -47,7 +47,8 @@ private fun JSONObject.extractAiCaptions(): AiCaptions? {
             AiCaptions(
                 uploadUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL),
                 transcribeUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL),
-                apiKey = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_KEY)
+                apiKey = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_KEY),
+                apiV2Key = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_V2_KEY)
             )
         }
     } catch (e: JSONException) {
