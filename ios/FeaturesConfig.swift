@@ -21,9 +21,10 @@ struct AiClipping: Codable {
 }
 
 struct AiCaptions: Codable {
-    let uploadUrl: String
-    let transcribeUrl: String
-    let apiKey: String
+    let uploadUrl: String?
+    let transcribeUrl: String?
+    let apiKey: String?
+    let apiV2Key: String?
 }
 
 struct AudioBrowser: Codable {

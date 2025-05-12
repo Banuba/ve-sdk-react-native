@@ -34,6 +34,7 @@ internal const val FEATURES_CONFIG_AI_CAPTIONS = "aiCaptions"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL = "uploadUrl"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL = "transcribeUrl"
 internal const val FEATURES_CONFIG_AI_CAPTIONS_API_KEY = "apiKey"
+internal const val FEATURES_CONFIG_AI_CAPTIONS_API_V2_KEY = "apiV2Key"
 
 internal const val FEATURES_CONFIG_AI_CLIPPING = "aiClipping"
 internal const val FEATURES_CONFIG_AI_CLIPPING_AUDIO_DATA_URL = "audioDataUrl"
@@ -165,9 +166,13 @@ internal const val MESSAGE_MISSING_WATERMARK_IMAGE_PATH =
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
   val bundle = Bundle()
   featuresConfig.aiCaptions?.let { params ->
-    bundle.putString(CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL, params.uploadUrl)
-    bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
-    bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
+    if (params.apiV2Key != null) {
+        bundle.putString(CaptionsApiService.ARG_API_KEY_V2, params.apiV2Key)
+    } else {
+        bundle.putString(CaptionsApiService.ARG_CAPTIONS_UPLOAD_URL, params.uploadUrl)
+        bundle.putString(CaptionsApiService.ARG_CAPTIONS_TRANSCRIBE_URL, params.transcribeUrl)
+        bundle.putString(CaptionsApiService.ARG_API_KEY, params.apiKey)
+    }
   }
   bundle.putBoolean(FEATURES_CONFIG_EXTRA_USE_EDITOR_V2, featuresConfig.enableEditorV2)
   return bundle
