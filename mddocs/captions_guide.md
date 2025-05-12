@@ -1,4 +1,4 @@
-# AI Captions
+# Closed Captions
 
 AI Captions are a textual representation of the audio within a media file.
 
