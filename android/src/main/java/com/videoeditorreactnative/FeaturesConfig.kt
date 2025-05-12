@@ -12,7 +12,7 @@ import org.json.JSONObject
 
 internal data class FeaturesConfig(
     val aiClipping: AiClipping? = null,
-    val aiCaptions: AiCaptions? = null,
+    val captions: Captions? = null,
     val audioBrowser: AudioBrowser = defaultAudioBrowser,
     val cameraConfig: CameraConfig = defaultCameraConfig,
     val editorConfig: EditorConfig = defaultEditorConfig,
@@ -28,7 +28,7 @@ internal data class AiClipping(
     val audioTracksUrl: String
 )
 
-internal data class AiCaptions(
+internal data class Captions(
     val uploadUrl: String?,
     val transcribeUrl: String?,
     val apiKey: String?,

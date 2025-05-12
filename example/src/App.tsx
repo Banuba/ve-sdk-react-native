@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button, TouchableOpacity, Platform } from 'reac
 
 import VideoEditorPlugin, {
   AiClipping,
-  AiCaptions,
+  Captions,
   AudioBrowser,
   AudioBrowserSource,
   DraftsConfig,

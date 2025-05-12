@@ -12,7 +12,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
             val featuresConfigObject = JSONObject(rawConfigParams)
             FeaturesConfig(
                 featuresConfigObject.extractAiClipping(),
-                featuresConfigObject.extractAiCaptions(),
+                featuresConfigObject.extractCaptions(),
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractCameraConfig(),
                 featuresConfigObject.extractEditorConfig(),
@@ -41,18 +41,18 @@ private fun JSONObject.extractAiClipping(): AiClipping? {
     }
 }
 
-private fun JSONObject.extractAiCaptions(): AiCaptions? {
+private fun JSONObject.extractCaptions(): Captions? {
     return try {
-        this.optJSONObject(FEATURES_CONFIG_AI_CAPTIONS)?.let { json ->
-            AiCaptions(
-                uploadUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_UPLOAD_URL),
-                transcribeUrl = json.optString(FEATURES_CONFIG_AI_CAPTIONS_TRANSCRIBE_URL),
-                apiKey = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_KEY),
-                apiV2Key = json.optString(FEATURES_CONFIG_AI_CAPTIONS_API_V2_KEY)
+        this.optJSONObject(FEATURES_CONFIG_CAPTIONS)?.let { json ->
+            Captions(
+                uploadUrl = json.optString(FEATURES_CONFIG_CAPTIONS_UPLOAD_URL),
+                transcribeUrl = json.optString(FEATURES_CONFIG_CAPTIONS_TRANSCRIBE_URL),
+                apiKey = json.optString(FEATURES_CONFIG_CAPTIONS_API_KEY),
+                apiV2Key = json.optString(FEATURES_CONFIG_CAPTIONS_API_V2_KEY)
             )
         }
     } catch (e: JSONException) {
-        Log.w(TAG, "Missing AiCaptions params", e)
+        Log.w(TAG, "Missing Captions params", e)
         null
     }
 }
