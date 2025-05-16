@@ -55,7 +55,7 @@ extension VideoEditorReactNative {
 
     var defaultFeaturesConfig : FeaturesConfig {
         return FeaturesConfig(
-            aiCaptions: nil,
+            captions: nil,
             aiClipping: nil,
             audioBrowser: AudioBrowser(
                 source: "local",

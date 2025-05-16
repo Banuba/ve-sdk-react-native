@@ -389,11 +389,11 @@ extension VideoEditorConfig {
             self.combinedGalleryConfiguration.visibleTabsInGallery = [GalleryMediaType.video, GalleryMediaType.photo]
         }
 
-        if let aiCaptions = featuresConfig.aiCaptions {
-            self.captionsConfiguration.captionsUploadUrl = aiCaptions.uploadUrl
-            self.captionsConfiguration.captionsTranscribeUrl = aiCaptions.transcribeUrl
-            self.captionsConfiguration.apiKey = aiCaptions.apiKey
-            self.captionsConfiguration.apiV2Key = aiCaptions.apiV2Key
+        if let captions = featuresConfig.captions {
+            self.captionsConfiguration.captionsUploadUrl = captions.uploadUrl
+            self.captionsConfiguration.captionsTranscribeUrl = captions.transcribeUrl
+            self.captionsConfiguration.apiKey = captions.apiKey
+            self.captionsConfiguration.apiV2Key = captions.apiV2Key
         }
 
 

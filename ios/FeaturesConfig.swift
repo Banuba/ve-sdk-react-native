@@ -3,7 +3,7 @@ import BanubaVideoEditorSDK
 import BanubaAudioBrowserSDK
 
 struct FeaturesConfig: Codable {
-    let aiCaptions: AiCaptions?
+    let captions: Captions?
     let aiClipping: AiClipping?
     let audioBrowser: AudioBrowser
     let cameraConfig: CameraConfig
@@ -20,7 +20,7 @@ struct AiClipping: Codable {
     let audioTracksUrl: String
 }
 
-struct AiCaptions: Codable {
+struct Captions: Codable {
     let uploadUrl: String?
     let transcribeUrl: String?
     let apiKey: String?

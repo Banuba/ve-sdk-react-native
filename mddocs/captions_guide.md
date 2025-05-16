@@ -1,4 +1,4 @@
-# AI Captions
+# Closed Captions
 
 AI Captions are a textual representation of the audio within a media file.
 
@@ -16,7 +16,7 @@ Over 80% of videos played on mobile devices don’t have sound turned on. This m
 
 ## Usage
 
-Specify instance of ```AiCaptions``` in ```FeaturesConfig``` builder:
+Specify instance of ```Captions``` in ```FeaturesConfig``` builder:
 
 > [!IMPORTANT]
 > A trial option for AI Captions
@@ -24,8 +24,8 @@ Specify instance of ```AiCaptions``` in ```FeaturesConfig``` builder:
 
 ```typescript
   private featuresConfig = new FeaturesConfigBuilder()
-    .setAiCaptions(
-      new AiCaptions({
+    .setCaptions(
+      new Captions({
         uploadUrl: "https://internal.transcribe.banuba.net",
         transcribeUrl: "https://rest.internal.transcribe.banuba.net/transcribe/v1/status",
         apiKey: "CheiYaaphoK6eungecheec4eingeik9shaijiech"

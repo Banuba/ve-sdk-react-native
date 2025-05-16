@@ -1,6 +1,6 @@
 class FeaturesConfig {
   readonly aiClipping: AiClipping | null;
-  readonly aiCaptions: AiCaptions | null;
+  readonly captions: Captions | null;
   readonly audioBrowser: AudioBrowser;
   readonly cameraConfig: CameraConfig;
   readonly editorConfig: EditorConfig;
@@ -12,7 +12,7 @@ class FeaturesConfig {
 
   constructor(
     aiClipping: AiClipping | null,
-    aiCaptions: AiCaptions | null,
+    captions: Captions | null,
     audioBrowser: AudioBrowser,
     cameraConfig: CameraConfig,
     editorConfig: EditorConfig,
@@ -23,7 +23,7 @@ class FeaturesConfig {
     processPictureExternally: boolean
   ) {
     this.aiClipping = aiClipping;
-    this.aiCaptions = aiCaptions;
+    this.captions = captions;
     this.audioBrowser = audioBrowser;
     this.cameraConfig = cameraConfig;
     this.editorConfig = editorConfig;
@@ -37,7 +37,7 @@ class FeaturesConfig {
 
 export class FeaturesConfigBuilder {
   private aiClipping: AiClipping | null = null;
-  private aiCaptions: AiCaptions | null = null;
+  private captions: Captions | null = null;
   private audioBrowser: AudioBrowser = AudioBrowser.fromSource({
     source: AudioBrowserSource.local,
     params: null,
@@ -65,8 +65,8 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
-  setAiCaptions(aiCaptions: AiCaptions | null): this {
-    this.aiCaptions = aiCaptions;
+  setCaptions(captions: Captions | null): this {
+    this.captions = captions;
     return this;
   }
 
@@ -113,7 +113,7 @@ export class FeaturesConfigBuilder {
   build(): FeaturesConfig {
     return new FeaturesConfig(
       this.aiClipping,
-      this.aiCaptions,
+      this.captions,
       this.audioBrowser,
       this.cameraConfig,
       this.editorConfig,
@@ -178,7 +178,7 @@ export class AiClipping {
   }
 }
 
-export class AiCaptions {
+export class Captions {
   uploadUrl: string | null;
   transcribeUrl: string | null;
   apiKey: string | null;
