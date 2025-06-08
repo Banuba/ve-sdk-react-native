@@ -426,6 +426,20 @@ extension VideoEditorConfig {
             })
         }
 
+        var recordModes: [BanubaVideoEditorSDK.CaptureButtonViewMode] = []
+        featuresConfig.cameraConfig.recordModes.forEach { mode in
+            switch mode {
+                case VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo:
+                    recordModes.append(.video)
+                case VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto:
+                    recordModes.append(.photo)
+                default:
+                    recordModes = [.video, .photo]
+            }
+        }
+
+        self.recorderConfiguration.captureButtonModes = recordModes
+
         self.editorConfiguration.isVideoAspectFillEnabled = featuresConfig.editorConfig.enableVideoAspectFill
 
         if !featuresConfig.editorConfig.supportsColorEffects {

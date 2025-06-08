@@ -46,6 +46,7 @@ export class FeaturesConfigBuilder {
     supportsBeauty: true,
     supportsColorEffects: true,
     supportsMasks: true,
+    recordModes: [RecordMode.video, RecordMode.photo],
   });
   private editorConfig: EditorConfig = new EditorConfig({
     enableVideoAspectFill: true,
@@ -202,23 +203,32 @@ export class Captions {
   }
 }
 
+export enum RecordMode {
+  video = 'video',
+  photo = 'photo',
+}
+
 export class CameraConfig {
   supportsBeauty: boolean | null;
   supportsColorEffects: boolean | null;
   supportsMasks: boolean | null;
+  recordModes: RecordMode[] | null;
 
   constructor({
-    supportsBeauty = null,
-    supportsColorEffects = null,
-    supportsMasks = null,
+    supportsBeauty = true,
+    supportsColorEffects = true,
+    supportsMasks = true,
+    recordModes = [RecordMode.video, RecordMode.photo],
   }: {
     supportsBeauty?: boolean | null;
     supportsColorEffects?: boolean | null;
     supportsMasks?: boolean | null;
+    recordModes?: RecordMode[] | null;
   }) {
     this.supportsBeauty = supportsBeauty;
     this.supportsColorEffects = supportsColorEffects;
     this.supportsMasks = supportsMasks;
+    this.recordModes = recordModes;
   }
 }
 
