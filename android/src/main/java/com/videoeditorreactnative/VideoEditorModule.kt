@@ -213,6 +213,15 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_TEMPLATES -> {
+                    Log.d(TAG, "Start video editor from Video Templates screen")
+                    VideoCreationActivity.startFromTemplates(
+                        context = hostActivity,
+                        additionalExportData = null,
+                        extras = prepareExtras(featuresConfig)
+                    )
+                }
+
                 else -> {
                     Log.w(TAG, "Unknown screen = $screen")
                     null
