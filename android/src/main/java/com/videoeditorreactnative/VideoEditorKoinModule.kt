@@ -25,6 +25,8 @@ import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
 import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.cameraui.data.CameraConfig
+import com.banuba.sdk.cameraui.ui.RecordMode
+import com.banuba.sdk.cameraui.data.CameraRecordingModesProvider
 import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
@@ -200,11 +202,18 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
       CameraConfig(
         maxRecordedTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
         videoDurations = featuresConfig.videoDurationConfig.videoDurations,
-        supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED, 
+        supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED,
         banubaMasksAssetsPath = if (featuresConfig.cameraConfig.supportsMasks) "effects" else null,
         banubaColorEffectsAssetsPath = if (featuresConfig.cameraConfig.supportsColorEffects) "luts" else null,
       )
     }
+
+    single<CameraRecordingModesProvider> {
+      object : CameraRecordingModesProvider {
+        override var availableModes = featuresConfig.cameraConfig.recordModes
+      }
+    }
+
     single <EditorConfig>{
       EditorConfig(
         maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,

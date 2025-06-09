@@ -8,7 +8,9 @@ import com.banuba.sdk.audiobrowser.feedfm.BanubaMusicProvider
 import com.banuba.sdk.core.ui.SimpleMusicTrackProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
+import com.banuba.sdk.cameraui.ui.RecordMode
 import org.json.JSONObject
+import org.json.JSONArray
 
 internal data class FeaturesConfig(
     val aiClipping: AiClipping? = null,
@@ -59,13 +61,15 @@ internal val defaultAudioBrowser = AudioBrowser(
 internal data class CameraConfig(
     val supportsBeauty: Boolean,
     val supportsColorEffects: Boolean,
-    val supportsMasks: Boolean
+    val supportsMasks: Boolean,
+    val recordModes: Set<RecordMode>
 )
 
 internal val defaultCameraConfig = CameraConfig(
     supportsBeauty = true,
     supportsColorEffects = true,
-    supportsMasks = true
+    supportsMasks = true,
+    recordModes = setOf(RecordMode.Video, RecordMode.Photo)
 )
 
 internal data class EditorConfig(

@@ -3,6 +3,7 @@ package com.videoeditorreactnative
 import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
+import com.banuba.sdk.cameraui.ui.RecordMode
 
 internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
     if (rawConfigParams.isNullOrEmpty()) {
@@ -82,7 +83,19 @@ private fun JSONObject.extractCameraConfig(): CameraConfig =
                 ),
                 supportsMasks = json.optBoolean(
                     FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_MASKS
-                )
+                ),
+                recordModes = json.optJSONArray(
+                    FEATURES_CONFIG_CAMERA_RECORD_MODES
+                )?.let { jsonArray ->
+                    (0 until jsonArray.length())
+                        .mapNotNull { i ->
+                            when (jsonArray.optString(i)) {
+                                FEATURES_CONFIG_CAMERA_RECORD_MODES_VIDEO -> RecordMode.Video
+                                FEATURES_CONFIG_CAMERA_RECORD_MODES_PHOTO -> RecordMode.Photo
+                            else -> null
+                        }
+                    }.toSet()
+                } ?: defaultCameraConfig.recordModes
             )
         }
     } catch (e: JSONException) {

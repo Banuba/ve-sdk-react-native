@@ -54,6 +54,7 @@ struct CameraConfig: Codable {
     let supportsBeauty: Bool
     let supportsColorEffects: Bool
     let supportsMasks: Bool
+    let recordModes: [String]
 }
 
 struct EditorConfig: Codable {

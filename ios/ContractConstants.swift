@@ -64,7 +64,11 @@ extension VideoEditorReactNative {
             cameraConfig: CameraConfig(
               supportsBeauty: true,
               supportsColorEffects: true,
-              supportsMasks: true
+              supportsMasks: true,
+              recordModes: [
+                  VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo,
+                  VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto
+              ]
             ),
             editorConfig: EditorConfig(
               enableVideoAspectFill: true,
@@ -113,6 +117,10 @@ extension VideoEditorConfig {
     static let featuresConfigDraftsConfigOptionСloseOnSave = "closeOnSave"
     static let featuresConfigDraftsConfigOptionAuto = "auto"
     static let featuresConfigDraftsConfigOptionDisabled = "disabled"
+
+    //Record Mode
+    static let featuresConfigCameraConfigRecordModeVideo = "video"
+    static let featuresConfigCameraConfigRecordModePhoto = "photo"
 
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"
