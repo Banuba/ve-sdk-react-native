@@ -12,6 +12,10 @@ protocol VideoEditor {
     func openVideoEditorPIP(fromViewController controller: UIViewController, videoURL: URL, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
     func openVideoEditorTrimmer(fromViewController controller: UIViewController, videoSources: Array<URL>, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
+    func openVideoEditorAiClipping(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
+    func openVideoEditorTemplates(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 }
 
 class VideoEditorModule: VideoEditor {
@@ -146,9 +150,29 @@ class VideoEditorModule: VideoEditor {
             entryPoint: .aiClipping,
             hostController: controller,
             animated: true
-    )
-    checkLicenseAndStartVideoEditor(with: config, resolve, reject)
-  }
+        )
+
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
+
+    func openVideoEditorTemplates(
+        fromViewController controller: UIViewController,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .videoTemplates,
+            hostController: controller,
+            animated: true
+        )
+
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
 
     func checkLicenseAndStartVideoEditor(
         with config: VideoEditorLaunchConfig,
