@@ -20,6 +20,7 @@ extension VideoEditorReactNative {
     static let screenPip = "pip"
     static let screenTrimmer = "trimmer"
     static let screenAiClipping = "aiClipping"
+    static let screenTemplates = "templates"
 
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"

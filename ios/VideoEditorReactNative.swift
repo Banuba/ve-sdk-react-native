@@ -63,8 +63,13 @@ class VideoEditorReactNative: NSObject {
             let videoURLs = videoSources!.compactMap { URL(string: $0) }
             
             videoEditor.openVideoEditorTrimmer(fromViewController: controller, videoSources: videoURLs, resolve, reject)
+
         case VideoEditorReactNative.screenAiClipping:
             videoEditor.openVideoEditorAiClipping(fromViewController: controller, resolve, reject)
+
+        case VideoEditorReactNative.screenTemplates:
+            videoEditor.openVideoEditorTemplates(fromViewController: controller, resolve, reject)
+            
         default:
             debugPrint("Unknown screen value = \(screen)")
             reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errInvalidParams, nil)
