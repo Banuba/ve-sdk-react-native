@@ -43,7 +43,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yosizesta/ve-sdk-react-native.git"
+    "url": "git+https://github.com/Banuba/ve-sdk-react-native.git"
   },
   "author": "Banuba <gp@banuba.com> (https://github.com/Banuba)",
   "license": "MIT",
