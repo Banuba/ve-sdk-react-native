@@ -85,7 +85,8 @@ extension VideoEditorReactNative {
                 videoDurations: [60.0, 30.0, 15.0]
             ),
             enableEditorV2: false,
-            processPictureExternally: false
+            processPictureExternally: false,
+            isVideoCoverSelectionEnabled: false
         )
     }
 
