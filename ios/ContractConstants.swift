@@ -86,7 +86,7 @@ extension VideoEditorReactNative {
             ),
             enableEditorV2: false,
             processPictureExternally: false,
-            isVideoCoverSelectionEnabled: false
+            isVideoCoverSelectionEnabled: true
         )
     }
 
