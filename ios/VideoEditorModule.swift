@@ -420,7 +420,6 @@ extension VideoEditorConfig {
             self.captionsConfiguration.apiV2Key = captions.apiV2Key
         }
 
-
         if let aiClipping = featuresConfig.aiClipping, let audioTracksUrl = URL(string: aiClipping.audioTracksUrl) {
             self.aiClippingConfiguration.embeddingsDownloadUrl = aiClipping.audioDataUrl
             self.aiClippingConfiguration.musicProvider =
