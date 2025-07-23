@@ -38,6 +38,8 @@ struct ExportedVideo: Codable {
 struct Watermark: Codable {
     let imagePath: String?
     let alignment: String?
+    let width: Int?
+    let height: Int?
 
     public func watermarkConfigurationValue(controller: UIViewController) -> WatermarkConfiguration? {
         guard let imageName = imagePath?.components(separatedBy: "/").last?.replacingOccurrences(of: ".png", with: "") else {return nil}
@@ -46,7 +48,7 @@ struct Watermark: Codable {
 
         return WatermarkConfiguration(
             watermark: ImageConfiguration(image: watermarkImage),
-            size: CGSize(width: 72, height: 72),
+            size: CGSize(width: width ?? 72, height: height ?? 72),
             sharedOffset: 20,
             position: watermarkAligmentValue()
         )
