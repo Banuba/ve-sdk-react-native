@@ -3,7 +3,7 @@
   "version": "0.17.0",
   "private": false,
   "description": "Banuba Video Editor React Native plugin",
-  "main": "lib/commonjs/index",
+  "main": "lib/module/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
   "react-native": "src/index",
