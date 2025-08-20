@@ -84,6 +84,9 @@ private fun JSONObject.extractCameraConfig(): CameraConfig =
                 supportsMasks = json.optBoolean(
                     FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_MASKS
                 ),
+                autoStartLocalMask = json.optString(
+                    FEATURES_CONFIG_CAMERA_CONFIG_AUTOSTART_LOCAL_MASK
+                ),
                 recordModes = json.optJSONArray(
                     FEATURES_CONFIG_CAMERA_RECORD_MODES
                 )?.let { jsonArray ->

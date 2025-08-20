@@ -55,6 +55,7 @@ struct CameraConfig: Codable {
     let supportsColorEffects: Bool
     let supportsMasks: Bool
     let recordModes: [String]
+    let autoStartLocalMask: String?
 }
 
 struct EditorConfig: Codable {

@@ -204,6 +204,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED,
         banubaMasksAssetsPath = if (featuresConfig.cameraConfig.supportsMasks) "effects" else null,
         banubaColorEffectsAssetsPath = if (featuresConfig.cameraConfig.supportsColorEffects) "luts" else null,
+        autoStartLocalMask = featuresConfig.cameraConfig.autoStartLocalMask
       )
     }
 

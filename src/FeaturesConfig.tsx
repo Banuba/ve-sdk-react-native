@@ -47,6 +47,7 @@ export class FeaturesConfigBuilder {
     supportsColorEffects: true,
     supportsMasks: true,
     recordModes: [RecordMode.video, RecordMode.photo],
+    autoStartLocalMask: null,
   });
   private editorConfig: EditorConfig = new EditorConfig({
     enableVideoAspectFill: true,
@@ -213,22 +214,26 @@ export class CameraConfig {
   supportsColorEffects: boolean | null;
   supportsMasks: boolean | null;
   recordModes: RecordMode[] | null;
+  autoStartLocalMask: string | null;
 
   constructor({
     supportsBeauty = true,
     supportsColorEffects = true,
     supportsMasks = true,
     recordModes = [RecordMode.video, RecordMode.photo],
+    autoStartLocalMask = null,
   }: {
     supportsBeauty?: boolean | null;
     supportsColorEffects?: boolean | null;
     supportsMasks?: boolean | null;
     recordModes?: RecordMode[] | null;
+    autoStartLocalMask?: string | null;
   }) {
     this.supportsBeauty = supportsBeauty;
     this.supportsColorEffects = supportsColorEffects;
     this.supportsMasks = supportsMasks;
     this.recordModes = recordModes;
+    this.autoStartLocalMask = autoStartLocalMask;
   }
 }
 
