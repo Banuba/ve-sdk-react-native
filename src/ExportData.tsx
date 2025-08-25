@@ -56,15 +56,23 @@ export enum WatermarkAlignment {
 export class Watermark {
   imagePath: string;
   alignment: WatermarkAlignment | null;
+  width?: number | undefined;
+  height?: number | undefined;
 
   constructor({
     imagePath,
     alignment = null,
+    width,
+    height,
   }: {
     imagePath: string;
     alignment?: WatermarkAlignment | null;
+    width?: number;
+    height?: number;
   }) {
     this.imagePath = imagePath;
     this.alignment = alignment;
+    this.width = width;
+    this.height = height;
   }
 }

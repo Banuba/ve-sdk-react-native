@@ -13,6 +13,7 @@ struct FeaturesConfig: Codable {
     let videoDurationConfig: VideoDurationConfig
     let enableEditorV2: Bool
     let processPictureExternally: Bool
+    let isVideoCoverSelectionEnabled: Bool
 }
 
 struct AiClipping: Codable {
