@@ -59,7 +59,7 @@ export class FeaturesConfigBuilder {
   });
   private gifPickerConfig: GifPickerConfig | null = null;
   private videoDurationConfig: VideoDurationConfig = new VideoDurationConfig();
-  private enableEditorV2: boolean = false;
+  private enableEditorV2: boolean = true;
   private processPictureExternally: boolean = false;
 
   setAiClipping(aiClipping: AiClipping | null): this {

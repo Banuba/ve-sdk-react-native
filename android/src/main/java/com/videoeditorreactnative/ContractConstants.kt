@@ -29,6 +29,7 @@ internal const val SCREEN_PIP = "pip"
 internal const val SCREEN_TRIMMER = "trimmer"
 internal const val SCREEN_AICLIPPING = "aiClipping"
 internal const val SCREEN_TEMPLATES = "templates"
+internal const val SCREEN_DRAFTS = "drafts"
 
 // Features config params
 internal const val FEATURES_CONFIG_CAPTIONS = "captions"
