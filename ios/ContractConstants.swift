@@ -21,6 +21,7 @@ extension VideoEditorReactNative {
     static let screenTrimmer = "trimmer"
     static let screenAiClipping = "aiClipping"
     static let screenTemplates = "templates"
+    static let screenDrafts = "drafts"
 
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
@@ -85,7 +86,7 @@ extension VideoEditorReactNative {
                 maxTotalVideoDuration: 120.0,
                 videoDurations: [60.0, 30.0, 15.0]
             ),
-            enableEditorV2: false,
+            enableEditorV2: true,
             processPictureExternally: false
         )
     }

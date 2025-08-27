@@ -174,6 +174,25 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
 
+    func openVideoEditorDrafts(
+        fromViewController controller: UIViewController,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .drafts,
+            hostController: controller,
+            animated: true
+        )
+
+      checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
+
     func checkLicenseAndStartVideoEditor(
         with config: VideoEditorLaunchConfig,
         _ resolve: @escaping RCTPromiseResolveBlock,
