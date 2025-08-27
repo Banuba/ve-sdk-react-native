@@ -17,6 +17,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractAudioBrowser(),
                 featuresConfigObject.extractCameraConfig(),
                 featuresConfigObject.extractEditorConfig(),
+                featuresConfigObject.extractCoverConfig(),
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
                 featuresConfigObject.extractVideoDurationConfig(),
@@ -125,6 +126,20 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
         Log.w(TAG, "Missing Editor Config params", e)
         defaultEditorConfig
     } ?: defaultEditorConfig
+
+private fun JSONObject.extractCoverConfig(): CoverConfig =
+    try {
+        this.optJSONObject(FEATURES_CONFIG_COVER_CONFIG)?.let { json ->
+            CoverConfig(
+                supportsCoverScreen = json.optBoolean(
+                    FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN
+                ),
+            )
+        }
+    } catch (e: JSONException) {
+        Log.w(TAG, "Missing Cover Config params", e)
+        defaultCoverConfig
+    } ?: defaultCoverConfig
 
 private fun JSONObject.extractDraftsConfig(): DraftsConfig =
     try {

@@ -8,6 +8,7 @@ struct FeaturesConfig: Codable {
     let audioBrowser: AudioBrowser
     let cameraConfig: CameraConfig
     let editorConfig: EditorConfig
+    let coverConfig: CoverConfig
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
     let videoDurationConfig: VideoDurationConfig
@@ -62,6 +63,10 @@ struct EditorConfig: Codable {
     let enableVideoAspectFill: Bool
     let supportsVisualEffects: Bool
     let supportsColorEffects: Bool
+}
+
+struct CoverConfig: Codable {
+    let supportsCoverScreen: Bool
 }
 
 struct DraftsConfig: Codable {

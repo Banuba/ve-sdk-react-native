@@ -69,6 +69,9 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG_ENABLE_VIDEO_ASPECT_FILL = "ena
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_COLOR_EFFECTS = "supportsColorEffects"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS = "supportsVisualEffects"
 
+internal const val FEATURES_CONFIG_COVER_CONFIG = "coverConfig"
+internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "supportsCoverScreen"
+
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftsConfig"
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"
 
