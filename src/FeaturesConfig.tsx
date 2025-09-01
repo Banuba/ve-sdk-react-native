@@ -4,6 +4,7 @@ class FeaturesConfig {
   readonly audioBrowser: AudioBrowser;
   readonly cameraConfig: CameraConfig;
   readonly editorConfig: EditorConfig;
+  readonly coverConfig: CoverConfig;
   readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
   readonly videoDurationConfig: VideoDurationConfig;
@@ -18,6 +19,7 @@ class FeaturesConfig {
     audioBrowser: AudioBrowser,
     cameraConfig: CameraConfig,
     editorConfig: EditorConfig,
+    coverConfig: CoverConfig,
     draftsConfig: DraftsConfig,
     gifPickerConfig: GifPickerConfig | null,
     videoDurationConfig: VideoDurationConfig,
@@ -30,7 +32,9 @@ class FeaturesConfig {
     this.audioBrowser = audioBrowser;
     this.cameraConfig = cameraConfig;
     this.editorConfig = editorConfig;
+    this.coverConfig = coverConfig;
     this.draftsConfig = draftsConfig;
+    this.coverConfig = coverConfig;
     this.gifPickerConfig = gifPickerConfig;
     this.videoDurationConfig = videoDurationConfig;
     this.enableEditorV2 = enableEditorV2;
@@ -51,18 +55,22 @@ export class FeaturesConfigBuilder {
     supportsColorEffects: true,
     supportsMasks: true,
     recordModes: [RecordMode.video, RecordMode.photo],
+    autoStartLocalMask: null,
   });
   private editorConfig: EditorConfig = new EditorConfig({
     enableVideoAspectFill: true,
     supportsVisualEffects: true,
     supportsColorEffects: true,
   });
+  private coverConfig: CoverConfig = new CoverConfig({
+    supportsCoverScreen: true,
+  });
   private draftsConfig: DraftsConfig = DraftsConfig.fromOption({
     option: DraftsOption.askToSave,
   });
   private gifPickerConfig: GifPickerConfig | null = null;
   private videoDurationConfig: VideoDurationConfig = new VideoDurationConfig();
-  private enableEditorV2: boolean = false;
+  private enableEditorV2: boolean = true;
   private processPictureExternally: boolean = false;
   private isVideoCoverSelectionEnabled: boolean = true ;
 
@@ -88,6 +96,11 @@ export class FeaturesConfigBuilder {
 
   setEditorConfig(editorConfig: EditorConfig): this {
     this.editorConfig = editorConfig;
+    return this;
+  }
+
+  setCoverConfig(coverConfig: CoverConfig): this {
+    this.coverConfig = coverConfig;
     return this;
   }
 
@@ -123,6 +136,7 @@ export class FeaturesConfigBuilder {
       this.audioBrowser,
       this.cameraConfig,
       this.editorConfig,
+      this.coverConfig,
       this.draftsConfig,
       this.gifPickerConfig,
       this.videoDurationConfig,
@@ -219,22 +233,26 @@ export class CameraConfig {
   supportsColorEffects: boolean | null;
   supportsMasks: boolean | null;
   recordModes: RecordMode[] | null;
+  autoStartLocalMask: string | null;
 
   constructor({
     supportsBeauty = true,
     supportsColorEffects = true,
     supportsMasks = true,
     recordModes = [RecordMode.video, RecordMode.photo],
+    autoStartLocalMask = null,
   }: {
     supportsBeauty?: boolean | null;
     supportsColorEffects?: boolean | null;
     supportsMasks?: boolean | null;
     recordModes?: RecordMode[] | null;
+    autoStartLocalMask?: string | null;
   }) {
     this.supportsBeauty = supportsBeauty;
     this.supportsColorEffects = supportsColorEffects;
     this.supportsMasks = supportsMasks;
     this.recordModes = recordModes;
+    this.autoStartLocalMask = autoStartLocalMask;
   }
 }
 
@@ -255,6 +273,18 @@ export class EditorConfig {
     this.enableVideoAspectFill = enableVideoAspectFill;
     this.supportsVisualEffects = supportsVisualEffects;
     this.supportsColorEffects = supportsColorEffects;
+  }
+}
+
+export class CoverConfig {
+  supportsCoverScreen: boolean;
+
+  constructor({
+    supportsCoverScreen = true,
+  }: {
+    supportsCoverScreen: boolean;
+  }) {
+    this.supportsCoverScreen = supportsCoverScreen;
   }
 }
 

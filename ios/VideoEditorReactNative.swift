@@ -69,7 +69,10 @@ class VideoEditorReactNative: NSObject {
 
         case VideoEditorReactNative.screenTemplates:
             videoEditor.openVideoEditorTemplates(fromViewController: controller, resolve, reject)
-            
+
+        case VideoEditorReactNative.screenDrafts:
+            videoEditor.openVideoEditorDrafts(fromViewController: controller, resolve, reject)
+
         default:
             debugPrint("Unknown screen value = \(screen)")
             reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errInvalidParams, nil)

@@ -222,6 +222,14 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_DRAFTS -> {
+                    Log.d(TAG, "Start video editor from Video Drafts screen")
+                    VideoCreationActivity.startFromDrafts(
+                        context = hostActivity,
+                        extras = prepareExtras(featuresConfig)
+                    )
+                }
+
                 else -> {
                     Log.w(TAG, "Unknown screen = $screen")
                     null
