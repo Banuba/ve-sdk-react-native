@@ -10,8 +10,6 @@ class FeaturesConfig {
   readonly videoDurationConfig: VideoDurationConfig;
   readonly enableEditorV2: boolean;
   readonly processPictureExternally: boolean;
-  isVideoCoverSelectionEnabled: boolean;
-
 
   constructor(
     aiClipping: AiClipping | null,
@@ -24,8 +22,7 @@ class FeaturesConfig {
     gifPickerConfig: GifPickerConfig | null,
     videoDurationConfig: VideoDurationConfig,
     enableEditorV2: boolean,
-    processPictureExternally: boolean,
-  isVideoCoverSelectionEnabled: boolean
+    processPictureExternally: boolean
   ) {
     this.aiClipping = aiClipping;
     this.captions = captions;
@@ -39,7 +36,6 @@ class FeaturesConfig {
     this.videoDurationConfig = videoDurationConfig;
     this.enableEditorV2 = enableEditorV2;
     this.processPictureExternally = processPictureExternally;
-    this.isVideoCoverSelectionEnabled = isVideoCoverSelectionEnabled;
   }
 }
 
@@ -72,7 +68,6 @@ export class FeaturesConfigBuilder {
   private videoDurationConfig: VideoDurationConfig = new VideoDurationConfig();
   private enableEditorV2: boolean = true;
   private processPictureExternally: boolean = false;
-  private isVideoCoverSelectionEnabled: boolean = true ;
 
   setAiClipping(aiClipping: AiClipping | null): this {
     this.aiClipping = aiClipping;
@@ -141,8 +136,7 @@ export class FeaturesConfigBuilder {
       this.gifPickerConfig,
       this.videoDurationConfig,
       this.enableEditorV2,
-      this.processPictureExternally, 
-      this.isVideoCoverSelectionEnabled
+      this.processPictureExternally
     );
   }
 }
