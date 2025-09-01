@@ -493,7 +493,6 @@ extension VideoEditorConfig {
         var featureConfiguration = self.featureConfiguration
         featureConfiguration.supportsTrimRecordedVideo = true
         featureConfiguration.isMuteCameraAudioEnabled = true
-        featureConfiguration.isVideoCoverSelectionEnabled = featuresConfig.isVideoCoverSelectionEnabled
         self.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
     }
 
