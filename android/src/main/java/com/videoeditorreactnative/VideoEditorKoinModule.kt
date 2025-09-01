@@ -28,6 +28,7 @@ import com.banuba.sdk.cameraui.data.CameraConfig
 import com.banuba.sdk.cameraui.ui.RecordMode
 import com.banuba.sdk.cameraui.data.CameraRecordingModesProvider
 import com.banuba.sdk.veui.data.EditorConfig
+import com.banuba.sdk.veui.domain.CoverProvider
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
@@ -204,6 +205,7 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         supportsExternalMusic = featuresConfig.audioBrowser.source != FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED,
         banubaMasksAssetsPath = if (featuresConfig.cameraConfig.supportsMasks) "effects" else null,
         banubaColorEffectsAssetsPath = if (featuresConfig.cameraConfig.supportsColorEffects) "luts" else null,
+        autoStartLocalMask = featuresConfig.cameraConfig.autoStartLocalMask
       )
     }
 
@@ -213,12 +215,20 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
       }
     }
 
-    single <EditorConfig>{
+    single <EditorConfig> {
       EditorConfig(
         maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
         editorSupportsVisualEffects = featuresConfig.editorConfig.supportsVisualEffects,
         editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
       )
+    }
+
+    single <CoverProvider> {
+      if (featuresConfig.coverConfig.supportsCoverScreen) {
+        CoverProvider.EXTENDED
+      } else {
+        CoverProvider.NONE
+      }
     }
 
     this.single<ExportSessionHelper> {

@@ -18,10 +18,11 @@ internal data class FeaturesConfig(
     val audioBrowser: AudioBrowser = defaultAudioBrowser,
     val cameraConfig: CameraConfig = defaultCameraConfig,
     val editorConfig: EditorConfig = defaultEditorConfig,
+    val coverConfig: CoverConfig = defaultCoverConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
     val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
-    val enableEditorV2: Boolean = false,
+    val enableEditorV2: Boolean = true,
     val processPictureExternally: Boolean = false,
 )
 
@@ -62,14 +63,16 @@ internal data class CameraConfig(
     val supportsBeauty: Boolean,
     val supportsColorEffects: Boolean,
     val supportsMasks: Boolean,
-    val recordModes: Set<RecordMode>
+    val recordModes: Set<RecordMode>,
+    val autoStartLocalMask: String?
 )
 
 internal val defaultCameraConfig = CameraConfig(
     supportsBeauty = true,
     supportsColorEffects = true,
     supportsMasks = true,
-    recordModes = setOf(RecordMode.Video, RecordMode.Photo)
+    recordModes = setOf(RecordMode.Video, RecordMode.Photo),
+    autoStartLocalMask = null
 )
 
 internal data class EditorConfig(
@@ -82,6 +85,14 @@ internal val defaultEditorConfig = EditorConfig(
     enableVideoAspectFill = true,
     supportsColorEffects = true,
     supportsVisualEffects = true
+)
+
+internal data class CoverConfig(
+    val supportsCoverScreen: Boolean
+)
+
+internal val defaultCoverConfig = CoverConfig(
+    supportsCoverScreen = true
 )
 
 internal data class DraftsConfig(
