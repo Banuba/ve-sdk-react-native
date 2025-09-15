@@ -230,6 +230,33 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_EDITOR -> {
+                    val videoSources = extractVideoSources(inputParams)
+                    Log.d(TAG, "Received editor video sources = $videoSources")
+
+                    if (videoSources.isEmpty()) {
+                        resultPromise?.reject(
+                            ERR_INVALID_PARAMS,
+                            ERR_MESSAGE_MISSING_EDITOR_VIDEO_SOURCES,
+                            null
+                        )
+                        return@initialize
+                    }
+
+                    Log.d(TAG, "Start video editor from editor with video = $videoSources")
+                    VideoCreationActivity.startFromEditor(
+                        context = hostActivity,
+                        // setup data that will be acceptable during export flow
+                        additionalExportData = null,
+                        // set TrackData object if you open VideoCreationActivity with preselected music track
+                        audioTrackData = null,
+                        // set Trimmer video configuration
+                        predefinedVideos = videoSources.map { Uri.parse(it) }
+                            .toTypedArray(),
+                        extras = prepareExtras(featuresConfig)
+                    )
+                }
+
                 else -> {
                     Log.w(TAG, "Unknown screen = $screen")
                     null

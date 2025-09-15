@@ -22,6 +22,7 @@ extension VideoEditorReactNative {
     static let screenAiClipping = "aiClipping"
     static let screenTemplates = "templates"
     static let screenDrafts = "drafts"
+    static let screenEditor = "editor"
 
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
@@ -43,7 +44,8 @@ extension VideoEditorReactNative {
     static let errMessageUnknownMethod = "Unknown method name"
     static let errMessageInvalidPiPVideo = "Missing pip video source: set correct value to \(inputParamVideoSources) input params"
     static let errMessageInvalidTrimmerVideo = "Missing trimmer video sources: set correct value to \(inputParamVideoSources) input params"
-    static let errMessageUnknownScreen = "Invalid inputParams value: available values(\(screenCamera), \(screenPip), \(screenTrimmer))"
+    static let errMessageInvalidEditorVideo = "Missing editor video sources: set correct value to \(inputParamVideoSources) input params"
+    static let errMessageUnknownScreen = "Invalid inputParams value: available values(\(screenCamera), \(screenPip), \(screenTrimmer), \(screenEditor), \(screenDrafts), \(screenTemplates)"
 
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully. Please try again"
