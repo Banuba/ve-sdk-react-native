@@ -138,6 +138,29 @@ class VideoEditorModule: VideoEditor {
         checkLicenseAndStartVideoEditor(with: trimmerLaunchConfig, resolve, reject)
     }
 
+    func openVideoEditorEditor(
+        fromViewController controller: UIViewController,
+        videoSources: Array<URL>,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let editorLaunchConfig = VideoEditorLaunchConfig(
+            entryPoint: .editor,
+            hostController: controller,
+            videoItems: videoSources,
+            shouldCopyVideo: true,
+            musicTrack: nil,
+            animated: true
+        )
+
+        checkLicenseAndStartVideoEditor(with: editorLaunchConfig, resolve, reject)
+  }
+
     func openVideoEditorAiClipping(
         fromViewController controller: UIViewController,
         _ resolve: @escaping RCTPromiseResolveBlock,
