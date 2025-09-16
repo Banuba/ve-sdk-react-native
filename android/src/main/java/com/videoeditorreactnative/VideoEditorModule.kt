@@ -129,6 +129,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
 
+        val audioData = parseAudioData(inputParams.getString(INPUT_PARAM_AUDIO_DATA)) 
+
         initialize(licenseToken, featuresConfig, exportData) {
             val hostActivity = currentActivity
 
@@ -249,8 +251,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         // setup data that will be acceptable during export flow
                         additionalExportData = null,
                         // set TrackData object if you open VideoCreationActivity with preselected music track
-                        audioTrackData = null,
-                        // set Trimmer video configuration
+                        audioTrackData = audioData?.getTrackData(),
+                        // set Editor video configuration
                         predefinedVideos = videoSources.map { Uri.parse(it) }
                             .toTypedArray(),
                         extras = prepareExtras(featuresConfig)

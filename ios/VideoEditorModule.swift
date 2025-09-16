@@ -141,6 +141,7 @@ class VideoEditorModule: VideoEditor {
     func openVideoEditorEditor(
         fromViewController controller: UIViewController,
         videoSources: Array<URL>,
+        audioData: AudioData?,
         _ resolve: @escaping RCTPromiseResolveBlock,
         _ reject: @escaping RCTPromiseRejectBlock
     ) {
@@ -154,7 +155,7 @@ class VideoEditorModule: VideoEditor {
             hostController: controller,
             videoItems: videoSources,
             shouldCopyVideo: true,
-            musicTrack: nil,
+            musicTrack: audioData?.getMediaTrack(),
             animated: true
         )
 

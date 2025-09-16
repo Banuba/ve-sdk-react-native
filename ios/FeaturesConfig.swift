@@ -63,6 +63,8 @@ struct EditorConfig: Codable {
     let enableVideoAspectFill: Bool
     let supportsVisualEffects: Bool
     let supportsColorEffects: Bool
+    let supportsVoiceOver: Bool
+    let supportsAudioEditing: Bool
 }
 
 struct CoverConfig: Codable {

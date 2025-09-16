@@ -1,9 +1,11 @@
 import { NativeModules, Platform } from 'react-native';
 import type { FeaturesConfig } from './FeaturesConfig';
 import type { ExportData } from './ExportData';
+import type { AudioData } from './AudioData';
 
 export * from './FeaturesConfig';
 export * from './ExportData';
+export * from './AudioData';
 
  const LINKING_ERROR =
   `The package 'video-editor-react-native' doesn't seem to be linked. Make sure: \n\n` +
@@ -71,6 +73,28 @@ export default class VideoEditorPlugin {
       screen: 'trimmer',
       featuresConfig: JSON.stringify(featuresConfig),
       exportData: JSON.stringify(exportData),
+      videoSources: videoSourcesArray,
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(
+          licenseToken,
+          inputParams
+        )
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+  }
+
+  openFromEditor(
+    licenseToken: String,
+    featuresConfig: FeaturesConfig,
+    videoSourcesArray: Array<String>,
+    exportData?: ExportData | null,
+    audioData?: AudioData | null
+  ): Promise<Map<String, String>> {
+    const inputParams = {
+      screen: 'editor',
+      featuresConfig: JSON.stringify(featuresConfig),
+      exportData: JSON.stringify(exportData),
+      audioData: JSON.stringify(audioData),
       videoSources: videoSourcesArray,
     };
     return Platform.OS === 'ios'

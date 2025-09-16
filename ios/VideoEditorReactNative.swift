@@ -23,7 +23,9 @@ class VideoEditorReactNative: NSObject {
         let featuresConfig = parseFeatureConfig(args[VideoEditorReactNative.inputParamFeaturesConfig] as? String)
 
         let exportData = parseExportData(args[VideoEditorReactNative.inputParamExportData] as? String)
-        
+
+        let audioData = parseAudioData(args[VideoEditorReactNative.inputParamAudioData] as? String)
+
         if (!videoEditor.initVideoEditor(token: token, featuresConfig: featuresConfig, exportData: exportData)) {
             debugPrint("# Cannot initialize video editor")
             reject(VideoEditorReactNative.errSdkNotInitialized, VideoEditorReactNative.errMessageSdkNotInitialized, nil)
@@ -72,7 +74,13 @@ class VideoEditorReactNative: NSObject {
             }
             let videoURLs = videoSources!.compactMap { URL(string: $0) }
 
-            videoEditor.openVideoEditorEditor(fromViewController: controller, videoSources: videoURLs, resolve, reject)
+            videoEditor.openVideoEditorEditor(
+                fromViewController: controller,
+                videoSources: videoURLs,
+                audioData: audioData,
+                resolve,
+                reject
+            )
 
         case VideoEditorReactNative.screenAiClipping:
             videoEditor.openVideoEditorAiClipping(fromViewController: controller, resolve, reject)

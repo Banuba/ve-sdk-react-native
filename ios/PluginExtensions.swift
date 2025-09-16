@@ -21,4 +21,15 @@ extension VideoEditorReactNative {
             return defaultExportData
         }
     }
+
+    func parseAudioData(_ rawAudioParams: String?) -> AudioData? {
+      guard let audioParamsData = rawAudioParams?.data(using: .utf8) else {return nil}
+      do {
+          let decodedAudioParams = try JSONDecoder().decode(AudioData.self, from: audioParamsData)
+          return decodedAudioParams
+      } catch {
+          print(VideoEditorReactNative.errMessageMissingAudioData)
+          return nil
+      }
+    }
 }
