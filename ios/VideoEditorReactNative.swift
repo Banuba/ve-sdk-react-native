@@ -24,7 +24,7 @@ class VideoEditorReactNative: NSObject {
 
         let exportData = parseExportData(args[VideoEditorReactNative.inputParamExportData] as? String)
 
-        let audioData = parseAudioData(args[VideoEditorReactNative.inputParamAudioData] as? String)
+        let mediaTrack = obtainTrackData(args[VideoEditorReactNative.inputParamAudioData] as? String)
 
         if (!videoEditor.initVideoEditor(token: token, featuresConfig: featuresConfig, exportData: exportData)) {
             debugPrint("# Cannot initialize video editor")
@@ -77,7 +77,7 @@ class VideoEditorReactNative: NSObject {
             videoEditor.openVideoEditorEditor(
                 fromViewController: controller,
                 videoSources: videoURLs,
-                audioData: audioData,
+                mediaTrack: mediaTrack,
                 resolve,
                 reject
             )

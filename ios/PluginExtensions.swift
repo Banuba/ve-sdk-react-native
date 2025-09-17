@@ -1,5 +1,8 @@
+import BanubaUtilities
+import AVFoundation
+
 extension VideoEditorReactNative {
-    
+
     func parseFeatureConfig(_ rawConfigParams: String?) -> FeaturesConfig {
         guard let featuresConfigData = rawConfigParams?.data(using: .utf8) else {return defaultFeaturesConfig}
         do {
@@ -22,11 +25,32 @@ extension VideoEditorReactNative {
         }
     }
 
-    func parseAudioData(_ rawAudioParams: String?) -> AudioData? {
-      guard let audioParamsData = rawAudioParams?.data(using: .utf8) else {return nil}
+    func obtainTrackData(_ audioDataJSON: String?) -> MediaTrack? {
+      guard let audioData = audioDataJSON?.data(using: .utf8) else {return nil}
+
+      struct AudioData: Codable {
+        let id: String
+        let title: String
+        let subtitle: String
+        let localUrl: URL
+      }
+
       do {
-          let decodedAudioParams = try JSONDecoder().decode(AudioData.self, from: audioParamsData)
-          return decodedAudioParams
+          let decodedAudioData = try JSONDecoder().decode(AudioData.self, from: audioData)
+
+          let urlAsset = AVURLAsset(url: decodedAudioData.localUrl)
+          let urlAssetTimeRange = CMTimeRange(start: .zero, duration: urlAsset.duration)
+          let mediaTrackTimeRange = MediaTrackTimeRange(startTime: .zero, playingTimeRange: urlAssetTimeRange)
+
+          return  MediaTrack(
+            uuid: UUID(uuidString: decodedAudioData.id) ?? UUID(),
+            id: nil,
+            url: decodedAudioData.localUrl,
+            coverURL: nil,
+            timeRange: mediaTrackTimeRange,
+            isEditable: true,
+            title: decodedAudioData.title
+          )
       } catch {
           print(VideoEditorReactNative.errMessageMissingAudioData)
           return nil
