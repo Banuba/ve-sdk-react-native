@@ -131,7 +131,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
 
-        val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_AUDIO_DATA)) 
+        val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_TRACK_DATA)) 
 
         initialize(licenseToken, featuresConfig, exportData) {
             val hostActivity = currentActivity
@@ -294,17 +294,17 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         return jsonArray.toString().replace("\\", "")
     }
 
-    private fun obtainTrackData(audioDataJSON: String?): TrackData? = 
-        if (audioDataJSON.isNullOrEmpty()) {
+    private fun obtainTrackData(trackDataJSON: String?): TrackData? = 
+        if (trackDataJSON.isNullOrEmpty()) {
             null
         } else {
             try {
-                val audioDataObject = JSONObject(audioDataJSON)
+                val trackDataObject = JSONObject(trackDataJSON)
                 TrackData(
-                    id = UUID.fromString(audioDataObject.optString(AUDIO_DATA_ID)),
-                    title = audioDataObject.optString(AUDIO_DATA_TITLE),
-                    subtitle = audioDataObject.optString(AUDIO_DATA_SUBTITLE),
-                    localUri = Uri.parse(audioDataObject.optString(AUDIO_DATA_LOCAL_URL))
+                    id = UUID.fromString(trackDataObject.optString(TRACK_DATA_ID)),
+                    title = trackDataObject.optString(TRACK_DATA_TITLE),
+                    subtitle = trackDataObject.optString(TRACK_DATA_SUBTITLE),
+                    localUri = Uri.parse(trackDataObject.optString(TRACK_DATA_LOCAL_URL))
                 )
             } catch (e: JSONException) {
                 Log.w(TAG, "Missing Audio Data Param", e)

@@ -25,10 +25,10 @@ extension VideoEditorReactNative {
         }
     }
 
-    func obtainTrackData(_ audioDataJSON: String?) -> MediaTrack? {
-      guard let audioData = audioDataJSON?.data(using: .utf8) else {return nil}
+    func obtainTrackData(_ trackDataJSON: String?) -> MediaTrack? {
+      guard let trackData = trackDataJSON?.data(using: .utf8) else {return nil}
 
-      struct AudioData: Codable {
+      struct TrackData: Codable {
         let id: String
         let title: String
         let subtitle: String
@@ -36,23 +36,23 @@ extension VideoEditorReactNative {
       }
 
       do {
-          let decodedAudioData = try JSONDecoder().decode(AudioData.self, from: audioData)
+          let decodedTrackData = try JSONDecoder().decode(TrackData.self, from: trackData)
 
-          let urlAsset = AVURLAsset(url: decodedAudioData.localUrl)
+          let urlAsset = AVURLAsset(url: decodedTrackData.localUrl)
           let urlAssetTimeRange = CMTimeRange(start: .zero, duration: urlAsset.duration)
           let mediaTrackTimeRange = MediaTrackTimeRange(startTime: .zero, playingTimeRange: urlAssetTimeRange)
 
           return  MediaTrack(
-            uuid: UUID(uuidString: decodedAudioData.id) ?? UUID(),
+            uuid: UUID(uuidString: decodedTrackData.id) ?? UUID(),
             id: nil,
-            url: decodedAudioData.localUrl,
+            url: decodedTrackData.localUrl,
             coverURL: nil,
             timeRange: mediaTrackTimeRange,
             isEditable: true,
-            title: decodedAudioData.title
+            title: decodedTrackData.title
           )
       } catch {
-          print(VideoEditorReactNative.errMessageMissingAudioData)
+          print(VideoEditorReactNative.errMessageMissingTrackData)
           return nil
       }
     }

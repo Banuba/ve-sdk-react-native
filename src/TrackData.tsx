@@ -1,4 +1,4 @@
-export class AudioData {
+export class TrackData {
   id: string;
   title: string;
   subtitle: string;

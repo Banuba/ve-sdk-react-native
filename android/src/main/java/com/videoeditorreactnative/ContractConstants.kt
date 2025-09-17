@@ -16,7 +16,7 @@ internal const val INPUT_PARAM_SCREEN = "screen"
 internal const val INPUT_PARAM_FEATURES_CONFIG = "featuresConfig"
 internal const val INPUT_PARAM_EXPORT_DATA = "exportData"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
-internal const val INPUT_PARAM_AUDIO_DATA = "audioData"
+internal const val INPUT_PARAM_TRACK_DATA = "trackData"
 
 // Exported params
 internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
@@ -125,10 +125,10 @@ internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_TOP_RIGHT = "topRight"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_LEFT = "bottomLeft"
 internal const val EXPORT_DATA_WATERMARK_ALIGNMENT_BOTTOM_RIGHT = "bottomRight"
 
-internal const val AUDIO_DATA_ID = "id"
-internal const val AUDIO_DATA_TITLE = "title"
-internal const val AUDIO_DATA_SUBTITLE = "subtitle"
-internal const val AUDIO_DATA_LOCAL_URL = "localUrl"
+internal const val TRACK_DATA_ID = "id"
+internal const val TRACK_DATA_TITLE = "title"
+internal const val TRACK_DATA_SUBTITLE = "subtitle"
+internal const val TRACK_DATA_LOCAL_URL = "localUrl"
 
 // Errors
 internal const val ERR_CODE_SDK_NOT_INITIALIZED = "ERR_SDK_NOT_INITIALIZED"
