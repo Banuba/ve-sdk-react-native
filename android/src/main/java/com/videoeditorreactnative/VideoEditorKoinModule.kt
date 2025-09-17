@@ -220,6 +220,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         maxTotalVideoDurationMs = featuresConfig.videoDurationConfig.maxTotalVideoDuration,
         editorSupportsVisualEffects = featuresConfig.editorConfig.supportsVisualEffects,
         editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
+        supportsVoiceOver = featuresConfig.editorConfig.supportsVoiceOver,
+        supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing
       )
     }
 

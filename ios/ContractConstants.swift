@@ -15,6 +15,7 @@ extension VideoEditorReactNative {
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
     static let argExportedAudioMeta = "exportedAudioMeta"
+    static let inputParamTrackData = "trackData"
 
     static let screenCamera = "camera"
     static let screenPip = "pip"
@@ -55,6 +56,9 @@ extension VideoEditorReactNative {
         static let errMessageMissingExportData =
     "❌ Missing or invalid config: \(inputParamExportData)"
 
+    static let errMessageMissingTrackData =
+    "❌ Missing or invalid config: \(inputParamTrackData)"
+
     static let errMessageMissingHost = "Missing host ViewController to start video editor"
 
     var defaultFeaturesConfig : FeaturesConfig {
@@ -78,7 +82,9 @@ extension VideoEditorReactNative {
             editorConfig: EditorConfig(
               enableVideoAspectFill: true,
               supportsVisualEffects: true,
-              supportsColorEffects: true
+              supportsColorEffects: true,
+              supportsVoiceOver: true,
+              supportsAudioEditing: true
             ),
             coverConfig: CoverConfig(
               supportsCoverScreen: true

@@ -119,6 +119,12 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
                 ),
                 supportsVisualEffects = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS
+                ),
+                supportsVoiceOver = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VOICE_OVER
+                ),
+                supportsAudioEditing = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING
                 )
             )
         }

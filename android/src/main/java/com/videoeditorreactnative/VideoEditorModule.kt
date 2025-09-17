@@ -7,6 +7,7 @@ import android.util.Log
 import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.ext.isFileUrl
 import com.banuba.sdk.core.license.BanubaVideoEditor
+import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
 import com.banuba.sdk.ve.flow.VideoCreationActivity
@@ -23,6 +24,7 @@ import org.json.JSONObject
 import org.json.JSONException
 import org.json.JSONArray
 import java.io.File
+import java.util.UUID
 
 class VideoEditorModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -128,6 +130,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
+
+        val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_TRACK_DATA)) 
 
         initialize(licenseToken, featuresConfig, exportData) {
             val hostActivity = currentActivity
@@ -249,8 +253,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                         // setup data that will be acceptable during export flow
                         additionalExportData = null,
                         // set TrackData object if you open VideoCreationActivity with preselected music track
-                        audioTrackData = null,
-                        // set Trimmer video configuration
+                        audioTrackData = trackData,
+                        // set Editor video configuration
                         predefinedVideos = videoSources.map { Uri.parse(it) }
                             .toTypedArray(),
                         extras = prepareExtras(featuresConfig)
@@ -289,6 +293,24 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         }
         return jsonArray.toString().replace("\\", "")
     }
+
+    private fun obtainTrackData(trackDataJSON: String?): TrackData? = 
+        if (trackDataJSON.isNullOrEmpty()) {
+            null
+        } else {
+            try {
+                val trackDataObject = JSONObject(trackDataJSON)
+                TrackData(
+                    id = UUID.fromString(trackDataObject.optString(TRACK_DATA_ID)),
+                    title = trackDataObject.optString(TRACK_DATA_TITLE),
+                    subtitle = trackDataObject.optString(TRACK_DATA_SUBTITLE),
+                    localUri = Uri.parse(trackDataObject.optString(TRACK_DATA_LOCAL_URL))
+                )
+            } catch (e: JSONException) {
+                Log.w(TAG, "Missing Audio Data Param", e)
+                null
+            }
+        }
 
     private fun initialize(
         token: String,

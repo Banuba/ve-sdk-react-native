@@ -78,13 +78,17 @@ internal val defaultCameraConfig = CameraConfig(
 internal data class EditorConfig(
     val enableVideoAspectFill: Boolean,
     val supportsColorEffects: Boolean,
-    val supportsVisualEffects: Boolean
+    val supportsVisualEffects: Boolean,
+    var supportsVoiceOver: Boolean,
+    var supportsAudioEditing: Boolean
 )
 
 internal val defaultEditorConfig = EditorConfig(
     enableVideoAspectFill = true,
     supportsColorEffects = true,
-    supportsVisualEffects = true
+    supportsVisualEffects = true,
+    supportsVoiceOver = true,
+    supportsAudioEditing = true,
 )
 
 internal data class CoverConfig(
