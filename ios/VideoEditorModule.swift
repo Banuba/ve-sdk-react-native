@@ -391,6 +391,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                 self.videoEditorSDK?.clearSessionData()
             }
             self.videoEditorSDK = nil
+            self.currentReject?(VideoEditorReactNative.errMissingExportResult, VideoEditorReactNative.errMessageVideoExportCancel, nil)
         }
     }
 
