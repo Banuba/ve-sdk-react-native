@@ -51,6 +51,9 @@ extension VideoEditorReactNative {
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully. Please try again"
 
+    static let errMessageVideoExportCancel =
+    "The user has canceled video editing flow!"
+
     static let errMessageMissingConfigParams =
     "❌ Missing or invalid config: \(inputParamFeaturesConfig)"
         static let errMessageMissingExportData =
