@@ -258,11 +258,11 @@ export class EditorConfig {
   supportsAudioEditing: boolean | null;
 
   constructor({
-    enableVideoAspectFill = null,
-    supportsVisualEffects = null,
-    supportsColorEffects = null,
-    supportsVoiceOver = null,
-    supportsAudioEditing = null,
+    enableVideoAspectFill = true,
+    supportsVisualEffects = true,
+    supportsColorEffects = true,
+    supportsVoiceOver = true,
+    supportsAudioEditing = true,
   }: {
     enableVideoAspectFill?: boolean | null;
     supportsVisualEffects?: boolean | null;
@@ -309,11 +309,28 @@ export class DraftsConfig {
   }
 }
 
+export enum GiphyMode {
+  search = 'search',
+  list = 'list',
+}
+
 export class GifPickerConfig {
   giphyApiKey: string;
+  mode?: GiphyMode;
+  ids?: string[] | null;
 
-  constructor({ giphyApiKey }: { giphyApiKey: string }) {
+  constructor({
+    giphyApiKey,
+    mode = GiphyMode.search,
+    ids = null,
+  }: {
+    giphyApiKey: string;
+    mode?: GiphyMode;
+    ids?: string[] | null;
+  }) {
     this.giphyApiKey = giphyApiKey;
+    this.mode = mode ?? GiphyMode.search;
+    this.ids = ids;
   }
 }
 

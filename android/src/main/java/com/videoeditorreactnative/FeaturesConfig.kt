@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
 import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.api.BanubaMusicProvider
+import com.banuba.sdk.veui.data.stickers.GifPickerMode
 import com.banuba.sdk.core.ui.SimpleMusicTrackProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
@@ -117,8 +118,24 @@ internal val defaultDraftsConfig = DraftsConfig(
 )
 
 internal data class GifPickerConfig(
-    val giphyApiKey: String
-)
+    val giphyApiKey: String,
+    val mode: String,
+    val ids: List<String>?
+) {
+    internal fun modeValue(): GifPickerMode {
+        return when (this.mode) {
+            FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE_SEARCH -> GifPickerMode.Search
+            FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE_LIST -> {
+                if (!ids.isNullOrEmpty()) {
+                    GifPickerMode.List(ids)
+                } else {
+                    GifPickerMode.Search
+                }
+            }
+            else -> GifPickerMode.Search
+        }
+    }
+}
 
 internal data class VideoDurationConfig(
   val maxTotalVideoDuration: Long,
