@@ -8,6 +8,7 @@ extension VideoEditorReactNative {
     static let errLicenseRevoked = "ERR_SDK_LICENSE_REVOKED"
     static let errMissingHost = "ERR_MISSING_HOST"
     static let errMissingExportResult = "ERR_MISSING_EXPORT_RESULT"
+    static let errVideoExportCancel = "ERR_VIDEO_EXPORT_CANCEL"
 
     static let inputParamToken = "token"
     static let inputParamFeaturesConfig = "featuresConfig"
