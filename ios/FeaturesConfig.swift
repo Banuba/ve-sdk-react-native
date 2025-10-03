@@ -88,8 +88,28 @@ struct DraftsConfig: Codable {
     }
 }
 
+enum GiphyMode: String, Codable {
+    case search
+    case list
+}
+
 struct GifPickerConfig: Codable {
     let giphyApiKey: String
+    let mode: GiphyMode
+    let ids: [String]?
+
+    func modeValue() -> GifPickerMode {
+        switch mode {
+            case .search:
+                return .search
+            case .list:
+                if let ids {
+                    return .list(ids)
+                } else {
+                    return .search
+                }
+        }
+    }
 }
 
 struct VideoDurationConfig: Codable {
