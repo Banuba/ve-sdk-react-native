@@ -163,7 +163,13 @@ private fun JSONObject.extractGifPickerConfig(): GifPickerConfig? {
     return try {
         this.optJSONObject(FEATURES_CONFIG_GIF_PICKER_CONFIG)?.let { json ->
             GifPickerConfig(
-                giphyApiKey = json.optString(FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY)
+                giphyApiKey = json.optString(FEATURES_CONFIG_GIF_PICKER_CONFIG_API_KEY),
+                mode = json.optString(FEATURES_CONFIG_GIF_PICKER_CONFIG_MODE),
+                ids = json.optJSONArray(FEATURES_CONFIG_GIF_PICKER_CONFIG_IDS)?.let { jsonArray ->
+                    (0 until jsonArray.length())
+                        .mapNotNull { i -> jsonArray.optString(i) }
+                        .toList()
+                }
             )
         }
     } catch (e: JSONException) {

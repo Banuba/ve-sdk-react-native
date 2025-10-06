@@ -16,7 +16,11 @@ Specify instance of ```GifPickerConfig``` in ```FeaturesConfig```:
 
 ```typescript
 private featuresConfig = new FeaturesConfigBuilder()
-    .setGifPickerConfig(new GifPickerConfig({ giphyApiKey: ... }))
+    .setGifPickerConfig(new GifPickerConfig({
+         giphyApiKey: "...",
+         mode: GiphyMode.search,
+         ids: ["...","..."]
+    }))
     ...
     .build();
 ```
