@@ -1,15 +1,44 @@
 # Banuba Video Editor React Native plugin
 
 ## Overview
-[Banuba Video Editor SDK](https://www.banuba.com/video-editor-sdk) allows you to quickly add short video functionality and possibly AR filters and effects into your mobile app.
+Build apps like TikTok and Videoshop faster with the Banuba [Video Editor SDK](https://www.banuba.com/video-editor-sdk-api-social-media-app) for React Native.
+
+With an extensive feature set, simple integration process, and user-friendly interface, it is a comprehensive toolkit that will bring your app to the level of industry giants. Its flexibility allows you to only pick the features that you need, optimizing the app’s download size and license costs.
+
+Banuba Video Editor React Native plugin offers [certain features that few competitors do](https://www.banuba.com/blog/best-video-editor-sdks-compared), including high-quality Face AR masks and AI video editing tools.
+
+Features:
+
+- Recording
+- Trimming & merging
+- Sound track editing
+- Hands-free mode
+- Transition effects
+- Color filters (LUTs)
+- Text, picture, and GIF overlays
+- 3D masks
+- Beauty effects
+- Picture-in-picture (Duets)
+- AR filters
+- AI clipping
+- AI video generation
+- AI subtitles
+- Royalty-free music library
+- Music provider integration
+  And more
+
+Refer to the documentation for more details:
+
+- [Android](https://docs.banuba.com/ve-pe-sdk/docs/android/requirements-ve/)
+- [iOS](https://docs.banuba.com/ve-pe-sdk/docs/ios/requirements)
+
+Video Editor SDK **works offline**, and doesn’t send, store, or process any user information, making it **compliant with GDPR and other data protection regulations**.
 
 ## Usage
 ### License
-Before you commit to a license, you are free to test all the features of the SDK for free.
-The trial period lasts 14 days. To start it, [send us a message](https://www.banuba.com/video-editor-sdk#form).
-We will get back to you with the trial token.
+[Start a 14-day free trial](https://www.banuba.com/video-editor-sdk#form) and see how the Video Editor SDK React Native plugin works. No credit card information is needed.
 
-Feel free to [contact us](https://www.banuba.com/support) if you have any questions.
+Feel free to [contact us](https://www.banuba.com/support) if you have any questions regarding this plugin.
 
 ## Installation
 Run in Terminal to install Video Editor React Native plugin
