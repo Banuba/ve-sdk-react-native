@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import com.banuba.sdk.export.di.VeExportKoinModule
 import com.banuba.sdk.export.data.ExportParamsProvider
 import com.banuba.sdk.ve.effects.watermark.WatermarkProvider
-import com.banuba.sdk.gallery.di.GalleryKoinModule
 import com.banuba.sdk.playback.di.VePlaybackSdkKoinModule
 import com.banuba.sdk.ve.di.VeSdkKoinModule
 import com.banuba.sdk.ve.flow.di.VeFlowKoinModule
@@ -71,9 +70,27 @@ class VideoEditorKoinModule {
         ArCloudKoinModule().module,
         VeUiSdkKoinModule().module,
         VeFlowKoinModule().module,
-        GalleryKoinModule().module,
         SampleIntegrationVeKoinModule(featuresConfig, exportData).module,
       )
+
+      if (BuildConfig.ENABLE_GALLERY) {
+        Log.d(TAG, "Banuba Gallery is added")
+        try {
+          val galleryInstance = Class.forName("com.banuba.sdk.gallery.di.GalleryKoinModule")
+            .getDeclaredConstructor()
+            .newInstance()
+          val module = galleryInstance.javaClass.getDeclaredField("module")
+            .apply {
+              isAccessible = true
+            }
+            .get(galleryInstance) as? Module
+          module?.let {
+            modulesList.add(it)
+          }
+        } catch (e: Exception) {
+          Log.w(TAG, "Error while adding the Gallery Module: ${e.message}")
+        }
+      }
 
       if (BuildConfig.ENABLE_FACE_AR) {
         Log.d(TAG, "Effect Player is added")

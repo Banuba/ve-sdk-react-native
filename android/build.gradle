@@ -39,6 +39,99 @@ def supportsNamespace() {
 }
 
 def ENABLE_FACE_AR = project.hasProperty("ENABLE_FACE_AR") ? project.ENABLE_FACE_AR.toBoolean() : true
+def ENABLE_GALLERY = project.hasProperty("ENABLE_GALLERY") ? project.ENABLE_GALLERY.toBoolean() : true
+
+// Below code modifies ve_styles.xml file when Gallery is disabled
+task updateGalleryStyles {
+  doLast {
+    println "!!! UPDATE GALLERY STYLES: ENABLED = $ENABLE_GALLERY !!!"
+    def stylesFile = file('src/main/res/values/ve_styles.xml')
+    if (stylesFile.exists()) {
+
+      def galleryStyles = [
+        'galleryAlbumBlurViewStyle' : '@style/GalleryAlbumBlurViewStyle',
+        'galleryItemRadioButtonStyle' : '@style/GalleryItemRadioButtonStyle',
+        'galleryItemTextStyle' : '@style/GalleryItemTextStyle',
+        'selectedGalleryItemTextStyle' : '@style/SelectedGalleryItemTextStyle',
+        'galleryTitleTextStyle' : '@style/GalleryTitleTextStyle',
+        'galleryAlbumTitleTextStyle' : '@style/GalleryAlbumTitleTextStyle',
+        'galleryAlbumDescTextStyle' : '@style/GalleryAlbumDescTextStyle',
+        'galleryEmptyTextStyle' : '@style/GalleryEmptyTextStyle',
+        'galleryBackButtonStyle' : '@style/GalleryBackButtonStyle',
+        'galleryNextButtonStyle' : '@style/GalleryNextButtonStyle',
+        'galleryAutoCutNextButtonStyle' : '@style/GalleryAutoCutNextButtonStyle',
+        'galleryAutoCutButtonStyle' : '@style/GalleryAutoCutButtonStyle',
+        'gallerySelectionDescriptionStyle' : '@style/GallerySelectionDescriptionStyle',
+        'galleryNextParentStyle' : '@style/GalleryNextParentStyle',
+        'galleryImageViewStyle' : '@style/GalleryImageViewStyle',
+        'galleryColumnsNumber' : 'wrap_content',
+        'galleryTabLayoutStyle' : '@style/GalleryTabLayoutStyle',
+        'galleryTabTextColors' : '@color/gallery_tab_color_state_list',
+        'gallery_bg_color' : '@color/black',
+        'gallery_item_corner_radius' : '0dp',
+        'gallery_item_margin' : '0.5dp',
+        'gallery_album_divider_color' : '@color/transparent',
+        'previewActionButtonStyle' : '@style/PreviewActionButtonStyle',
+        'previewContainerStyle' : '@style/PreviewContainerStyle',
+      ]
+
+      println "# Styles file is found!"
+      def content = stylesFile.getText('UTF-8')
+
+      def pattern = /<style name="CustomIntegrationAppTheme"[^>]*>([\s\S]*?)<\/style>/
+      content = content.replaceAll(pattern) { fullMatch, styleContent ->
+        def modifiedContent = styleContent
+        int totalProcessed = 0
+
+        galleryStyles.each { itemName, defaultValue ->
+          def itemPattern = /(\s*)<item name="${itemName}"[^>]*>([\s\S]*?)<\/item>(\s*)/
+
+          def itemExists = (modifiedContent =~ itemPattern).find()
+
+          if (ENABLE_GALLERY) {
+            if (itemExists) {
+              // Item exists - just skip (do nothing)
+              println "# Item exists, skipping: $itemName"
+            } else {
+              // Item doesn't exist - add with value
+              def newItem = "\n    <item name=\"$itemName\">$defaultValue</item>"
+              modifiedContent += newItem
+              println "# Added missing item: $itemName = $defaultValue"
+              totalProcessed++
+            }
+          } else {
+            if (itemExists) {
+              // Item exists - remove it
+              def before = modifiedContent
+              modifiedContent = modifiedContent.replaceAll(itemPattern, '')
+              if (before != modifiedContent) {
+                println "# Removed item: $itemName"
+                totalProcessed++
+              }
+            } else {
+              // Item doesn't exist - just skip (do nothing)
+              println "# Item doesn't exist, skipping: $itemName"
+            }
+          }
+        }
+
+        println "# Total items processed: $totalProcessed"
+        // Return the modified style block
+        return "<style name=\"CustomIntegrationAppTheme\" parent=\"VideoCreationTheme\">" + modifiedContent + "</style>"
+      }
+
+      // Remove multiple empty lines and clean up
+      content = content.replaceAll(/(\r\n|\n){3,}/, '\n\n')
+      content = content.replaceAll(/>\s+</, '>\n    <')
+
+      // Write back to file
+      stylesFile.write(content, 'UTF-8')
+      println "# ve_styles.xml has been updated successfully!"
+    }
+  }
+}
+
+preBuild.dependsOn updateGalleryStyles
 
 android {
   if (supportsNamespace()) {
@@ -62,6 +155,7 @@ android {
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
 
     buildConfigField "boolean", "ENABLE_FACE_AR", "${ENABLE_FACE_AR}"
+    buildConfigField "boolean", "ENABLE_GALLERY", "${ENABLE_GALLERY}"
   }
 
   buildTypes {
@@ -115,7 +209,7 @@ rootProject.allprojects {
       url "https://maven.pkg.github.com/sdk-banuba/banuba-sdk-android"
       credentials {
         username = "sdk-banuba"
-        password = "\u0067\u0068\u0070\u005f\u0073\u0049\u0037\u0066\u006f\u0056\u0051\u0055\u0045\u0032\u006c\u0073\u0054\u0063\u007a\u006c\u0041\u004e\u0073\u0061\u0037\u0067\u0063\u0061\u0059\u0069\u0053\u0038\u0031\u004a\u0032\u0049\u0048\u0043\u0054\u0069"
+        password = "\u0067\u0068\u0070\u005f\u0033\u0057\u006a\u0059\u004a\u0067\u0071\u0054\u0058\u0058\u0068\u0074\u0051\u0033\u0075\u0038\u0051\u0046\u0036\u005a\u0067\u004f\u0041\u0053\u0064\u0046\u0032\u0045\u0046\u006a\u0030\u0036\u006d\u006e\u004a\u004a"
       }
     }
     google()
@@ -130,7 +224,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-  def banubaSdkVersion = '1.48.0.1'
+  def banubaSdkVersion = '1.48.1'
   implementation "com.banuba.sdk:ffmpeg:5.3.0"
   implementation "com.banuba.sdk:camera-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:camera-ui-sdk:${banubaSdkVersion}"
@@ -139,12 +233,18 @@ dependencies {
   implementation "com.banuba.sdk:ve-flow-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-ui-sdk:${banubaSdkVersion}"
-  implementation "com.banuba.sdk:ve-gallery-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-effects-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ar-cloud:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-audio-browser-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-export-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:ve-playback-sdk:${banubaSdkVersion}"
+
+  if (ENABLE_GALLERY){
+    println("!!! BANUBA GALLERY IS ENABLED !!!")
+    implementation "com.banuba.sdk:ve-gallery-sdk:${banubaSdkVersion}"
+  } else {
+    println("!!! BANUBA GALLERY IS DISABLED !!!")
+  }
 
   if (ENABLE_FACE_AR){
     print("!!! BANUBA FACE AR IS ENABLED !!!")
