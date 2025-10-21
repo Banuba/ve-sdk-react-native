@@ -43,7 +43,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
     private val videoEditorResultListener = object : ActivityEventListener {
         override fun onActivityResult(
-            activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?
+            activity: Activity, requestCode: Int, resultCode: Int, data: Intent?
         ) {
             try {
                 if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
@@ -97,7 +97,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             }
         }
 
-        override fun onNewIntent(intent: Intent?) {}
+        override fun onNewIntent(intent: Intent) {}
     }
 
     init {
@@ -134,7 +134,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_TRACK_DATA)) 
 
         initialize(licenseToken, featuresConfig, exportData) {
-            val hostActivity = currentActivity
+            val hostActivity = reactApplicationContext.currentActivity
 
             if (hostActivity == null) {
                 resultPromise?.reject(ERR_MISSING_HOST, ERR_MESSAGE_MISSING_HOST)
@@ -145,7 +145,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 SCREEN_CAMERA -> {
                     Log.d(TAG, "Start video editor from camera screen")
                     VideoCreationActivity.startFromCamera(
-                        hostActivity,
+                        hostActivity as android.content.Context,
                         PipConfig(video = Uri.EMPTY, openPipSettings = false),
                         extras = prepareExtras(featuresConfig),
                     )
@@ -167,7 +167,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     val videoUri = Uri.parse(videoSources.first())
                     Log.d(TAG, "Start video editor in pip mode with video = $videoUri")
                     VideoCreationActivity.startFromCamera(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         // setup data that will be acceptable during export flow
                         additionalExportData = null,
                         // set TrackData object if you open VideoCreationActivity with preselected music track
@@ -196,7 +196,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
                     Log.d(TAG, "Start video editor from trimmer with video = $videoSources")
                     VideoCreationActivity.startFromTrimmer(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         // setup data that will be acceptable during export flow
                         additionalExportData = null,
                         // set TrackData object if you open VideoCreationActivity with preselected music track
@@ -211,7 +211,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 SCREEN_AICLIPPING -> {
                     Log.d(TAG, "Start video editor from AI Clipping screen")
                     VideoCreationActivity.startFromAiClipping(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         additionalExportData = null,
                         extras = prepareExtras(featuresConfig)
                     )
@@ -220,7 +220,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 SCREEN_TEMPLATES -> {
                     Log.d(TAG, "Start video editor from Video Templates screen")
                     VideoCreationActivity.startFromTemplates(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         additionalExportData = null,
                         extras = prepareExtras(featuresConfig)
                     )
@@ -229,7 +229,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 SCREEN_DRAFTS -> {
                     Log.d(TAG, "Start video editor from Video Drafts screen")
                     VideoCreationActivity.startFromDrafts(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         extras = prepareExtras(featuresConfig)
                     )
                 }
@@ -249,7 +249,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
                     Log.d(TAG, "Start video editor from editor with video = $videoSources")
                     VideoCreationActivity.startFromEditor(
-                        context = hostActivity,
+                        context = hostActivity as android.content.Context,
                         // setup data that will be acceptable during export flow
                         additionalExportData = null,
                         // set TrackData object if you open VideoCreationActivity with preselected music track
@@ -273,7 +273,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 return@initialize
             }
 
-            hostActivity.startActivityForResult(intent, OPEN_VIDEO_EDITOR_REQUEST_CODE)
+            hostActivity.startActivity(intent)
         }
     }
 
@@ -318,7 +318,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         exportData: ExportData?,
         block: () -> Unit
     ) {
-        val activity = currentActivity
+        val activity = reactApplicationContext.currentActivity
 
         if (activity == null) {
             Log.e(TAG, ERR_MESSAGE_MISSING_HOST)
@@ -342,7 +342,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         if (videoEditorModule == null) {
             // Initialize video editor sdk dependencies
             videoEditorModule = VideoEditorKoinModule().apply {
-                initialize(activity.application, featuresConfig, exportData)
+                initialize(activity.applicationContext, featuresConfig, exportData)
             }
         }
 
