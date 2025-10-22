@@ -523,6 +523,12 @@ extension VideoEditorConfig {
                     $0.identifier != .effects
             })
         }
+      
+        if !featuresConfig.editorConfig.supportsAudioEditing && !featuresConfig.editorConfig.supportsVoiceOver {
+            self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
+                    $0.identifier != .audio
+            })
+        }
 
         self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
 

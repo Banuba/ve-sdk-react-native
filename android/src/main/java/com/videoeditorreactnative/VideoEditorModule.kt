@@ -273,7 +273,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 return@initialize
             }
 
-            hostActivity.startActivity(intent)
+            hostActivity.startActivityForResult(intent, OPEN_VIDEO_EDITOR_REQUEST_CODE)
         }
     }
 
