@@ -50,7 +50,7 @@ extension VideoEditorReactNative {
     static let errMessageUnknownScreen = "Invalid inputParams value: available values(\(screenCamera), \(screenPip), \(screenTrimmer), \(screenEditor), \(screenDrafts), \(screenTemplates)"
 
     static let errMessageMissingExportResult =
-    "Missing export result: video export has not been completed successfully. Please try again"
+    "Missing export result: video export has not been completed successfully with:"
 
     static let errMessageVideoExportCancel =
     "The user has canceled video editing flow!"
