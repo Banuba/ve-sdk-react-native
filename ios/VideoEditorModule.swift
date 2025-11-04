@@ -334,7 +334,7 @@ extension VideoEditorModule {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
             let success = error == nil
             if success {
-                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), , audio metadata = \(String(describing: audioMetaJSON)), preview = \(previewUrl))")
+                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), audio metadata = \(String(describing: audioMetaJSON)), preview = \(previewUrl))")
 
                 let previewImageData = previewImage?.pngData()
 
@@ -348,7 +348,7 @@ extension VideoEditorModule {
                 ])
             } else {
                 print("Error while exporting video = \(String(describing: error))")
-                self.currentReject?(VideoEditorReactNative.errMissingExportResult, VideoEditorReactNative.errMessageMissingExportResult, nil)
+                self.currentReject?(VideoEditorReactNative.errMissingExportResult, "\(VideoEditorReactNative.errMessageMissingExportResult): \(String(describing: error))", nil)
             }
 
             // Remove strong reference to video editor sdk instance
