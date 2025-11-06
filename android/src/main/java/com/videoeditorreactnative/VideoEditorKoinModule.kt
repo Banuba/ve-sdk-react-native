@@ -47,6 +47,7 @@ import com.banuba.sdk.ve.ext.VideoEditorUtils.getKoin
 import org.json.JSONException
 import org.koin.core.context.stopKoin
 import org.koin.core.error.InstanceCreationException
+import org.koin.core.context.GlobalContext
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
@@ -57,6 +58,14 @@ import java.util.Date
 
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
+    // Check if Koin is already started to prevent multiple initializations
+    // This prevents memory leaks from recreating SDK modules on each editor open
+    if (GlobalContext.getOrNull() != null) {
+      Log.d(TAG, "Koin is already initialized, reusing existing context")
+      return
+    }
+
+    Log.d(TAG, "Initializing Koin for Video Editor - first time")
     startKoin {
       androidContext(application)
       allowOverride(true)
@@ -116,20 +125,93 @@ class VideoEditorKoinModule {
   }
 
     fun releaseVideoEditor() {
+      Log.d(TAG, "Releasing Video Editor completely - stopping Koin")
       releaseUtilityManager()
-      stopKoin()
+      try {
+        stopKoin()
+        Log.d(TAG, "Koin stopped successfully")
+      } catch (e: Exception) {
+        Log.w(TAG, "Error stopping Koin: ${e.message}", e)
+      }
     }
 
-    private fun releaseUtilityManager() {
+    fun releaseUtilityManager() {
+      Log.d(TAG, "Releasing EditorUtilityManager")
       val utilityManager = try {
           getKoin().getOrNull<EditorUtilityManager>()
       } catch (e: InstanceCreationException) {
           Log.w(TAG, "EditorUtilityManager was not initialized!", e)
           null
+      } catch (e: IllegalStateException) {
+          Log.w(TAG, "Koin is not started, cannot get EditorUtilityManager!", e)
+          null
+      } catch (e: Exception) {
+          Log.w(TAG, "Unexpected error getting EditorUtilityManager: ${e.message}", e)
+          null
       }
 
-      utilityManager?.release()
+      try {
+        utilityManager?.release()
+        Log.d(TAG, "EditorUtilityManager released successfully")
+      } catch (e: Exception) {
+        Log.w(TAG, "Error releasing EditorUtilityManager: ${e.message}", e)
+      }
     }
+}
+
+/**
+ * External implementation of MediaNavigationProcessor to avoid Activity reference leaks.
+ * This class is stateless and doesn't hold any references to Activity or Context.
+ */
+private class ExternalPictureNavigationProcessor : MediaNavigationProcessor {
+  override fun process(activity: Activity, mediaList: List<Uri>): Boolean {
+    val pngs = mediaList.filter { media ->
+      media.path?.let { path ->
+        path.contains(".png") || path.contains("external/images")
+      } ?: false
+    }
+
+    return if (pngs.isEmpty()) {
+      true
+    } else {
+      // Cache image before clearing session
+      val savedImage = saveImageToCache(activity, pngs.first())
+
+      try {
+        val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
+        sessionKoin?.cleanSessionData()
+      } catch (e: Exception) {
+        Log.w(TAG, "Error cleaning session data: ${e.message}", e)
+      }
+
+      (activity as? VideoCreationActivity)?.closeWithResult(
+        ExportResult.Success(
+          emptyList(),
+          savedImage,
+          Uri.EMPTY,
+          Bundle()
+        )
+      )
+      false
+    }
+  }
+
+  private fun saveImageToCache(context: Context, uri: Uri): Uri {
+    try {
+      val contentResolver = context.contentResolver
+      val cacheFile = File(context.cacheDir, "${dateTimeFormatter.format(Date())}.png")
+
+      contentResolver.openInputStream(uri)?.use { inputStream ->
+        FileOutputStream(cacheFile).use { outputStream ->
+          inputStream.copyTo(outputStream)
+        }
+      }
+      return Uri.fromFile(cacheFile)
+    } catch (e: IOException) {
+      Log.w(TAG, "Failed to cache an image: ${e.message}", e)
+    }
+    return Uri.EMPTY
+  }
 }
 
 /**
@@ -258,33 +340,10 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
     }
 
     if (featuresConfig.processPictureExternally){
-      this.single<MediaNavigationProcessor> {
-        object : MediaNavigationProcessor {
-          override fun process(activity: Activity, mediaList: List<Uri>): Boolean {
-            val pngs = mediaList.filter { media ->
-              media.path?.let { path ->
-                path.contains(".png") || path.contains("external/images")
-              } ?: false
-            }
-            return if (pngs.isEmpty()) {
-              true
-            } else {
-              // Cache image before clearing sessing
-              val savedImage = saveImageToCache(activity, pngs.first())
-              val sessionKoin = getKoin().getOrNull<ExportSessionHelper>()
-              sessionKoin?.cleanSessionData()
-              (activity as? VideoCreationActivity)?.closeWithResult(
-                ExportResult.Success(
-                  emptyList(),
-                  savedImage,
-                  Uri.EMPTY,
-                  Bundle()
-                )
-              )
-              false
-            }
-          }
-        }
+      // Use factory instead of single to prevent Activity reference leak
+      // Factory creates a new instance on each request, avoiding long-lived closures
+      this.factory<MediaNavigationProcessor> {
+        ExternalPictureNavigationProcessor()
       }
     }
   }
@@ -355,23 +414,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         )
       }
     }
-  }
-
-  fun saveImageToCache(context: Context, uri: Uri): Uri {
-    try {
-      val contentResolver = context.contentResolver
-      val cacheFile = File(context.cacheDir, "${dateTimeFormatter.format(Date())}.png")
-
-      contentResolver.openInputStream(uri)?.use { inputStream ->
-        FileOutputStream(cacheFile).use { outputStream ->
-          inputStream.copyTo(outputStream)
-        }
-      }
-      return Uri.fromFile(cacheFile)
-    } catch (e: IOException) {
-      Log.w(TAG, "Failed to cache an image: ${e.printStackTrace()}")
-    }
-    return Uri.EMPTY
   }
 }
 

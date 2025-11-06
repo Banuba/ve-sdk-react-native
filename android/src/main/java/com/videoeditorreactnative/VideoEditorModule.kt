@@ -37,7 +37,6 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     }
 
     private var resultPromise: Promise? = null
-    private var editorSDK: BanubaVideoEditor? = null
     private var videoEditorModule: VideoEditorKoinModule? = null
     override fun getName(): String = TAG
 
@@ -91,9 +90,16 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                   )
               }
             } finally {
-                Log.d(TAG, "Video Editor released")
-                videoEditorModule?.releaseVideoEditor()
-                videoEditorModule = null
+                // Clean up utility manager after each session, but keep Koin context alive
+                // This prevents memory leaks from recreating SDK modules on each editor open
+                Log.d(TAG, "Cleaning up Video Editor session")
+                try {
+                    videoEditorModule?.releaseUtilityManager()
+                } catch (e: Exception) {
+                    Log.w(TAG, "Error releasing UtilityManager: ${e.message}", e)
+                }
+                // Note: We do NOT call releaseVideoEditor() or set videoEditorModule to null here
+                // The module and Koin context are reused for better performance and memory management
             }
         }
 
@@ -102,6 +108,31 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
     init {
         reactApplicationContext.addActivityEventListener(videoEditorResultListener)
+    }
+
+    override fun onCatalystInstanceDestroy() {
+        super.onCatalystInstanceDestroy()
+        Log.d(TAG, "VideoEditorModule cleanup - React Native instance destroyed")
+
+        // Remove activity listener to prevent memory leak
+        try {
+            reactApplicationContext.removeActivityEventListener(videoEditorResultListener)
+            Log.d(TAG, "ActivityEventListener removed successfully")
+        } catch (e: Exception) {
+            Log.w(TAG, "Error removing ActivityEventListener: ${e.message}", e)
+        }
+
+        // Clean up video editor module and stop Koin completely
+        try {
+            videoEditorModule?.releaseVideoEditor()
+            videoEditorModule = null
+            Log.d(TAG, "VideoEditorModule released successfully")
+        } catch (e: Exception) {
+            Log.w(TAG, "Error releasing VideoEditorModule: ${e.message}", e)
+        }
+
+        // Clear promise if pending
+        resultPromise = null
     }
 
     /**
@@ -339,14 +370,15 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
+        // Initialize video editor module once and reuse it
+        // This prevents recreating Koin context and SDK modules on each editor open
         if (videoEditorModule == null) {
-            // Initialize video editor sdk dependencies
-            videoEditorModule = VideoEditorKoinModule().apply {
-                initialize(activity.applicationContext, featuresConfig, exportData)
-            }
+            Log.d(TAG, "Creating new VideoEditorKoinModule instance")
+            videoEditorModule = VideoEditorKoinModule()
         }
 
-        editorSDK = sdk
+        // Initialize Koin context (will be skipped if already initialized)
+        videoEditorModule?.initialize(activity.applicationContext, featuresConfig, exportData)
 
         sdk.getLicenseState { isValid ->
             if (isValid) {
