@@ -23,6 +23,7 @@ import com.facebook.react.bridge.WritableMap
 import org.json.JSONObject
 import org.json.JSONException
 import org.json.JSONArray
+import org.koin.core.context.stopKoin
 import java.io.File
 import java.util.UUID
 
@@ -37,72 +38,81 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     }
 
     private var resultPromise: Promise? = null
-    private var editorSDK: BanubaVideoEditor? = null
     private var videoEditorModule: VideoEditorKoinModule? = null
     override fun getName(): String = TAG
 
-    private val videoEditorResultListener = object : ActivityEventListener {
-        override fun onActivityResult(
-            activity: Activity, requestCode: Int, resultCode: Int, data: Intent?
-        ) {
-            try {
-                if (requestCode == OPEN_VIDEO_EDITOR_REQUEST_CODE) {
-                  when {
-                      resultCode == Activity.RESULT_OK -> {
-                          val exportResult = data?.getParcelableExtra<ExportResult.Success>(
-                              EXTRA_EXPORTED_SUCCESS
-                          )
+  private val videoEditorResultListener = object : ActivityEventListener {
+    override fun onActivityResult(
+      activity: Activity,
+      requestCode: Int,
+      resultCode: Int,
+      data: Intent?
+    ) {
+      if (requestCode != OPEN_VIDEO_EDITOR_REQUEST_CODE) {
+        Log.e(TAG, "Unhandled request code = $requestCode")
+        resultPromise?.reject( ERR_UNKNOWN_REQUEST_CODE, ERR_MESSAGE_UNKNOWN_REQUEST_CODE )
+        return
+      }
 
-                          if (exportResult == null) {
-                              Log.w(TAG, "Missing export result")
-                              resultPromise?.reject(
-                                  ERR_MISSING_EXPORT_RESULT,
-                                  ERR_MESSAGE_MISSING_EXPORT_RESULT
-                              )
-                          } else {
-                              val videoSources = exportResult?.videoList?.map { it.sourceUri.toString() } ?: emptyList()
-                              val previewUri = exportResult?.preview
-                              val metaUri = exportResult?.metaUri
-                              // Send video export results to React
-                              val arguments: WritableMap = Arguments.createMap()
-                              val videoSourcesArray = Arguments.createArray()
-                              videoSources.onEach { videoSourcesArray.pushString(it) }
+      try {
+        when (resultCode) {
+          Activity.RESULT_OK -> {
+            val exportResult =
+              data?.getParcelableExtra<ExportResult.Success>(EXTRA_EXPORTED_SUCCESS)
 
-                              arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
-                              arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
-                              arguments.putString(EXPORTED_META, metaUri?.toString())
-                              arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult))
-                              Log.d(TAG, "Send video export results to React")
-                              resultPromise?.resolve(arguments)
-                          }
-                      }
-
-                      resultCode == Activity.RESULT_CANCELED -> resultPromise?.reject(
-                          ERR_VIDEO_EXPORT_CANCEL,
-                          ERR_MESSAGE_VIDEO_EXPORT_CANCEL
-                      )
-                  }
-                  resultPromise = null
-              } else {
-                  Log.e(TAG, "Unhandled request code = $requestCode")
-                  resultPromise?.reject(
-                      ERR_UNKNOWN_REQUEST_CODE,
-                      ERR_MESSAGE_UNKNOWN_REQUEST_CODE
-                  )
-              }
-            } finally {
-                Log.d(TAG, "Video Editor released")
-                videoEditorModule?.releaseVideoEditor()
-                videoEditorModule = null
+            if (exportResult == null) {
+              Log.w(TAG, "Missing export result")
+              resultPromise?.reject(
+                ERR_MISSING_EXPORT_RESULT,
+                ERR_MESSAGE_MISSING_EXPORT_RESULT
+              )
+              return
             }
+
+            val videoSources =
+              exportResult.videoList.map { it.sourceUri.toString() }
+            val previewUri = exportResult.preview
+            val metaUri = exportResult.metaUri
+
+            val arguments = Arguments.createMap()
+            val videoSourcesArray = Arguments.createArray()
+            videoSources.forEach { videoSourcesArray.pushString(it) }
+
+            arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
+            arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
+            arguments.putString(EXPORTED_META, metaUri?.toString())
+            arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult)
+            )
+
+            Log.d(TAG, "Send video export results to React")
+            resultPromise?.resolve(arguments)
+          }
+
+          Activity.RESULT_CANCELED -> resultPromise?.reject(
+                ERR_VIDEO_EXPORT_CANCEL,
+                ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+          )
         }
-
-        override fun onNewIntent(intent: Intent) {}
+        resultPromise = null
+      } finally {
+        Log.d(TAG, "Release Editor Utility Manager")
+        videoEditorModule?.releaseUtilityManager()
+        videoEditorModule = null
+      }
     }
 
-    init {
-        reactApplicationContext.addActivityEventListener(videoEditorResultListener)
-    }
+    override fun onNewIntent(intent: Intent) {}
+  }
+
+  init {
+    reactApplicationContext.addActivityEventListener(videoEditorResultListener)
+  }
+
+  override fun onCatalystInstanceDestroy() {
+    super.onCatalystInstanceDestroy()
+    // Clean up Koin context
+    stopKoin()
+  }
 
     /**
      * Open Video Editor SDK
@@ -131,7 +141,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
 
-        val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_TRACK_DATA)) 
+        val trackData = obtainTrackData(inputParams.getString(INPUT_PARAM_TRACK_DATA))
 
         initialize(licenseToken, featuresConfig, exportData) {
             val hostActivity = reactApplicationContext.currentActivity
@@ -294,7 +304,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         return jsonArray.toString().replace("\\", "")
     }
 
-    private fun obtainTrackData(trackDataJSON: String?): TrackData? = 
+    private fun obtainTrackData(trackDataJSON: String?): TrackData? =
         if (trackDataJSON.isNullOrEmpty()) {
             null
         } else {
@@ -345,8 +355,6 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 initialize(activity.applicationContext, featuresConfig, exportData)
             }
         }
-
-        editorSDK = sdk
 
         sdk.getLicenseState { isValid ->
             if (isValid) {
