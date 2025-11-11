@@ -284,7 +284,7 @@ extension VideoEditorModule {
         videoEditorSDK?.export(
             using: exportProvider.provideExportConfiguration(),
             exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
-        ) { [weak self] (error, coverImage) in
+        ) { [weak self] (error, errorPayload, coverImage) in
             // Export Callback
             DispatchQueue.main.async {
                 progressView.dismiss(animated: true) {
@@ -316,6 +316,7 @@ extension VideoEditorModule {
                           .appendingPathComponent("export_preview.png"),
                         audioMetaJSON: audioMetaJSON,
                         error: error,
+                        errorPayload: errorPayload,
                         previewImage: coverImage?.coverImage
                     )
                 }
@@ -329,6 +330,7 @@ extension VideoEditorModule {
         previewUrl: URL,
         audioMetaJSON: String?,
         error: Error?,
+        errorPayload: [String: Any]?,
         previewImage: UIImage?
     ) {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
@@ -348,7 +350,15 @@ extension VideoEditorModule {
                 ])
             } else {
                 print("Error while exporting video = \(String(describing: error))")
-                self.currentReject?(VideoEditorReactNative.errMissingExportResult, "\(VideoEditorReactNative.errMessageMissingExportResult): \(String(describing: error))", nil)
+                self.currentReject?(
+                  VideoEditorReactNative.errMissingExportResult,
+                  """
+                  \(VideoEditorReactNative.errMessageMissingExportResult) \(String(describing: error)),
+                  Free Disk Space: \(String(describing: errorPayload?["free_space"])), 
+                  Is App Active: \(String(describing: errorPayload?["is_app_active"]))
+                  """,
+                  nil
+                )
             }
 
             // Remove strong reference to video editor sdk instance
@@ -429,6 +439,7 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                       ),
                       audioMetaJSON: nil,
                       error: nil,
+                      errorPayload: nil,
                       previewImage: resultImage
                   )
               }
