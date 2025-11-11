@@ -371,11 +371,13 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     }
 
     private fun releaseSdk(hard: Boolean) {
+      videoEditorModule?.releaseUtilityManager()
+
       if (hard) {
         Log.d(TAG, "STOP KOIN")
         stopKoin()
       }
-      videoEditorModule?.releaseUtilityManager()
+
       videoEditorModule = null
     }
 
