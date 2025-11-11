@@ -95,9 +95,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         }
         resultPromise = null
       } finally {
-        Log.d(TAG, "Release Editor Utility Manager")
-        videoEditorModule?.releaseUtilityManager()
-        videoEditorModule = null
+        Log.d(TAG, "Release SDK")
+        releaseSdk(hard = false)
       }
     }
 
@@ -111,7 +110,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
   override fun onCatalystInstanceDestroy() {
     super.onCatalystInstanceDestroy()
     // Clean up Koin context
-    stopKoin()
+    releaseSdk(hard = true)
   }
 
     /**
@@ -369,6 +368,15 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 )
             }
         }
+    }
+
+    private fun releaseSdk(hard: Boolean) {
+      if (hard) {
+        Log.d(TAG, "STOP KOIN")
+        stopKoin()
+      }
+      videoEditorModule?.releaseUtilityManager()
+      videoEditorModule = null
     }
 
     private fun extractVideoSources(readableMap: ReadableMap): List<String> {

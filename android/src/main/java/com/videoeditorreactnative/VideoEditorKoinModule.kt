@@ -58,7 +58,7 @@ import java.util.Date
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
     if (GlobalContext.getOrNull() == null) {
-      Log.d(TAG, "Start new koin")
+      Log.d(TAG, "START A NEW KOIN")
 
       startKoin {
         androidContext(application)
@@ -117,7 +117,7 @@ class VideoEditorKoinModule {
         modules(modulesList)
       }
     } else {
-      Log.d(TAG, "Koin already starter. Skip creating a new one")
+      Log.d(TAG, "KOIN ALREADY STARTED. Skip creating a new one")
     }
   }
 
