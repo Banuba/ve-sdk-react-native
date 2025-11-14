@@ -13,6 +13,8 @@ source 'https://github.com/sdk-banuba/banuba-sdk-podspecs.git'
 
 prepare_react_native_project!
 
+ENV['RCT_NEW_ARCH_ENABLED'] = "0"
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -25,7 +27,10 @@ target 'VideoEditorReactNativeExample' do
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    :hermes_enabled => true,
+    :fabric_enabled => false,
+    :new_arch_enabled => false
   )
 
   post_install do |installer|
