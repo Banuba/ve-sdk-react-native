@@ -270,6 +270,15 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_GALLERY -> {
+                    Log.d(TAG, "Start video editor from Gallery screen")
+                    VideoCreationActivity.startFromGallery(
+                        context = hostActivity as android.content.Context,
+                        additionalExportData = null,
+                        extras = prepareExtras(featuresConfig)
+                    )
+                }
+
                 else -> {
                     Log.w(TAG, "Unknown screen = $screen")
                     null
