@@ -90,6 +90,9 @@ class VideoEditorReactNative: NSObject {
 
         case VideoEditorReactNative.screenDrafts:
             videoEditor.openVideoEditorDrafts(fromViewController: controller, resolve, reject)
+          
+        case VideoEditorReactNative.screenGallery:
+            videoEditor.openVideoEditorGallery(fromViewController: controller, resolve, reject)
 
         default:
             debugPrint("Unknown screen value = \(screen)")

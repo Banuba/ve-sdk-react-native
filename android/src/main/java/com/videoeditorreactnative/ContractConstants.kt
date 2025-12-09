@@ -32,6 +32,7 @@ internal const val SCREEN_AICLIPPING = "aiClipping"
 internal const val SCREEN_TEMPLATES = "templates"
 internal const val SCREEN_DRAFTS = "drafts"
 internal const val SCREEN_EDITOR = "editor"
+internal const val SCREEN_GALLERY = "gallery"
 
 // Features config params
 internal const val FEATURES_CONFIG_CAPTIONS = "captions"
@@ -170,7 +171,7 @@ internal const val ERR_MESSAGE_MISSING_EDITOR_VIDEO_SOURCES =
     "Missing editor video sources: set correct value to $INPUT_PARAM_VIDEO_SOURCES input params"
 
 internal const val ERR_MESSAGE_UNKNOWN_SCREEN =
-    "Invalid $INPUT_PARAM_SCREEN value: available values($SCREEN_CAMERA, $SCREEN_PIP, $SCREEN_TRIMMER, $SCREEN_EDITOR, $SCREEN_DRAFTS, $SCREEN_TEMPLATES)"
+    "Invalid $INPUT_PARAM_SCREEN value: available values($SCREEN_CAMERA, $SCREEN_PIP, $SCREEN_TRIMMER, $SCREEN_EDITOR, $SCREEN_DRAFTS, $SCREEN_TEMPLATES, $SCREEN_GALLERY)"
 
 internal const val ERR_MESSAGE_MISSING_EXPORT_RESULT =
     "Missing export result: video export has not been completed successfully. Please try again"
