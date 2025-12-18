@@ -16,6 +16,8 @@ protocol VideoEditor {
     func openVideoEditorAiClipping(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
     func openVideoEditorTemplates(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
+    func openVideoEditorDraft(fromViewController controller: UIViewController, draftId: String, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 }
 
 class VideoEditorModule: VideoEditor {
@@ -26,6 +28,7 @@ class VideoEditorModule: VideoEditor {
     private var currentResolve: RCTPromiseResolveBlock?
     private var currentReject: RCTPromiseRejectBlock?
     private var featuresConfig: FeaturesConfig?
+    private var savedDraftId: String?
 
     // Use “true” if you want users could restore the last video editing session.
     private let restoreLastVideoEditingSession: Bool = false
@@ -219,6 +222,41 @@ class VideoEditorModule: VideoEditor {
       checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
 
+    func openVideoEditorDraft(
+        fromViewController controller: UIViewController,
+        draftId: String,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        guard let drafts = videoEditorSDK?.draftsService.getDrafts(), let draft = drafts.first(where: { $0.sequenceId == draftId }) else {
+          reject(
+              VideoEditorReactNative.errMissingDraftId,
+              VideoEditorReactNative.errMessageInvalidDraftId,
+              nil
+          )
+          return
+        }
+
+        let draftedConfig = VideoEditorLaunchConfig.DraftedLaunchConfig(
+            externalDraft: draft,
+            draftsConfig: .enabled
+        )
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .editor,
+            hostController: controller,
+            draftedLaunchConfig: draftedConfig,
+            animated: true
+        )
+
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+  }
+
     func checkLicenseAndStartVideoEditor(
         with config: VideoEditorLaunchConfig,
         _ resolve: @escaping RCTPromiseResolveBlock,
@@ -317,7 +355,8 @@ extension VideoEditorModule {
                         audioMetaJSON: audioMetaJSON,
                         error: error,
                         errorPayload: errorPayload,
-                        previewImage: coverImage?.coverImage
+                        previewImage: coverImage?.coverImage,
+                        savedDraftId: self?.savedDraftId
                     )
                 }
             }
@@ -331,12 +370,13 @@ extension VideoEditorModule {
         audioMetaJSON: String?,
         error: Error?,
         errorPayload: [String: Any]?,
-        previewImage: UIImage?
+        previewImage: UIImage?,
+        savedDraftId: String?
     ) {
         videoEditorSDK?.dismissVideoEditor(animated: true) {
             let success = error == nil
             if success {
-                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), audio metadata = \(String(describing: audioMetaJSON)), preview = \(previewUrl))")
+                print("Video exported successfully: video sources = \(videoUrls)), meta = \(metaUrl)), audio metadata = \(String(describing: audioMetaJSON)), preview = \(previewUrl), draft ID = \(savedDraftId)")
 
                 let previewImageData = previewImage?.pngData()
 
@@ -346,7 +386,8 @@ extension VideoEditorModule {
                     VideoEditorReactNative.argExportedVideoSources: videoUrls.compactMap { $0.path },
                     VideoEditorReactNative.argExportedPreview: previewUrl.path,
                     VideoEditorReactNative.argExportedMeta : metaUrl?.path,
-                    VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON
+                    VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON,
+                    VideoEditorReactNative.argSavedDraftId: savedDraftId
                 ])
             } else {
                 print("Error while exporting video = \(String(describing: error))")
@@ -354,7 +395,7 @@ extension VideoEditorModule {
                   VideoEditorReactNative.errMissingExportResult,
                   """
                   \(VideoEditorReactNative.errMessageMissingExportResult) \(String(describing: error)),
-                  Free Disk Space: \(String(describing: errorPayload?["free_space"])), 
+                  Free Disk Space: \(String(describing: errorPayload?["free_space"])),
                   Is App Active: \(String(describing: errorPayload?["is_app_active"]))
                   """,
                   nil
@@ -394,20 +435,24 @@ extension VideoEditorModule {
 
 // MARK: - BanubaVideoEditorSDKDelegate
 extension VideoEditorModule: BanubaVideoEditorDelegate {
-    func videoEditorDidCancel(_ videoEditor: BanubaVideoEditor) {
-        videoEditor.dismissVideoEditor(animated: true) {
-            // remove strong reference to video editor sdk instance
-            if self.restoreLastVideoEditingSession == false {
-                self.videoEditorSDK?.clearSessionData()
-            }
-            self.videoEditorSDK = nil
-            self.currentReject?(VideoEditorReactNative.errVideoExportCancel, VideoEditorReactNative.errMessageVideoExportCancel, nil)
-        }
-    }
+  func videoEditorDidCancel(_ videoEditor: BanubaVideoEditor) {
+      videoEditor.dismissVideoEditor(animated: true) {
+        // remove strong reference to video editor sdk instance
+          if self.restoreLastVideoEditingSession == false {
+              self.videoEditorSDK?.clearSessionData()
+          }
+          self.videoEditorSDK = nil
+          self.currentReject?(VideoEditorReactNative.errVideoExportCancel, VideoEditorReactNative.errMessageVideoExportCancel, nil)
+      }
+  }
 
-    func videoEditorDone(_ videoEditor: BanubaVideoEditor) {
-        exportVideo()
-    }
+  func videoEditorDone(_ videoEditor: BanubaVideoEditor) {
+      exportVideo()
+  }
+
+  func videoEditor(_ videoEditor: BanubaVideoEditor, didSaveDraft draft: ExternalDraft) {
+      savedDraftId = draft.sequenceId
+  }
 
   func videoEditor(_ videoEditor: BanubaVideoEditor, shouldProcessMediaUrls urls: [URL]) -> Bool {
       guard let featuresConfig else {
@@ -440,7 +485,8 @@ extension VideoEditorModule: BanubaVideoEditorDelegate {
                       audioMetaJSON: nil,
                       error: nil,
                       errorPayload: nil,
-                      previewImage: resultImage
+                      previewImage: resultImage,
+                      savedDraftId: nil
                   )
               }
           }
@@ -534,7 +580,7 @@ extension VideoEditorConfig {
                     $0.identifier != .effects
             })
         }
-      
+
         if !featuresConfig.editorConfig.supportsAudioEditing && !featuresConfig.editorConfig.supportsVoiceOver {
             self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
                     $0.identifier != .audio

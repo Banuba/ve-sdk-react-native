@@ -9,12 +9,14 @@ extension VideoEditorReactNative {
     static let errMissingHost = "ERR_MISSING_HOST"
     static let errMissingExportResult = "ERR_MISSING_EXPORT_RESULT"
     static let errVideoExportCancel = "ERR_VIDEO_EXPORT_CANCEL"
+    static let errMissingDraftId = "ERR_MISSING_DRAFT_ID"
 
     static let inputParamToken = "token"
     static let inputParamFeaturesConfig = "featuresConfig"
     static let inputParamExportData = "exportData"
     static let inputParamScreen = "screen"
     static let inputParamVideoSources = "videoSources"
+    static let inputParamDraftId = "draftId"
     static let argExportedAudioMeta = "exportedAudioMeta"
     static let inputParamTrackData = "trackData"
 
@@ -24,8 +26,10 @@ extension VideoEditorReactNative {
     static let screenAiClipping = "aiClipping"
     static let screenTemplates = "templates"
     static let screenDrafts = "drafts"
+    static let screenDraft = "draft"
     static let screenEditor = "editor"
 
+    static let argSavedDraftId = "savedDraftId"
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
     static let argExportedMeta = "exportedMeta"
@@ -47,7 +51,8 @@ extension VideoEditorReactNative {
     static let errMessageInvalidPiPVideo = "Missing pip video source: set correct value to \(inputParamVideoSources) input params"
     static let errMessageInvalidTrimmerVideo = "Missing trimmer video sources: set correct value to \(inputParamVideoSources) input params"
     static let errMessageInvalidEditorVideo = "Missing editor video sources: set correct value to \(inputParamVideoSources) input params"
-    static let errMessageUnknownScreen = "Invalid inputParams value: available values(\(screenCamera), \(screenPip), \(screenTrimmer), \(screenEditor), \(screenDrafts), \(screenTemplates)"
+    static let errMessageInvalidDraftId = "Missing draft ID: set correct value to \(inputParamDraftId) input params"
+    static let errMessageUnknownScreen = "Invalid inputParams value: available values(\(screenCamera), \(screenPip), \(screenTrimmer), \(screenEditor), \(screenDrafts), \(screenDraft), \(screenTemplates)"
 
     static let errMessageMissingExportResult =
     "Missing export result: video export has not been completed successfully with:"

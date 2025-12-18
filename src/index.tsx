@@ -155,4 +155,21 @@ export default class VideoEditorPlugin {
       )
       : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
+
+  openFromDraft(
+    licenseToken: String,
+    featuresConfig: FeaturesConfig,
+    draftId: string,
+    exportData?: ExportData | null
+  ): Promise<Map<String, String>> {
+    const inputParams = {
+      screen: 'draft',
+      featuresConfig: JSON.stringify(featuresConfig),
+      draftId: draftId,
+      exportData: JSON.stringify(exportData),
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+  }
 }
