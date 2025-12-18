@@ -87,6 +87,8 @@ export default class App extends Component {
         message = "Provided Draft ID doesn't exist!";
       case 'ERR_VIDEO_EXPORT_CANCEL':
         message = "The user has canceled video editing flow!";
+      case 'ERR_ENTRY_NOT_SUPPORTED':
+        message = "Draft by ID is not supported on Android"
       case 'ERR_INVALID_PARAMS':
         message = e.message;
       default:

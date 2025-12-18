@@ -170,6 +170,6 @@ export default class VideoEditorPlugin {
     };
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
-      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+      : Promise.reject({ code: 'ERR_ENTRY_NOT_SUPPORTED', message: 'Draft by ID is not supported on Android' });
   }
 }
