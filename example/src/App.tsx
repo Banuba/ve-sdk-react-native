@@ -63,8 +63,9 @@ export default class App extends Component {
     let exportedVideoSources = response?.exportedVideoSources
     let exportedPreview = response?.exportedPreview
     let exportedMeta = response?.exportedMeta
+    let exportedDraftId = response?.savedDraftId
     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
-      + exportedPreview + "; meta = " + exportedMeta);
+      + exportedPreview + "; meta = " + exportedMeta + ": savedDraftId = " + exportedDraftId);
   }
 
   handleSdkError(e) {
@@ -82,8 +83,12 @@ export default class App extends Component {
         message = 'Missing export result: video export has not been completed successfully. Please try again';
       case 'ERR_MISSING_HOST':
         message = "Missing host Activity to start video editor";
+      case 'ERR_MISSING_DRAFT_ID':
+        message = "Provided Draft ID doesn't exist!";
       case 'ERR_VIDEO_EXPORT_CANCEL':
         message = "The user has canceled video editing flow!";
+      case 'ERR_ENTRY_NOT_SUPPORTED':
+        message = "Draft by ID is not supported on Android"
       case 'ERR_INVALID_PARAMS':
         message = e.message;
       default:
