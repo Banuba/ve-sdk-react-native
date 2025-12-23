@@ -595,6 +595,8 @@ extension VideoEditorConfig {
         }
 
         self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
+      
+        self.featureConfiguration.isPhotosEditingEnabled = featuresConfig.editorConfig.supportPhotoEditing
 
         // Make customization here
 

@@ -125,7 +125,10 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
                 ),
                 supportsAudioEditing = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING
-                )
+                ),
+                supportPhotoEditing = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORT_PHOTO_EDITING
+                ),
             )
         }
     } catch (e: JSONException) {
