@@ -141,11 +141,7 @@ class VideoEditorKoinModule {
  * these classes fully depends on your requirements
  */
 private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportData: ExportData?) {
-  private val photoEditorHandler: OnImageEditorCallback? = runCatching {
-    val clazz = Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
-    val instance = clazz.getField("INSTANCE").get(null)
-    instance as OnImageEditorCallback
-  }.getOrNull()
+
   val module = module {
     single<ArEffectsRepositoryProvider>(createdAtStart = true) {
       ArEffectsRepositoryProvider(
@@ -250,9 +246,19 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
       )
     }
 
-    if (featuresConfig.editorConfig.supportPhotoEditing && photoEditorHandler != null) {
-      factory<OnImageEditorCallback> {
-        photoEditorHandler
+    if (featuresConfig.editorConfig.supportPhotoEditing) {
+      val photoEditorHandler: OnImageEditorCallback? = runCatching {
+        val clazz = Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
+        val instance = clazz.getField("INSTANCE").get(null)
+        instance as OnImageEditorCallback
+      }.getOrNull()
+
+      if (photoEditorHandler == null) {
+        Log.d(TAG, "!!! Banuba Photo Editor plugin not found while Photo Editing support is enabled !!!")
+      } else {
+        factory<OnImageEditorCallback> {
+          photoEditorHandler
+        }
       }
     }
 
