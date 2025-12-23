@@ -37,6 +37,7 @@ import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.ve.flow.VideoCreationActivity
 import com.banuba.sdk.export.data.ExportSessionHelper
 import com.banuba.sdk.ve.flow.session.FlowExportSessionHelper
+import com.banuba.sdk.core.domain.OnImageEditorCallback
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
@@ -54,7 +55,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Date
-import com.banuba.sdk.core.domain.OnImageEditorCallback
 
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
