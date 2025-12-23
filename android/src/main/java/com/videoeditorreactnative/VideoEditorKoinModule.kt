@@ -54,6 +54,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Date
+import com.banuba.sdk.core.domain.OnImageEditorCallback
 
 class VideoEditorKoinModule {
   internal fun initialize(application: Context, featuresConfig: FeaturesConfig, exportData: ExportData?) {
@@ -140,7 +141,11 @@ class VideoEditorKoinModule {
  * these classes fully depends on your requirements
  */
 private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, exportData: ExportData?) {
-
+  private val photoEditorHandler: OnImageEditorCallback? = runCatching {
+    val clazz = Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
+    val instance = clazz.getField("INSTANCE").get(null)
+    instance as OnImageEditorCallback
+  }.getOrNull()
   val module = module {
     single<ArEffectsRepositoryProvider>(createdAtStart = true) {
       ArEffectsRepositoryProvider(
@@ -240,8 +245,15 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         editorSupportsVisualEffects = featuresConfig.editorConfig.supportsVisualEffects,
         editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
         supportsVoiceOver = featuresConfig.editorConfig.supportsVoiceOver,
-        supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing
+        supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing,
+        supportPhotoEditing = featuresConfig.editorConfig.supportPhotoEditing
       )
+    }
+
+    if (featuresConfig.editorConfig.supportPhotoEditing && photoEditorHandler != null) {
+      factory<OnImageEditorCallback> {
+        photoEditorHandler
+      }
     }
 
     single <CoverProvider> {
