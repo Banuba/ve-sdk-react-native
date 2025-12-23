@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.resources = 'ios/Assets/*'
 
-  sdk_version = '1.48.3'
+  sdk_version = '1.49.2'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
@@ -29,8 +29,8 @@ Pod::Spec.new do |s|
     s.dependency 'BanubaSDK', sdk_version
   else
     puts "!!! BANUBA FACE AR IS DISABLED !!!"
+    s.dependency 'BanubaSDKSimple', sdk_version
   end
-  s.dependency 'BanubaSDKSimple', sdk_version
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
