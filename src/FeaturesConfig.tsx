@@ -256,6 +256,7 @@ export class EditorConfig {
   supportsColorEffects: boolean | null;
   supportsVoiceOver: boolean | null;
   supportsAudioEditing: boolean | null;
+  supportPhotoEditing: boolean | null;
 
   constructor({
     enableVideoAspectFill = true,
@@ -263,18 +264,21 @@ export class EditorConfig {
     supportsColorEffects = true,
     supportsVoiceOver = true,
     supportsAudioEditing = true,
+    supportPhotoEditing = false,
   }: {
     enableVideoAspectFill?: boolean | null;
     supportsVisualEffects?: boolean | null;
     supportsColorEffects?: boolean | null;
     supportsVoiceOver?: boolean | null;
     supportsAudioEditing?: boolean | null;
+    supportPhotoEditing?: boolean | null;
   }) {
     this.enableVideoAspectFill = enableVideoAspectFill;
     this.supportsVisualEffects = supportsVisualEffects;
     this.supportsColorEffects = supportsColorEffects;
     this.supportsVoiceOver = supportsVoiceOver;
     this.supportsAudioEditing = supportsAudioEditing;
+    this.supportPhotoEditing = supportPhotoEditing;
   }
 }
 

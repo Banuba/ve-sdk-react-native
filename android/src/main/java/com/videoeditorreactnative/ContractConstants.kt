@@ -73,6 +73,8 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VISUAL_EFFECTS = "supp
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_VOICE_OVER = "supportsVoiceOver"
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING = "supportsAudioEditing"
 
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORT_PHOTO_EDITING = "supportPhotoEditing"
+
 internal const val FEATURES_CONFIG_COVER_CONFIG = "coverConfig"
 internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "supportsCoverScreen"
 

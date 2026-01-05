@@ -37,6 +37,7 @@ import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.ve.flow.VideoCreationActivity
 import com.banuba.sdk.export.data.ExportSessionHelper
 import com.banuba.sdk.ve.flow.session.FlowExportSessionHelper
+import com.banuba.sdk.core.domain.OnImageEditorCallback
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.qualifier.named
@@ -240,8 +241,25 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         editorSupportsVisualEffects = featuresConfig.editorConfig.supportsVisualEffects,
         editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
         supportsVoiceOver = featuresConfig.editorConfig.supportsVoiceOver,
-        supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing
+        supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing,
+        supportPhotoEditing = featuresConfig.editorConfig.supportPhotoEditing
       )
+    }
+
+    if (featuresConfig.editorConfig.supportPhotoEditing) {
+      val photoEditorHandler: OnImageEditorCallback? = runCatching {
+        val clazz = Class.forName("com.banuba.sdk.pe.domain.PhotoEditorHandler")
+        val instance = clazz.getField("INSTANCE").get(null)
+        instance as OnImageEditorCallback
+      }.getOrNull()
+
+      if (photoEditorHandler == null) {
+        Log.d(TAG, "!!! Banuba Photo Editor plugin not found while Photo Editing support is enabled !!!")
+      } else {
+        factory<OnImageEditorCallback> {
+          photoEditorHandler
+        }
+      }
     }
 
     single <CoverProvider> {
