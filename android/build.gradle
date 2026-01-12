@@ -204,7 +204,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-  def banubaSdkVersion = '1.48.5'
+  def banubaSdkVersion = '1.49.2'
   implementation "com.banuba.sdk:ffmpeg:5.3.0"
   implementation "com.banuba.sdk:camera-sdk:${banubaSdkVersion}"
   implementation "com.banuba.sdk:camera-ui-sdk:${banubaSdkVersion}"
