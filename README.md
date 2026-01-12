@@ -65,6 +65,6 @@ Set Banuba license token [within the app](example/src/App.tsx#L8)
 |              | Version |
 |--------------|:-------:|
 | Yarn         |  3.6.1  |
-| React Native | 0.79.5  |
+| React Native | 0.83.0  |
 | Android      |  8.0+   |
 | iOS          |  15.0+  |
