@@ -75,6 +75,8 @@ internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_AUDIO_EDITING = "suppo
 
 internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORT_PHOTO_EDITING = "supportPhotoEditing"
 
+internal const val FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_STICKERS_ON_VIDEO = "supportsStickersOnVideo"
+
 internal const val FEATURES_CONFIG_COVER_CONFIG = "coverConfig"
 internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "supportsCoverScreen"
 

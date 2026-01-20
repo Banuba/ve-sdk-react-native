@@ -13,6 +13,7 @@ final featuresConfig = new FeaturesConfigBuilder()
         supportsVoiceOver: false,
         supportsAudioEditing: false,
         supportPhotoEditing: false,
+        supportsStickersOnVideo: false,
     }))
     ...
     .build()
@@ -26,3 +27,4 @@ final featuresConfig = new FeaturesConfigBuilder()
 - ```supportsVoiceOver``` - Determines whether the editor supports voice over. Default value is ```true```.
 - ```supportsAudioEditing``` - Determines whether the editor supports audio editing. Default value is ```true```.
 - ```supportPhotoEditing``` - Requires the [pe-sdk-react-native](https://www.npmjs.com/package/pe-sdk-react-native) plugin. Determines whether the editor supports photo editing flow in Banuba Photo Editor. Default value is ```false```.
+- ```supportsStickersOnVideo``` - Determines whether the editor supports stickers on video. Default value is ```true```.

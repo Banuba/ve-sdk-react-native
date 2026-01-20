@@ -94,7 +94,8 @@ extension VideoEditorReactNative {
               supportsColorEffects: true,
               supportsVoiceOver: true,
               supportsAudioEditing: true,
-              supportPhotoEditing: false
+              supportPhotoEditing: false,
+              supportsStickersOnVideo: true
             ),
             coverConfig: CoverConfig(
               supportsCoverScreen: true
