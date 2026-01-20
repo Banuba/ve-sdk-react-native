@@ -242,7 +242,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         editorBanubaColorEffectsAssetsPath = if (featuresConfig.editorConfig.supportsColorEffects) "luts" else null,
         supportsVoiceOver = featuresConfig.editorConfig.supportsVoiceOver,
         supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing,
-        supportPhotoEditing = featuresConfig.editorConfig.supportPhotoEditing
+        supportPhotoEditing = featuresConfig.editorConfig.supportPhotoEditing,
+        supportsStickersOnVideo = featuresConfig.editorConfig.supportsStickersOnVideo
       )
     }
 

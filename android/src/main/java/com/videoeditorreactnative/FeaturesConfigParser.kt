@@ -129,6 +129,9 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
                 supportPhotoEditing = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_SUPPORT_PHOTO_EDITING
                 ),
+                supportsStickersOnVideo = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_STICKERS_ON_VIDEO
+                ),
             )
         }
     } catch (e: JSONException) {

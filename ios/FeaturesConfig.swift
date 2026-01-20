@@ -66,6 +66,7 @@ struct EditorConfig: Codable {
     let supportsVoiceOver: Bool
     let supportsAudioEditing: Bool
     let supportPhotoEditing: Bool
+    let supportsStickersOnVideo: Bool
 }
 
 struct CoverConfig: Codable {

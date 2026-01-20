@@ -587,6 +587,12 @@ extension VideoEditorConfig {
             })
         }
 
+        if !featuresConfig.editorConfig.supportsStickersOnVideo {
+            self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
+                    $0.identifier != .sticker
+            })
+        }
+
         self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
 
         if let gifPickerConfig = featuresConfig.gifPickerConfig {
@@ -595,7 +601,7 @@ extension VideoEditorConfig {
         }
 
         self.videoDurationConfiguration = featuresConfig.videoDurationConfig.value()
-      
+
         self.featureConfiguration.isPhotosEditingEnabled = featuresConfig.editorConfig.supportPhotoEditing
 
         // Make customization here
