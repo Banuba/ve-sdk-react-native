@@ -52,11 +52,6 @@ Specify the required iOS permissions used by the SDK in your [Info.plist](../exa
 1. Android - add effects to the project by the path [android/app/src/main/assets/bnb-resources/effects](../example/android/app/src/main/).
 2. iOS - add the effect to resource folder ```bundleEffects```. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes while adding effects to the ```bundleEffects``` folder.
 
-### Android
-Preview files are in [drawable-xhdpi](../example/android/app/src/main/res/drawable-xhdpi),
-[drawable-xxhdpi](../example/android/app/src/main/res/drawable-xxhdpi), [drawable-xxxhdpi](../example/android/app/src/main/res/drawable-xxxhdpi) folders.
-Keep in mind that ```drawable-xxxhdpi``` contains files with the highest resolution. Additionally, you can copy paste just one set of previews if it meets your requirements.
-
 ### iOS
 
 Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
