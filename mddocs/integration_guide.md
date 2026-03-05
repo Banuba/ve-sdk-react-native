@@ -52,10 +52,6 @@ Specify the required iOS permissions used by the SDK in your [Info.plist](../exa
 1. Android - add effects to the project by the path [android/app/src/main/assets/bnb-resources/effects](../example/android/app/src/main/).
 2. iOS - add the effect to resource folder ```bundleEffects```. Make sure to select the "Copy items if needed" and "Create folder references" checkboxes while adding effects to the ```bundleEffects``` folder.
 
-### iOS
-
-Copy the ```ColorEffectsPreview``` folder from [example's asset catalog](example/ios/Runner/Assets.xcassets) to your app's asset catalog.
-
 ## Disable Face AR SDK
 
 ### Android

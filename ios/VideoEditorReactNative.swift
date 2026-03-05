@@ -48,14 +48,6 @@ class VideoEditorReactNative: NSObject {
         case VideoEditorReactNative.screenCamera:
             videoEditor.openVideoEditorDefault(fromViewController: controller, resolve, reject)
 
-        case VideoEditorReactNative.screenPip:
-            let videoSources = args[VideoEditorReactNative.inputParamVideoSources] as? Array<String>
-            if (videoSources == nil || videoSources!.isEmpty) {
-                reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errMessageInvalidPiPVideo, nil)
-                return
-            }
-            videoEditor.openVideoEditorPIP(fromViewController: controller, videoURL: URL(fileURLWithPath: videoSources!.first!), resolve, reject)
-
         case VideoEditorReactNative.screenTrimmer:
             let videoSources = args[VideoEditorReactNative.inputParamVideoSources] as? Array<String>
             if (videoSources == nil || videoSources!.isEmpty) {
