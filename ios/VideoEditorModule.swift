@@ -16,6 +16,9 @@ protocol VideoEditor {
     func openVideoEditorTemplates(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
     func openVideoEditorDraft(fromViewController controller: UIViewController, draftId: String, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
+    func openVideoEditorGallery(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
 }
 
 class VideoEditorModule: VideoEditor {
@@ -174,7 +177,7 @@ class VideoEditorModule: VideoEditor {
 
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
-
+  
     func openVideoEditorDrafts(
         fromViewController controller: UIViewController,
         _ resolve: @escaping RCTPromiseResolveBlock,
@@ -202,32 +205,51 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-
+    
         self.currentController = controller
-
+    
         guard let drafts = videoEditorSDK?.draftsService.getDrafts(), let draft = drafts.first(where: { $0.sequenceId == draftId }) else {
-          reject(
-              VideoEditorReactNative.errMissingDraftId,
-              VideoEditorReactNative.errMessageInvalidDraftId,
-              nil
-          )
-          return
+            reject(
+                VideoEditorReactNative.errMissingDraftId,
+                VideoEditorReactNative.errMessageInvalidDraftId,
+                nil
+            )
+            return
         }
-
+    
         let draftedConfig = VideoEditorLaunchConfig.DraftedLaunchConfig(
             externalDraft: draft,
             draftsConfig: .enabled
         )
-
+    
         let config = VideoEditorLaunchConfig(
             entryPoint: .editor,
             hostController: controller,
             draftedLaunchConfig: draftedConfig,
             animated: true
         )
-
+    
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
-  }
+    }
+
+    func openVideoEditorGallery(
+        fromViewController controller: UIViewController,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+    
+        self.currentController = controller
+    
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .gallery,
+            hostController: controller,
+            animated: true
+        )
+    
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
 
     func checkLicenseAndStartVideoEditor(
         with config: VideoEditorLaunchConfig,

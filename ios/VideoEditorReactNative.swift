@@ -82,13 +82,16 @@ class VideoEditorReactNative: NSObject {
 
         case VideoEditorReactNative.screenDrafts:
             videoEditor.openVideoEditorDrafts(fromViewController: controller, resolve, reject)
-          
+
         case VideoEditorReactNative.screenDraft:
             guard let draftId = args[VideoEditorReactNative.inputParamDraftId] as? String else {
               reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errMessageInvalidDraftId, nil)
               return
             }
             videoEditor.openVideoEditorDraft(fromViewController: controller, draftId: draftId, resolve, reject)
+
+        case VideoEditorReactNative.screenGallery:
+            videoEditor.openVideoEditorGallery(fromViewController: controller, resolve, reject)
 
         default:
             debugPrint("Unknown screen value = \(screen)")
