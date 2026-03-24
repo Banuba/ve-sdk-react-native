@@ -101,6 +101,7 @@ extension VideoEditorReactNative {
             coverConfig: CoverConfig(
               supportsCoverScreen: true
             ),
+            templatesConfig: nil,
             draftsConfig: DraftsConfig(
                 option: "enable"
             ),

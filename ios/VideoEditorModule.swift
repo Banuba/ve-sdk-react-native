@@ -539,6 +539,10 @@ extension VideoEditorConfig {
         if !featuresConfig.cameraConfig.supportsMasks {
             self.recorderConfiguration.hideFeatures(.masks)
         }
+      
+        if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
+            self.videoTemplatesConfguration.url = url
+        }
 
         var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
         featuresConfig.cameraConfig.recordModes.forEach { mode in

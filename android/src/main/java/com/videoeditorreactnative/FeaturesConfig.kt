@@ -6,6 +6,7 @@ import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
 import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.api.BanubaMusicProvider
 import com.banuba.sdk.veui.data.stickers.GifPickerMode
+import com.banuba.sdk.veui.data.templates.TemplatesConfig
 import com.banuba.sdk.core.ui.SimpleMusicTrackProvider
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.core.domain.DraftConfig
@@ -20,6 +21,7 @@ internal data class FeaturesConfig(
     val cameraConfig: CameraConfig = defaultCameraConfig,
     val editorConfig: EditorConfig = defaultEditorConfig,
     val coverConfig: CoverConfig = defaultCoverConfig,
+    val templatesConfig: TemplatesConfig? = null,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
     val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,

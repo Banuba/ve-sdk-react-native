@@ -5,6 +5,7 @@ class FeaturesConfig {
   readonly cameraConfig: CameraConfig;
   readonly editorConfig: EditorConfig;
   readonly coverConfig: CoverConfig;
+  readonly templatesConfig: TemplatesConfig | null;
   readonly draftsConfig: DraftsConfig;
   readonly gifPickerConfig: GifPickerConfig | null;
   readonly videoDurationConfig: VideoDurationConfig;
@@ -18,6 +19,7 @@ class FeaturesConfig {
     cameraConfig: CameraConfig,
     editorConfig: EditorConfig,
     coverConfig: CoverConfig,
+    templatesConfig: TemplatesConfig | null,
     draftsConfig: DraftsConfig,
     gifPickerConfig: GifPickerConfig | null,
     videoDurationConfig: VideoDurationConfig,
@@ -30,6 +32,7 @@ class FeaturesConfig {
     this.cameraConfig = cameraConfig;
     this.editorConfig = editorConfig;
     this.coverConfig = coverConfig;
+    this.templatesConfig = templatesConfig;
     this.draftsConfig = draftsConfig;
     this.coverConfig = coverConfig;
     this.gifPickerConfig = gifPickerConfig;
@@ -61,6 +64,7 @@ export class FeaturesConfigBuilder {
   private coverConfig: CoverConfig = new CoverConfig({
     supportsCoverScreen: true,
   });
+  private templatesConfig: TemplatesConfig | null = null;
   private draftsConfig: DraftsConfig = DraftsConfig.fromOption({
     option: DraftsOption.askToSave,
   });
@@ -99,6 +103,11 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
+  setTemplatesConfig(templatesConfig: TemplatesConfig | null): this {
+    this.templatesConfig = templatesConfig;
+    return this;
+  }
+
   setDraftsConfig(draftsConfig: DraftsConfig): this {
     this.draftsConfig = draftsConfig;
     return this;
@@ -132,6 +141,7 @@ export class FeaturesConfigBuilder {
       this.cameraConfig,
       this.editorConfig,
       this.coverConfig,
+      this.templatesConfig,
       this.draftsConfig,
       this.gifPickerConfig,
       this.videoDurationConfig,
@@ -314,6 +324,18 @@ export class DraftsConfig {
 
   static fromOption({ option }: { option: DraftsOption }): DraftsConfig {
     return new DraftsConfig({ option });
+  }
+}
+
+export class TemplatesConfig {
+  url: string | null;
+
+  constructor({
+    url = null
+  }: {
+    url: string | null
+  }) {
+    this.url = url
   }
 }
 

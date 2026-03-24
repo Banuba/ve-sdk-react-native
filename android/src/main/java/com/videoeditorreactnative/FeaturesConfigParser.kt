@@ -4,6 +4,7 @@ import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 import com.banuba.sdk.cameraui.ui.RecordMode
+import com.banuba.sdk.veui.data.templates.TemplatesConfig
 
 internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
     if (rawConfigParams.isNullOrEmpty()) {
@@ -18,6 +19,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractCameraConfig(),
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractCoverConfig(),
+                featuresConfigObject.extractTemplatesConfig(),
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
                 featuresConfigObject.extractVideoDurationConfig(),
@@ -152,6 +154,20 @@ private fun JSONObject.extractCoverConfig(): CoverConfig =
         Log.w(TAG, "Missing Cover Config params", e)
         defaultCoverConfig
     } ?: defaultCoverConfig
+
+private fun JSONObject.extractTemplatesConfig(): TemplatesConfig? =
+    try {
+        this.optJSONObject(FEATURES_CONFIG_TEMPLATES_CONFIG)?.let { json ->
+            TemplatesConfig(
+                url = json.optString(
+                    FEATURES_CONFIG_TEMPLATES_CONFIG_URL
+                ),
+            )
+        }
+    } catch (e: JSONException) {
+        Log.w(TAG, "Missing Templates Config params", e)
+        null
+    } ?: null
 
 private fun JSONObject.extractDraftsConfig(): DraftsConfig =
     try {
