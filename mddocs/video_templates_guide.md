@@ -13,3 +13,12 @@ videoEditor.openFromTemplates(LICENSE_TOKEN, this.featuresConfig)
     .then(response => { this.handleVideoExport(response); })
     .catch(e => { this.handleSdkError(e); });
 ```
+
+## Setup Custom Templates
+
+```typescript
+final featuresConfig = new FeaturesConfigBuilder()
+    .setTemplatesConfig(new TemplatesConfig({ url: "YOUR_URL"}))
+    ...
+    .build()
+```
