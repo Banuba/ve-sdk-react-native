@@ -30,6 +30,7 @@ import com.banuba.sdk.cameraui.data.CameraRecordingModesProvider
 import com.banuba.sdk.veui.data.EditorConfig
 import com.banuba.sdk.veui.domain.CoverProvider
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
+import com.banuba.sdk.veui.data.templates.TemplatesConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
 import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import com.banuba.sdk.core.domain.MediaNavigationProcessor
@@ -260,6 +261,14 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         factory<OnImageEditorCallback> {
           photoEditorHandler
         }
+      }
+    }
+
+    if (featuresConfig.templatesConfig.url != null) {
+      single<TemplatesConfig> {
+        TemplatesConfig(
+          url = featuresConfig.templatesConfig.url
+        )
       }
     }
 

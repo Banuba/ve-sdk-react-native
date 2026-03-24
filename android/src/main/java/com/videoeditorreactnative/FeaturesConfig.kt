@@ -20,6 +20,7 @@ internal data class FeaturesConfig(
     val cameraConfig: CameraConfig = defaultCameraConfig,
     val editorConfig: EditorConfig = defaultEditorConfig,
     val coverConfig: CoverConfig = defaultCoverConfig,
+    val templatesConfig: TemplatesConfig = defaultTemplatesConfig,
     val draftsConfig: DraftsConfig = defaultDraftsConfig,
     val gifPickerConfig: GifPickerConfig? = null,
     val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
@@ -102,6 +103,14 @@ internal data class CoverConfig(
 
 internal val defaultCoverConfig = CoverConfig(
     supportsCoverScreen = true
+)
+
+internal data class TemplatesConfig(
+    val url: String?
+)
+
+internal val defaultTemplatesConfig = TemplatesConfig(
+    url = null
 )
 
 internal data class DraftsConfig(

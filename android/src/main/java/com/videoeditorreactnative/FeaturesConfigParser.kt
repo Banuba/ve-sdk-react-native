@@ -18,6 +18,7 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractCameraConfig(),
                 featuresConfigObject.extractEditorConfig(),
                 featuresConfigObject.extractCoverConfig(),
+                featuresConfigObject.extractTemplatesConfig(),
                 featuresConfigObject.extractDraftsConfig(),
                 featuresConfigObject.extractGifPickerConfig(),
                 featuresConfigObject.extractVideoDurationConfig(),
@@ -152,6 +153,20 @@ private fun JSONObject.extractCoverConfig(): CoverConfig =
         Log.w(TAG, "Missing Cover Config params", e)
         defaultCoverConfig
     } ?: defaultCoverConfig
+
+private fun JSONObject.extractTemplatesConfig(): TemplatesConfig =
+    try {
+        this.optJSONObject(FEATURES_CONFIG_TEMPLATES_CONFIG)?.let { json ->
+            TemplatesConfig(
+                url = json.optString(
+                    FEATURES_CONFIG_TEMPLATES_CONFIG_URL
+                ),
+            )
+        }
+    } catch (e: JSONException) {
+        Log.w(TAG, "Missing Templates Config params", e)
+        defaultTemplatesConfig
+    } ?: defaultTemplatesConfig
 
 private fun JSONObject.extractDraftsConfig(): DraftsConfig =
     try {
