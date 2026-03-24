@@ -9,6 +9,7 @@ struct FeaturesConfig: Codable {
     let cameraConfig: CameraConfig
     let editorConfig: EditorConfig
     let coverConfig: CoverConfig
+    let templatesConfig: TemplatesConfig?
     let draftsConfig: DraftsConfig
     let gifPickerConfig: GifPickerConfig?
     let videoDurationConfig: VideoDurationConfig
@@ -71,6 +72,10 @@ struct EditorConfig: Codable {
 
 struct CoverConfig: Codable {
     let supportsCoverScreen: Bool
+}
+
+struct TemplatesConfig: Codable {
+    let url: String?
 }
 
 struct DraftsConfig: Codable {
