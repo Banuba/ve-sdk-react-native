@@ -541,7 +541,7 @@ extension VideoEditorConfig {
         }
       
         if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
-            self.videoTemplatesConfguration.url = url
+            self.videoTemplatesConfiguration.url = url
         }
 
         var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
@@ -549,7 +549,7 @@ extension VideoEditorConfig {
             switch mode {
                 case VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo:
                     recordModes.append(.video)
-                case VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto:
+                case VideoEditorConfig.featuresConfigCameraConfigRecordModeStory:
                     recordModes.append(.photo)
                 default:
                     recordModes = [.video, .photo]

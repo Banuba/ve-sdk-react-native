@@ -66,7 +66,7 @@ internal data class CameraConfig(
     val supportsBeauty: Boolean,
     val supportsColorEffects: Boolean,
     val supportsMasks: Boolean,
-    val recordModes: Set<RecordMode>,
+    val recordModes: List<RecordMode>,
     val autoStartLocalMask: String?
 )
 
@@ -74,7 +74,7 @@ internal val defaultCameraConfig = CameraConfig(
     supportsBeauty = true,
     supportsColorEffects = true,
     supportsMasks = true,
-    recordModes = setOf(RecordMode.Video, RecordMode.Photo),
+    recordModes = listOf(RecordMode.Video, RecordMode.Story),
     autoStartLocalMask = null
 )
 

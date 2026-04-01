@@ -97,10 +97,10 @@ private fun JSONObject.extractCameraConfig(): CameraConfig =
                         .mapNotNull { i ->
                             when (jsonArray.optString(i)) {
                                 FEATURES_CONFIG_CAMERA_RECORD_MODES_VIDEO -> RecordMode.Video
-                                FEATURES_CONFIG_CAMERA_RECORD_MODES_PHOTO -> RecordMode.Photo
+                                FEATURES_CONFIG_CAMERA_RECORD_MODES_STORY -> RecordMode.Story
                             else -> null
                         }
-                    }.toSet()
+                    }.toList()
                 } ?: defaultCameraConfig.recordModes
             )
         }
