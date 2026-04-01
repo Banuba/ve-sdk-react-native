@@ -12,7 +12,7 @@ Add ```VideoCreationActivity``` in [AndroidManifest.xml](../example/android/app/
     <activity
         android:name="com.banuba.sdk.ve.flow.VideoCreationActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/CustomIntegrationAppTheme"
+        android:theme="@style/VideoCreationTheme"
         android:windowSoftInputMode="adjustResize"
         tools:replace="android:theme" />
 ```

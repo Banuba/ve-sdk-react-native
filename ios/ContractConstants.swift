@@ -85,7 +85,7 @@ extension VideoEditorReactNative {
               supportsMasks: true,
               recordModes: [
                   VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo,
-                  VideoEditorConfig.featuresConfigCameraConfigRecordModePhoto
+                  VideoEditorConfig.featuresConfigCameraConfigRecordModeStory
               ],
               autoStartLocalMask: nil
             ),
@@ -147,7 +147,7 @@ extension VideoEditorConfig {
 
     //Record Mode
     static let featuresConfigCameraConfigRecordModeVideo = "video"
-    static let featuresConfigCameraConfigRecordModePhoto = "photo"
+    static let featuresConfigCameraConfigRecordModeStory = "story"
 
     //Editor Configs
     static let featuresConfigEnableVideoAspectFill = "enableVideoAspectFill"

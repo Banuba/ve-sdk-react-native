@@ -53,7 +53,7 @@ export class FeaturesConfigBuilder {
     supportsBeauty: true,
     supportsColorEffects: true,
     supportsMasks: true,
-    recordModes: [RecordMode.video, RecordMode.photo],
+    recordModes: [RecordMode.video, RecordMode.story],
     autoStartLocalMask: null,
   });
   private editorConfig: EditorConfig = new EditorConfig({
@@ -229,7 +229,7 @@ export class Captions {
 
 export enum RecordMode {
   video = 'video',
-  photo = 'photo',
+  story = 'story',
 }
 
 export class CameraConfig {
@@ -243,7 +243,7 @@ export class CameraConfig {
     supportsBeauty = true,
     supportsColorEffects = true,
     supportsMasks = true,
-    recordModes = [RecordMode.video, RecordMode.photo],
+    recordModes = [RecordMode.video, RecordMode.story],
     autoStartLocalMask = null,
   }: {
     supportsBeauty?: boolean | null;
