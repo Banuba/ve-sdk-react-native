@@ -188,3 +188,27 @@ export default class VideoEditorPlugin {
       : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 }
+
+export class DraftManager {
+  initManager(
+    licenseToken: String
+  ) : Promise<Map<String, String>> {
+    return Platform.OS === 'ios'
+      ? NativeModules.DraftManager.initManager(licenseToken)
+      : Promise.reject({ code: 'ERR_NOT_SUPPORTED', message: 'Drafts is not supported on Android' });
+  }
+
+  deleteDraftById(
+    draftId: string,
+  ): Promise<Map<String, String>> {
+    return Platform.OS === 'ios'
+      ? NativeModules.DraftManager.deleteDraftById(draftId)
+      : Promise.reject({ code: 'ERR_NOT_SUPPORTED', message: 'Draft by ID is not supported on Android' });
+  }
+
+  deinitManager() : Promise<Map<String, String>> {
+    return Platform.OS === 'ios'
+      ? NativeModules.DraftManager.deinitManager()
+      : Promise.reject({ code: 'ERR_NOT_SUPPORTED', message: 'Drafts is not supported on Android' });
+  }
+}

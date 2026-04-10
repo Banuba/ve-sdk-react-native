@@ -11,7 +11,7 @@ class VideoEditorReactNative: NSObject {
 
     let videoEditor = VideoEditorModule()
 
-    @objc (openVideoEditor:inputParams:resolver:rejecter:)
+    @objc(openVideoEditor:inputParams:resolver:rejecter:)
     func openVideoEditor(_ token: String, _inputParams: NSDictionary, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
 
         guard let args = _inputParams as? Dictionary<String, Any> else {
@@ -42,7 +42,6 @@ class VideoEditorReactNative: NSObject {
             reject(VideoEditorReactNative.errMissingHost, VideoEditorReactNative.errMessageMissingHost, nil)
             return
         }
-
 
         switch screen {
         case VideoEditorReactNative.screenCamera:
