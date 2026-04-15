@@ -8,6 +8,7 @@ import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.ext.isFileUrl
 import com.banuba.sdk.core.license.BanubaVideoEditor
 import com.banuba.sdk.core.data.TrackData
+import com.banuba.sdk.core.data.DraftsHelper
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
 import com.banuba.sdk.ve.flow.VideoCreationActivity
@@ -26,6 +27,7 @@ import org.json.JSONArray
 import org.koin.core.context.stopKoin
 import java.io.File
 import java.util.UUID
+import org.koin.java.KoinJavaComponent.get
 
 class VideoEditorModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -73,7 +75,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
               exportResult.videoList.map { it.sourceUri.toString() }
             val previewUri = exportResult.preview
             val metaUri = exportResult.metaUri
-
+            val savedDraftId = exportResult.draftUuid
             val arguments = Arguments.createMap()
             val videoSourcesArray = Arguments.createArray()
             videoSources.forEach { videoSourcesArray.pushString(it) }
@@ -81,8 +83,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
             arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
             arguments.putString(EXPORTED_META, metaUri?.toString())
-            arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult)
-            )
+            arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult))
+            arguments.putString(EXPORTED_SAVED_DRAFT_ID, savedDraftId.toString())
 
             Log.d(TAG, "Send video export results to React")
             resultPromise?.resolve(arguments)
@@ -150,7 +152,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 return@initialize
             }
 
-            val intent = when (screen) {
+            val intent: Intent? = when (screen) {
                 SCREEN_CAMERA -> {
                     Log.d(TAG, "Start video editor from camera screen")
                     VideoCreationActivity.startFromCamera(
@@ -243,6 +245,24 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_DRAFT -> {
+                    Log.d(TAG, "Start video editor from Video Draft")
+                    val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+                    val draftId = inputParams.getString(INPUT_PARAM_DRAFT_ID)
+                        ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
+
+                    val draft = draftId?.let { id ->
+                        draftsHelper.allDrafts.value.firstOrNull { it.uuid?.uuid == id }
+                    }
+
+                    if (draft == null) {
+                        resultPromise?.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+                        return@initialize
+                    }
+
+                    draftsHelper.openDraft(draft)
+                }
+
                 SCREEN_EDITOR -> {
                     val videoSources = extractVideoSources(inputParams)
                     Log.d(TAG, "Received editor video sources = $videoSources")
@@ -293,6 +313,18 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
             hostActivity.startActivityForResult(intent, OPEN_VIDEO_EDITOR_REQUEST_CODE)
         }
+    }
+
+    /**
+    * Delete Draft
+    */
+    @ReactMethod
+    fun deleteDraft(
+        licenseToken: String,
+        draftId: String,
+        promise: Promise
+    ) {
+        Log.d(TAG, "Removing draft")
     }
 
     private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {
