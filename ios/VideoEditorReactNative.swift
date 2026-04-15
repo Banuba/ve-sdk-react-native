@@ -11,7 +11,7 @@ class VideoEditorReactNative: NSObject {
 
     let videoEditor = VideoEditorModule()
 
-    @objc (openVideoEditor:inputParams:resolver:rejecter:)
+    @objc(openVideoEditor:inputParams:resolver:rejecter:)
     func openVideoEditor(_ token: String, _inputParams: NSDictionary, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
 
         guard let args = _inputParams as? Dictionary<String, Any> else {
@@ -98,6 +98,26 @@ class VideoEditorReactNative: NSObject {
             reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errInvalidParams, nil)
             return
         }
-
+    }
+  
+    @objc(deleteDraft:draftId:resolver:rejecter:)
+    func deleteDraft(_ token: String, draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+        var videoEditorSdk = BanubaVideoEditor(
+            token: token,
+            configuration: VideoEditorConfig()
+        )
+      
+        if videoEditorSdk == nil {
+            reject(VideoEditorReactNative.errSdkNotInitialized, VideoEditorReactNative.errMessageSdkNotInitialized, nil)
+            return
+        }
+      
+        guard videoEditorSdk?.draftsService.removeExternalDraft(id: draftId) ?? false else {
+            reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)
+            return
+        }
+      
+        videoEditorSdk = nil
+        resolve(VideoEditorReactNative.messageDraftSuccessfullyRemoved)
     }
 }

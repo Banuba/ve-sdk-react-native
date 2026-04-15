@@ -34,6 +34,8 @@ extension VideoEditorReactNative {
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
     static let argExportedMeta = "exportedMeta"
+  
+    static let messageDraftSuccessfullyRemoved = "Draft successfully removed"
 
     static let errMessageSdkNotInitialized = """
         Failed to initialize SDK!!!
