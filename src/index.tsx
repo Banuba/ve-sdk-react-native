@@ -194,6 +194,6 @@ export default class VideoEditorPlugin {
   ): Promise<Map<String, String>>  {
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.deleteDraft(licenseToken, draftId)
-      : Promise.reject({ code: 'ERR_NOT_SUPPORTED', message: 'Delete draft by ID is not supported on Android' });
+      : VideoEditorModule.deleteDraft(licenseToken, draftId)
   }
 }

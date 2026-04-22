@@ -325,6 +325,21 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         promise: Promise
     ) {
         Log.d(TAG, "Removing draft")
+
+        initialize(licenseToken, defaultFeaturesConfig, null) {
+          val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+          val parsedDraftId = runCatching { UUID.fromString(draftId) }.getOrNull()
+
+          if (parsedDraftId == null) {
+            promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+            return@initialize
+          }
+
+          draftsHelper.delete(uuid = parsedDraftId)
+          videoEditorModule?.releaseUtilityManager()
+
+          promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
+        }
     }
 
     private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {

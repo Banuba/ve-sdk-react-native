@@ -203,6 +203,8 @@ internal const val MESSAGE_MISSING_EXPORT_DATA =
 internal const val MESSAGE_MISSING_WATERMARK_IMAGE_PATH =
     "Watermark image is no set. Watermark will not be used."
 
+internal const val MESSAGE_DRAFT_SUCCESSFULLY_REMOVED = "Draft successfully removed"
+
 //Prepare Extras from captions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {
   val bundle = Bundle()
