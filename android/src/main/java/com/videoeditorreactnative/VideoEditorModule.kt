@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.os.Bundle
 import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.ext.isFileUrl
 import com.banuba.sdk.core.license.BanubaVideoEditor
@@ -246,21 +247,29 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 }
 
                 SCREEN_DRAFT -> {
-                    Log.d(TAG, "Start video editor from Video Draft")
                     val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
                     val draftId = inputParams.getString(INPUT_PARAM_DRAFT_ID)
                         ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
 
-                    val draft = draftId?.let { id ->
-                        draftsHelper.allDrafts.value.firstOrNull { it.uuid?.uuid == id }
+                    Log.d(TAG, "Start video editor by Draft ID: $draftId")
+
+                    if (draftId == null) {
+                        resultPromise?.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+                        return@initialize
                     }
+
+                    val draft = draftsHelper.allDrafts.value.firstOrNull { it.uuid?.uuid == draftId }
 
                     if (draft == null) {
                         resultPromise?.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
                         return@initialize
                     }
 
-                    draftsHelper.openDraft(draft)
+                    val intent = draftsHelper.openDraft(draft)
+                    val bundle = intent.getBundleExtra("EXTRA_BUNDLE") ?: Bundle()
+                    bundle.putAll(prepareExtras(featuresConfig))
+
+                    intent
                 }
 
                 SCREEN_EDITOR -> {
@@ -324,21 +333,21 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
         draftId: String,
         promise: Promise
     ) {
-        Log.d(TAG, "Removing draft")
+        Log.d(TAG, "Remove draft by ID: $draftId")
 
         initialize(licenseToken, defaultFeaturesConfig, null) {
-          val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
-          val parsedDraftId = runCatching { UUID.fromString(draftId) }.getOrNull()
+            val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+            val draftId = runCatching { UUID.fromString(draftId) }.getOrNull()
 
-          if (parsedDraftId == null) {
-            promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
-            return@initialize
-          }
+            if (draftId == null) {
+                promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+                return@initialize
+            }
 
-          draftsHelper.delete(uuid = parsedDraftId)
-          videoEditorModule?.releaseUtilityManager()
+            draftsHelper.delete(uuid = draftId)
+            videoEditorModule?.releaseUtilityManager()
 
-          promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
+            promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
         }
     }
 
