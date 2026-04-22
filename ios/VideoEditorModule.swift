@@ -422,7 +422,7 @@ extension VideoEditorModule {
 
     func createProgressViewController() -> ProgressViewController {
         let progressViewController = ProgressViewController.makeViewController()
-        progressViewController.message = NSLocalizedString("com.banuba.alert.progressView.exportingVideo", comment: "")
+        progressViewController.message = BNBLocalizedString("com.banuba.alert.progressView.exportingVideo")
         return progressViewController
     }
 }
