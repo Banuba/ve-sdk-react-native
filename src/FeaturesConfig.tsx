@@ -11,6 +11,7 @@ class FeaturesConfig {
   readonly videoDurationConfig: VideoDurationConfig;
   readonly enableEditorV2: boolean;
   readonly processPictureExternally: boolean;
+  readonly releaseOnExport: boolean;
 
   constructor(
     aiClipping: AiClipping | null,
@@ -24,7 +25,8 @@ class FeaturesConfig {
     gifPickerConfig: GifPickerConfig | null,
     videoDurationConfig: VideoDurationConfig,
     enableEditorV2: boolean,
-    processPictureExternally: boolean
+    processPictureExternally: boolean,
+    releaseOnExport: boolean
   ) {
     this.aiClipping = aiClipping;
     this.captions = captions;
@@ -39,6 +41,7 @@ class FeaturesConfig {
     this.videoDurationConfig = videoDurationConfig;
     this.enableEditorV2 = enableEditorV2;
     this.processPictureExternally = processPictureExternally;
+    this.releaseOnExport = releaseOnExport;
   }
 }
 
@@ -72,6 +75,7 @@ export class FeaturesConfigBuilder {
   private videoDurationConfig: VideoDurationConfig = new VideoDurationConfig();
   private enableEditorV2: boolean = true;
   private processPictureExternally: boolean = false;
+  private releaseOnExport: boolean = true;
 
   setAiClipping(aiClipping: AiClipping | null): this {
     this.aiClipping = aiClipping;
@@ -128,6 +132,11 @@ export class FeaturesConfigBuilder {
     return this;
   }
 
+  setReleaseOnExport(releaseOnExport: boolean): this {
+    this.releaseOnExport = releaseOnExport;
+    return this;
+  }
+
   setProcessPictureExternally(processPictureExternally: boolean): this {
     this.processPictureExternally = processPictureExternally;
     return this;
@@ -146,7 +155,8 @@ export class FeaturesConfigBuilder {
       this.gifPickerConfig,
       this.videoDurationConfig,
       this.enableEditorV2,
-      this.processPictureExternally
+      this.processPictureExternally,
+      this.releaseOnExport
     );
   }
 }

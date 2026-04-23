@@ -24,7 +24,8 @@ internal fun parseFeaturesConfig(rawConfigParams: String?): FeaturesConfig =
                 featuresConfigObject.extractGifPickerConfig(),
                 featuresConfigObject.extractVideoDurationConfig(),
                 featuresConfigObject.optBoolean(FEATURES_CONFIG_ENABLE_EDITOR_V2),
-                featuresConfigObject.optBoolean(FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY)
+                featuresConfigObject.optBoolean(FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY),
+                featuresConfigObject.optBoolean(FEATURES_CONFIG_RELEASE_ON_EXPORT)
             )
         } catch (e: JSONException) {
             defaultFeaturesConfig

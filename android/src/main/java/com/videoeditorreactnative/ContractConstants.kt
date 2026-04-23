@@ -111,6 +111,9 @@ internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_VIDEO_DURATIONS = "vide
 internal const val FEATURES_CONFIG_ENABLE_EDITOR_V2 = "enableEditorV2"
 internal const val FEATURES_CONFIG_EXTRA_USE_EDITOR_V2 = "EXTRA_USE_EDITOR_V2"
 
+// Release Video Editor SDK on export
+internal const val FEATURES_CONFIG_RELEASE_ON_EXPORT = "releaseOnExport"
+
 internal const val FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY = "processPictureExternally"
 
 internal const val EXPORT_DATA_EXPORTED_VIDEOS = "exportedVideos"
@@ -204,6 +207,7 @@ internal const val MESSAGE_MISSING_WATERMARK_IMAGE_PATH =
     "Watermark image is no set. Watermark will not be used."
 
 internal const val MESSAGE_DRAFT_SUCCESSFULLY_REMOVED = "Draft successfully removed"
+internal const val MESSAGE_VIDEO_EDITOR_RELEASED = "Video Editor SDK released"
 
 //Prepare Extras from captions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {

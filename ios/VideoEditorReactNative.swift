@@ -99,25 +99,24 @@ class VideoEditorReactNative: NSObject {
             return
         }
     }
-  
+
     @objc(deleteDraft:draftId:resolver:rejecter:)
     func deleteDraft(_ token: String, draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
-        var videoEditorSdk = BanubaVideoEditor(
-            token: token,
-            configuration: VideoEditorConfig()
-        )
-      
-        if videoEditorSdk == nil {
-            reject(VideoEditorReactNative.errSdkNotInitialized, VideoEditorReactNative.errMessageSdkNotInitialized, nil)
-            return
-        }
-      
-        guard videoEditorSdk?.draftsService.removeExternalDraft(id: draftId) ?? false else {
-            reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)
-            return
-        }
-      
-        videoEditorSdk = nil
-        resolve(VideoEditorReactNative.messageDraftSuccessfullyRemoved)
+      if let videoEditorSDK = videoEditor.videoEditorSDK {
+          guard videoEditorSDK.draftsService.removeExternalDraft(id: draftId) else {
+              reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)
+              return
+          }
+
+          resolve(VideoEditorReactNative.messageDraftSuccessfullyRemoved)
+      } else {
+          reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageMissingToken, nil)
+      }
+    }
+
+    @objc(release:rejecter:)
+    func release(_ resolver: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+        videoEditor.videoEditorSDK = nil
+        resolver(VideoEditorReactNative.messageVideoEditorReleased)
     }
 }

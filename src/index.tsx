@@ -196,4 +196,10 @@ export default class VideoEditorPlugin {
       ? NativeModules.VideoEditorReactNative.deleteDraft(licenseToken, draftId)
       : VideoEditorModule.deleteDraft(licenseToken, draftId)
   }
+
+  release(): Promise<Map<String, String>>  {
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.release()
+      : VideoEditorModule.release()
+  }
 }

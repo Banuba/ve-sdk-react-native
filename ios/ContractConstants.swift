@@ -34,8 +34,9 @@ extension VideoEditorReactNative {
     static let argExportedVideoSources = "exportedVideoSources"
     static let argExportedPreview = "exportedPreview"
     static let argExportedMeta = "exportedMeta"
-  
+
     static let messageDraftSuccessfullyRemoved = "Draft successfully removed"
+    static let messageVideoEditorReleased = "Video Editor SDK released"
 
     static let errMessageSdkNotInitialized = """
         Failed to initialize SDK!!!
@@ -113,7 +114,8 @@ extension VideoEditorReactNative {
                 videoDurations: [60.0, 30.0, 15.0]
             ),
             enableEditorV2: true,
-            processPictureExternally: false
+            processPictureExternally: false,
+            releaseOnExport: true
         )
     }
 

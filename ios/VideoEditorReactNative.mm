@@ -6,6 +6,8 @@ RCT_EXTERN_METHOD(openVideoEditor:(NSString *) token inputParams:(NSDictionary *
 
 RCT_EXTERN_METHOD(deleteDraft:(NSString *) token draftId:(NSString *) draftId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(release:(RCTPromiseResolveBlock *)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
 + (BOOL)requiresMainQueueSetup
 {
   return NO;
