@@ -332,7 +332,6 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     */
     @ReactMethod
     fun deleteDraft(
-        licenseToken: String,
         draftId: String,
         promise: Promise
     ) {

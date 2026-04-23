@@ -100,8 +100,8 @@ class VideoEditorReactNative: NSObject {
         }
     }
 
-    @objc(deleteDraft:draftId:resolver:rejecter:)
-    func deleteDraft(_ token: String, draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+    @objc(deleteDraft:resolver:rejecter:)
+    func deleteDraft(draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
       if let videoEditorSDK = videoEditor.videoEditorSDK {
           guard videoEditorSDK.draftsService.removeExternalDraft(id: draftId) else {
               reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)

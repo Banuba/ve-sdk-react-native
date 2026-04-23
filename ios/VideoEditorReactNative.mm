@@ -4,7 +4,7 @@
 
 RCT_EXTERN_METHOD(openVideoEditor:(NSString *) token inputParams:(NSDictionary *) inputParams resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(deleteDraft:(NSString *) token draftId:(NSString *) draftId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(deleteDraft:(NSString *) draftId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(release:(RCTPromiseResolveBlock *)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
