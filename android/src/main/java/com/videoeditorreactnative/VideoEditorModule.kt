@@ -42,6 +42,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
     private var resultPromise: Promise? = null
     private var videoEditorModule: VideoEditorKoinModule? = null
+    private var featuresConfig: FeaturesConfig = defaultFeaturesConfig
     override fun getName(): String = TAG
 
   private val videoEditorResultListener = object : ActivityEventListener {
@@ -92,14 +93,16 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
           }
 
           Activity.RESULT_CANCELED -> resultPromise?.reject(
-                ERR_VIDEO_EXPORT_CANCEL,
-                ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+              ERR_VIDEO_EXPORT_CANCEL,
+              ERR_MESSAGE_VIDEO_EXPORT_CANCEL
           )
         }
         resultPromise = null
       } finally {
-        Log.d(TAG, "Release SDK")
-        releaseSdk(hard = false)
+        if (featuresConfig.releaseOnExport) {
+          Log.d(TAG, "Release SDK")
+          releaseSdk(hard = false)
+        }
       }
     }
 
@@ -139,7 +142,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
+        featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
 
@@ -329,26 +332,30 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
     */
     @ReactMethod
     fun deleteDraft(
-        licenseToken: String,
         draftId: String,
         promise: Promise
     ) {
         Log.d(TAG, "Remove draft by ID: $draftId")
+        val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+        val draftId = runCatching { UUID.fromString(draftId) }.getOrNull()
 
-        initialize(licenseToken, defaultFeaturesConfig, null) {
-            val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
-            val draftId = runCatching { UUID.fromString(draftId) }.getOrNull()
-
-            if (draftId == null) {
-                promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
-                return@initialize
-            }
-
-            draftsHelper.delete(uuid = draftId)
-            videoEditorModule?.releaseUtilityManager()
-
-            promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
+        if (draftId == null) {
+             promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+             return@deleteDraft
         }
+
+        draftsHelper.delete(uuid = draftId)
+
+        promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
+    }
+
+    /**
+    * Deinit Video Editor SDK
+    */
+    @ReactMethod
+    fun release(promise: Promise) {
+        videoEditorModule?.releaseUtilityManager()
+        promise.resolve(MESSAGE_VIDEO_EDITOR_RELEASED)
     }
 
     private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {

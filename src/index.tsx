@@ -189,11 +189,16 @@ export default class VideoEditorPlugin {
   }
 
   deleteDraft(
-    licenseToken: String,
     draftId: String
   ): Promise<Map<String, String>>  {
     return Platform.OS === 'ios'
-      ? NativeModules.VideoEditorReactNative.deleteDraft(licenseToken, draftId)
-      : VideoEditorModule.deleteDraft(licenseToken, draftId)
+      ? NativeModules.VideoEditorReactNative.deleteDraft(draftId)
+      : VideoEditorModule.deleteDraft(draftId)
+  }
+
+  release(): Promise<Map<String, String>>  {
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.release()
+      : VideoEditorModule.release()
   }
 }

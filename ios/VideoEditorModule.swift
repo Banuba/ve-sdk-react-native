@@ -23,7 +23,8 @@ protocol VideoEditor {
 
 class VideoEditorModule: VideoEditor {
 
-    private var videoEditorSDK: BanubaVideoEditor?
+    var videoEditorSDK: BanubaVideoEditor?
+  
     private var exportData: ExportData?
     private var currentController: UIViewController?
     private var currentResolve: RCTPromiseResolveBlock?
@@ -400,7 +401,10 @@ extension VideoEditorModule {
             if self.restoreLastVideoEditingSession == false {
                 self.videoEditorSDK?.clearSessionData()
             }
-            self.videoEditorSDK = nil
+          
+            if self.featuresConfig?.releaseOnExport ?? true {
+              self.videoEditorSDK = nil
+            }
         }
     }
 
