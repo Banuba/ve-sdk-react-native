@@ -86,7 +86,9 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
             arguments.putString(EXPORTED_META, metaUri?.toString())
             arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult))
-            arguments.putString(EXPORTED_SAVED_DRAFT_ID, savedDraftId.toString())
+            if (savedDraftId != null) {
+              arguments.putString(EXPORTED_SAVED_DRAFT_ID, savedDraftId.toString())
+            }
 
             Log.d(TAG, "Send video export results to React")
             resultPromise?.resolve(arguments)
@@ -269,6 +271,8 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     }
 
                     val intent = draftsHelper.openDraft(draft)
+
+                    // EXTRA_BUNDLE is used in VideoCreationActivity to pass additional params
                     val bundle = intent.getBundleExtra("EXTRA_BUNDLE") ?: Bundle()
                     bundle.putAll(prepareExtras(featuresConfig))
 
