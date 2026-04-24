@@ -27,6 +27,7 @@ internal data class FeaturesConfig(
     val videoDurationConfig: VideoDurationConfig = defaultVideoDurationConfig,
     val enableEditorV2: Boolean = true,
     val processPictureExternally: Boolean = false,
+    val releaseOnExport: Boolean = true
 )
 
 internal data class AiClipping(

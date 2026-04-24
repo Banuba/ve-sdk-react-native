@@ -23,7 +23,8 @@ protocol VideoEditor {
 
 class VideoEditorModule: VideoEditor {
 
-    private var videoEditorSDK: BanubaVideoEditor?
+    var videoEditorSDK: BanubaVideoEditor?
+  
     private var exportData: ExportData?
     private var currentController: UIViewController?
     private var currentResolve: RCTPromiseResolveBlock?
@@ -375,14 +376,19 @@ extension VideoEditorModule {
                 let previewImageData = previewImage?.pngData()
 
                 try? previewImageData?.write(to: previewUrl)
+              
+                var exportData = [
+                  VideoEditorReactNative.argExportedVideoSources: videoUrls.compactMap { $0.path },
+                  VideoEditorReactNative.argExportedPreview: previewUrl.path,
+                  VideoEditorReactNative.argExportedMeta : metaUrl?.path,
+                  VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON,
+                ]
+              
+                if let savedDraftId {
+                  exportData[VideoEditorReactNative.argSavedDraftId] = savedDraftId
+                }
 
-                self.currentResolve?([
-                    VideoEditorReactNative.argExportedVideoSources: videoUrls.compactMap { $0.path },
-                    VideoEditorReactNative.argExportedPreview: previewUrl.path,
-                    VideoEditorReactNative.argExportedMeta : metaUrl?.path,
-                    VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON,
-                    VideoEditorReactNative.argSavedDraftId: savedDraftId
-                ])
+                self.currentResolve?(exportData)
             } else {
                 print("Error while exporting video = \(String(describing: error))")
                 self.currentReject?(
@@ -400,7 +406,10 @@ extension VideoEditorModule {
             if self.restoreLastVideoEditingSession == false {
                 self.videoEditorSDK?.clearSessionData()
             }
-            self.videoEditorSDK = nil
+          
+            if self.featuresConfig?.releaseOnExport ?? true {
+              self.videoEditorSDK = nil
+            }
         }
     }
 

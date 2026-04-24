@@ -17,8 +17,10 @@ internal const val INPUT_PARAM_FEATURES_CONFIG = "featuresConfig"
 internal const val INPUT_PARAM_EXPORT_DATA = "exportData"
 internal const val INPUT_PARAM_VIDEO_SOURCES = "videoSources"
 internal const val INPUT_PARAM_TRACK_DATA = "trackData"
+internal const val INPUT_PARAM_DRAFT_ID = "draftId"
 
 // Exported params
+internal const val EXPORTED_SAVED_DRAFT_ID = "savedDraftId"
 internal const val EXPORTED_VIDEO_SOURCES = "exportedVideoSources"
 internal const val EXPORTED_PREVIEW = "exportedPreview"
 internal const val EXPORTED_META = "exportedMeta"
@@ -31,6 +33,7 @@ internal const val SCREEN_TRIMMER = "trimmer"
 internal const val SCREEN_AICLIPPING = "aiClipping"
 internal const val SCREEN_TEMPLATES = "templates"
 internal const val SCREEN_DRAFTS = "drafts"
+internal const val SCREEN_DRAFT = "draft"
 internal const val SCREEN_EDITOR = "editor"
 internal const val SCREEN_GALLERY = "gallery"
 
@@ -108,6 +111,9 @@ internal const val FEATURES_CONFIG_VIDEO_DURATION_CONFIG_VIDEO_DURATIONS = "vide
 internal const val FEATURES_CONFIG_ENABLE_EDITOR_V2 = "enableEditorV2"
 internal const val FEATURES_CONFIG_EXTRA_USE_EDITOR_V2 = "EXTRA_USE_EDITOR_V2"
 
+// Release Video Editor SDK on export
+internal const val FEATURES_CONFIG_RELEASE_ON_EXPORT = "releaseOnExport"
+
 internal const val FEATURES_CONFIG_PROCESS_PICTURE_EXTERNALLY = "processPictureExternally"
 
 internal const val EXPORT_DATA_EXPORTED_VIDEOS = "exportedVideos"
@@ -142,6 +148,8 @@ internal const val TRACK_DATA_TITLE = "title"
 internal const val TRACK_DATA_SUBTITLE = "subtitle"
 internal const val TRACK_DATA_LOCAL_URL = "localUrl"
 
+internal  const val DRAFT_SUCSESFULLY_REMOVED = "Draft successfully removed"
+
 // Errors
 internal const val ERR_CODE_SDK_NOT_INITIALIZED = "ERR_SDK_NOT_INITIALIZED"
 internal const val ERR_CODE_SDK_LICENSE_REVOKED = "ERR_SDK_LICENSE_REVOKED"
@@ -150,6 +158,7 @@ internal const val ERR_INVALID_PARAMS = "ERR_INVALID_PARAMS"
 internal const val ERR_MISSING_EXPORT_RESULT = "ERR_MISSING_EXPORT_RESULT"
 internal const val ERR_VIDEO_EXPORT_CANCEL = "ERR_VIDEO_EXPORT_CANCEL"
 internal const val ERR_UNKNOWN_REQUEST_CODE = "ERR_UNKNOWN_REQUEST_CODE"
+internal const val ERR_MISSING_DRAFT_ID = "ERR_MISSING_DRAFT_ID"
 
 internal const val ERR_MESSAGE_SDK_NOT_INITIALIZED = """
     Failed to initialize SDK!!!
@@ -189,11 +198,16 @@ internal const val ERR_MESSAGE_VIDEO_EXPORT_CANCEL = "The user has canceled vide
 
 internal const val ERR_MESSAGE_UNKNOWN_REQUEST_CODE = "Unknown request code"
 
+internal const val ERR_MESSAGE_INVALID_DRAFT_ID = "Missing draft ID: set correct value to $INPUT_PARAM_DRAFT_ID input params"
+
 internal const val MESSAGE_MISSING_EXPORT_DATA =
     "Export data is not set. Default implementation will be used. Input export config: $INPUT_PARAM_EXPORT_DATA"
 
 internal const val MESSAGE_MISSING_WATERMARK_IMAGE_PATH =
     "Watermark image is no set. Watermark will not be used."
+
+internal const val MESSAGE_DRAFT_SUCCESSFULLY_REMOVED = "Draft successfully removed"
+internal const val MESSAGE_VIDEO_EDITOR_RELEASED = "Video Editor SDK released"
 
 //Prepare Extras from captions
 internal fun prepareExtras(featuresConfig: FeaturesConfig): Bundle {

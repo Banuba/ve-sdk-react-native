@@ -170,7 +170,7 @@ export default class VideoEditorPlugin {
     };
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
-      : Promise.reject({ code: 'ERR_ENTRY_NOT_SUPPORTED', message: 'Draft by ID is not supported on Android' });
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
   openFromGallery(
@@ -186,5 +186,19 @@ export default class VideoEditorPlugin {
     return Platform.OS === 'ios'
       ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
       : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+  }
+
+  deleteDraft(
+    draftId: String
+  ): Promise<Map<String, String>>  {
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.deleteDraft(draftId)
+      : VideoEditorModule.deleteDraft(draftId)
+  }
+
+  release(): Promise<Map<String, String>>  {
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.release()
+      : VideoEditorModule.release()
   }
 }

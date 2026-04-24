@@ -15,6 +15,7 @@ struct FeaturesConfig: Codable {
     let videoDurationConfig: VideoDurationConfig
     let enableEditorV2: Bool
     let processPictureExternally: Bool
+    let releaseOnExport: Bool
 }
 
 struct AiClipping: Codable {

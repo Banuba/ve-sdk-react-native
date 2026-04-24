@@ -11,7 +11,7 @@ class VideoEditorReactNative: NSObject {
 
     let videoEditor = VideoEditorModule()
 
-    @objc (openVideoEditor:inputParams:resolver:rejecter:)
+    @objc(openVideoEditor:inputParams:resolver:rejecter:)
     func openVideoEditor(_ token: String, _inputParams: NSDictionary, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
 
         guard let args = _inputParams as? Dictionary<String, Any> else {
@@ -98,6 +98,25 @@ class VideoEditorReactNative: NSObject {
             reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errInvalidParams, nil)
             return
         }
+    }
 
+    @objc(deleteDraft:resolver:rejecter:)
+    func deleteDraft(draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+      if let videoEditorSDK = videoEditor.videoEditorSDK {
+          guard videoEditorSDK.draftsService.removeExternalDraft(id: draftId) else {
+              reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)
+              return
+          }
+
+          resolve(VideoEditorReactNative.messageDraftSuccessfullyRemoved)
+      } else {
+          reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageMissingToken, nil)
+      }
+    }
+
+    @objc(release:rejecter:)
+    func release(_ resolver: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
+        videoEditor.videoEditorSDK = nil
+        resolver(VideoEditorReactNative.messageVideoEditorReleased)
     }
 }

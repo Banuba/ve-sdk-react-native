@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.os.Bundle
 import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.ext.isFileUrl
 import com.banuba.sdk.core.license.BanubaVideoEditor
 import com.banuba.sdk.core.data.TrackData
+import com.banuba.sdk.core.data.DraftsHelper
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.export.utils.EXTRA_EXPORTED_SUCCESS
 import com.banuba.sdk.ve.flow.VideoCreationActivity
@@ -26,6 +28,7 @@ import org.json.JSONArray
 import org.koin.core.context.stopKoin
 import java.io.File
 import java.util.UUID
+import org.koin.java.KoinJavaComponent.get
 
 class VideoEditorModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -39,6 +42,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
     private var resultPromise: Promise? = null
     private var videoEditorModule: VideoEditorKoinModule? = null
+    private var featuresConfig: FeaturesConfig = defaultFeaturesConfig
     override fun getName(): String = TAG
 
   private val videoEditorResultListener = object : ActivityEventListener {
@@ -73,7 +77,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
               exportResult.videoList.map { it.sourceUri.toString() }
             val previewUri = exportResult.preview
             val metaUri = exportResult.metaUri
-
+            val savedDraftId = exportResult.draftUuid
             val arguments = Arguments.createMap()
             val videoSourcesArray = Arguments.createArray()
             videoSources.forEach { videoSourcesArray.pushString(it) }
@@ -81,22 +85,26 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             arguments.putArray(EXPORTED_VIDEO_SOURCES, videoSourcesArray)
             arguments.putString(EXPORTED_PREVIEW, previewUri?.toString())
             arguments.putString(EXPORTED_META, metaUri?.toString())
-            arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult)
-            )
+            arguments.putString(EXPORTED_AUDIO_META, serializeExportedAudioMeta(exportResult))
+            if (savedDraftId != null) {
+              arguments.putString(EXPORTED_SAVED_DRAFT_ID, savedDraftId.toString())
+            }
 
             Log.d(TAG, "Send video export results to React")
             resultPromise?.resolve(arguments)
           }
 
           Activity.RESULT_CANCELED -> resultPromise?.reject(
-                ERR_VIDEO_EXPORT_CANCEL,
-                ERR_MESSAGE_VIDEO_EXPORT_CANCEL
+              ERR_VIDEO_EXPORT_CANCEL,
+              ERR_MESSAGE_VIDEO_EXPORT_CANCEL
           )
         }
         resultPromise = null
       } finally {
-        Log.d(TAG, "Release SDK")
-        releaseSdk(hard = false)
+        if (featuresConfig.releaseOnExport) {
+          Log.d(TAG, "Release SDK")
+          releaseSdk(hard = false)
+        }
       }
     }
 
@@ -136,7 +144,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        val featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
+        featuresConfig = parseFeaturesConfig(inputParams.getString(INPUT_PARAM_FEATURES_CONFIG))
 
         val exportData = parseExportData(inputParams.getString(INPUT_PARAM_EXPORT_DATA))
 
@@ -150,7 +158,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                 return@initialize
             }
 
-            val intent = when (screen) {
+            val intent: Intent? = when (screen) {
                 SCREEN_CAMERA -> {
                     Log.d(TAG, "Start video editor from camera screen")
                     VideoCreationActivity.startFromCamera(
@@ -243,6 +251,34 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
                     )
                 }
 
+                SCREEN_DRAFT -> {
+                    val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+                    val draftId = inputParams.getString(INPUT_PARAM_DRAFT_ID)
+                        ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
+
+                    Log.d(TAG, "Start video editor by Draft ID: $draftId")
+
+                    if (draftId == null) {
+                        resultPromise?.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+                        return@initialize
+                    }
+
+                    val draft = draftsHelper.allDrafts.value.firstOrNull { it.uuid?.uuid == draftId }
+
+                    if (draft == null) {
+                        resultPromise?.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+                        return@initialize
+                    }
+
+                    val intent = draftsHelper.openDraft(draft)
+
+                    // EXTRA_BUNDLE is used in VideoCreationActivity to pass additional params
+                    val bundle = intent.getBundleExtra("EXTRA_BUNDLE") ?: Bundle()
+                    bundle.putAll(prepareExtras(featuresConfig))
+
+                    intent
+                }
+
                 SCREEN_EDITOR -> {
                     val videoSources = extractVideoSources(inputParams)
                     Log.d(TAG, "Received editor video sources = $videoSources")
@@ -293,6 +329,37 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
 
             hostActivity.startActivityForResult(intent, OPEN_VIDEO_EDITOR_REQUEST_CODE)
         }
+    }
+
+    /**
+    * Delete Draft
+    */
+    @ReactMethod
+    fun deleteDraft(
+        draftId: String,
+        promise: Promise
+    ) {
+        Log.d(TAG, "Remove draft by ID: $draftId")
+        val draftsHelper: DraftsHelper = get(DraftsHelper::class.java)
+        val draftId = runCatching { UUID.fromString(draftId) }.getOrNull()
+
+        if (draftId == null) {
+             promise.reject(ERR_MISSING_DRAFT_ID, ERR_MESSAGE_INVALID_DRAFT_ID)
+             return@deleteDraft
+        }
+
+        draftsHelper.delete(uuid = draftId)
+
+        promise.resolve(MESSAGE_DRAFT_SUCCESSFULLY_REMOVED)
+    }
+
+    /**
+    * Deinit Video Editor SDK
+    */
+    @ReactMethod
+    fun release(promise: Promise) {
+        videoEditorModule?.releaseUtilityManager()
+        promise.resolve(MESSAGE_VIDEO_EDITOR_RELEASED)
     }
 
     private fun serializeExportedAudioMeta(result: ExportResult.Success): String? {
