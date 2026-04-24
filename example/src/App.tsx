@@ -2,55 +2,19 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity, Platform } from 'react-native';
 
 import VideoEditorPlugin, {
-  AiClipping,
-  Captions,
-  AudioBrowser,
-  AudioBrowserSource,
-  DraftsConfig,
-  DraftsOption,
-  EditorConfig,
-  GifPickerConfig,
   FeaturesConfigBuilder,
-  ExportData,
-  ExportedVideo,
-  Watermark,
-  VideoResolution,
-  WatermarkAlignment,
-  VideoDurationConfig,
 } from 'video-editor-react-native';
 
-import { launchImageLibrary } from 'react-native-image-picker';
-
 const LICENSE_TOKEN = SET BANUBA LICENSE TOKEN
-
-const videoOptions = { mediaType: 'video' };
 
 export default class App extends Component {
 
   private featuresConfig = new FeaturesConfigBuilder()
-    // Specify your Config params in the builder below
-    //.setAudioBrowser(...)
-    //...
+    // Set release Video Editor SDK on Export to false to open last edited video
+    .setReleaseOnExport(false)
     .build();
 
-  //   Export Data example
-
-  // private exportData = new ExportData({
-  //   exportedVideos: [
-  //     new ExportedVideo({
-  //       fileName: 'export_hd',
-  //       videoResolution: VideoResolution.fhd1080p,
-  //     }),
-  //     new ExportedVideo({
-  //       fileName: 'export_auto',
-  //       videoResolution: VideoResolution.auto,
-  //     }),
-  //   ],
-  //   watermark: new Watermark({
-  //     imagePath: 'watermark.png',
-  //     alignment: WatermarkAlignment.topLeft,
-  //   }),
-  // });
+  private draftID: string | null = null
 
   constructor() {
     super();
@@ -66,6 +30,8 @@ export default class App extends Component {
     let exportedDraftId = response?.savedDraftId
     console.log('Export completed successfully: video = ' + exportedVideoSources + '; videoPreview = '
       + exportedPreview + "; meta = " + exportedMeta + ": savedDraftId = " + exportedDraftId);
+
+    this.draftID = exportedDraftId
   }
 
   handleSdkError(e) {
@@ -104,6 +70,10 @@ export default class App extends Component {
     this.setState({ errorText: message });
   }
 
+  handleVideoEditor(response) {
+    console.log(response);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -133,56 +103,30 @@ export default class App extends Component {
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
-                launchImageLibrary(
-                  videoOptions,
-                  (response) => {
-                    console.log('Response = ', response);
-                    if (response.didCancel) {
-                      console.warn('User cancelled photo picker');
-                    } else if (response.error) {
-                      console.warn('ImagePicker Error: ', response.error);
-                    } else {
-                      let videoUri = response.uri || response.assets?.[0]?.uri;
-                      console.log('# Picked video source for pip = ' + videoUri);
-
-                      const videoEditor = new VideoEditorPlugin();
-                      videoEditor.openFromPip(LICENSE_TOKEN, this.featuresConfig, videoUri)
-                        .then(response => { this.handleVideoExport(response); })
-                        .catch(e => { this.handleSdkError(e); });
-                    }
-                  },
-                );
+                const videoEditor = new VideoEditorPlugin();
+                videoEditor.openFromDraft(LICENSE_TOKEN, this.featuresConfig, this.draftID ?? "")
+                  .then(response => this.handleVideoExport(response))
+                  .catch(e => this.handleSdkError(e));
               }}
             >
-              <Text style={styles.buttonText}>Open Video Editor - PIP</Text>
+              <Text style={styles.buttonText}>Open Video Editor - Draft</Text>
             </TouchableOpacity>
 
+            // Delete the draft and release the Video Editor SDK on user done action
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
-                launchImageLibrary(
-                  videoOptions,
-                  (response) => {
-                    console.log('Response = ', response);
-                    if (response.didCancel) {
-                      console.warn('User cancelled photo picker');
-                    } else if (response.error) {
-                      console.warn('ImagePicker Error: ', response.error);
-                    } else {
-                      let videoUri = response.uri || response.assets?.[0]?.uri;
-                      console.log('# Picked video source for trimmer = ' + videoUri);
-                      let videoSources = [videoUri];
-
-                      const videoEditor = new VideoEditorPlugin();
-                      videoEditor.openFromTrimmer(LICENSE_TOKEN, this.featuresConfig, videoSources)
-                        .then(response => { this.handleVideoExport(response); })
-                        .catch(e => { this.handleSdkError(e); });
-                    }
-                  },
-                );
+                const videoEditor = new VideoEditorPlugin();
+                videoEditor.deleteDraft(this.draftID ?? "")
+                  .then(response => {
+                      this.handleVideoEditor(response)
+                      videoEditor.release()
+                        .then(response => this.handleVideoEditor(response))
+                  })
+                  .catch(e => this.handleSdkError(e));
               }}
             >
-              <Text style={styles.buttonText}>Open Video Editor - Trimmer</Text>
+              <Text style={styles.buttonText}>Delete Draft</Text>
             </TouchableOpacity>
           </View>
         </View>
