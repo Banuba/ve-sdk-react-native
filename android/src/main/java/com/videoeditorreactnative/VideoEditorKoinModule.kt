@@ -22,7 +22,7 @@ import com.banuba.sdk.core.data.autocut.AutoCutTrackLoader
 import com.banuba.sdk.audiobrowser.domain.AiClippingRecommendedSoundProvider
 import com.banuba.sdk.audiobrowser.api.AiClippingBanubaMusicTrackLoader
 import com.banuba.sdk.audiobrowser.soundstripe.AiClippingSoundstripeTrackLoader
-import com.banuba.sdk.ve.data.aiclipping.AiClippingConfig
+import com.banuba.sdk.core.data.autocut.AiClippingConfig
 import com.banuba.sdk.core.domain.DraftConfig
 import com.banuba.sdk.cameraui.data.CameraConfig
 import com.banuba.sdk.cameraui.ui.RecordMode
