@@ -24,3 +24,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Supports Video Editor SDK 1.51.2
 - Introduce Open Draft by ID Android
+
+## [0.48.0] - 2026-05-05
+
+### Added
+- Supports Android Video Editor SDK 1.51.10
