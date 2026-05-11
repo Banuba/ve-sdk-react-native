@@ -339,13 +339,21 @@ export class DraftsConfig {
 
 export class TemplatesConfig {
   url: string | null;
+  enableBuilder: boolean | null;
+  termsOfUseUrl: string | null;
 
   constructor({
-    url = null
+    url = null,
+    enableBuilder = null,
+    termsOfUseUrl = null,
   }: {
-    url: string | null
+    url: string | null;
+    enableBuilder?: boolean | null;
+    termsOfUseUrl?: string | null;
   }) {
-    this.url = url
+    this.url = url;
+    this.enableBuilder = enableBuilder;
+    this.termsOfUseUrl = termsOfUseUrl;
   }
 }
 

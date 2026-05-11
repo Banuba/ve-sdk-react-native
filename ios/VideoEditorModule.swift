@@ -24,7 +24,7 @@ protocol VideoEditor {
 class VideoEditorModule: VideoEditor {
 
     var videoEditorSDK: BanubaVideoEditor?
-  
+
     private var exportData: ExportData?
     private var currentController: UIViewController?
     private var currentResolve: RCTPromiseResolveBlock?
@@ -170,6 +170,10 @@ class VideoEditorModule: VideoEditor {
 
         self.currentController = controller
 
+        videoEditorSDK?.updateVideoEditorArgs([
+            VideoEditorConfig.createVideoTemplatesFlow: featuresConfig?.templatesConfig?.enableBuilder == true
+        ])
+
         let config = VideoEditorLaunchConfig(
             entryPoint: .videoTemplates,
             hostController: controller,
@@ -178,7 +182,7 @@ class VideoEditorModule: VideoEditor {
 
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
-  
+
     func openVideoEditorDrafts(
         fromViewController controller: UIViewController,
         _ resolve: @escaping RCTPromiseResolveBlock,
@@ -206,9 +210,9 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-    
+
         self.currentController = controller
-    
+
         guard let drafts = videoEditorSDK?.draftsService.getDrafts(), let draft = drafts.first(where: { $0.sequenceId == draftId }) else {
             reject(
                 VideoEditorReactNative.errMissingDraftId,
@@ -217,19 +221,19 @@ class VideoEditorModule: VideoEditor {
             )
             return
         }
-    
+
         let draftedConfig = VideoEditorLaunchConfig.DraftedLaunchConfig(
             externalDraft: draft,
             draftsConfig: .enabled
         )
-    
+
         let config = VideoEditorLaunchConfig(
             entryPoint: .editor,
             hostController: controller,
             draftedLaunchConfig: draftedConfig,
             animated: true
         )
-    
+
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
 
@@ -240,15 +244,15 @@ class VideoEditorModule: VideoEditor {
     ) {
         self.currentResolve = resolve
         self.currentReject = reject
-    
+
         self.currentController = controller
-    
+
         let config = VideoEditorLaunchConfig(
             entryPoint: .gallery,
             hostController: controller,
             animated: true
         )
-    
+
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
 
@@ -376,14 +380,14 @@ extension VideoEditorModule {
                 let previewImageData = previewImage?.pngData()
 
                 try? previewImageData?.write(to: previewUrl)
-              
+
                 var exportData = [
                   VideoEditorReactNative.argExportedVideoSources: videoUrls.compactMap { $0.path },
                   VideoEditorReactNative.argExportedPreview: previewUrl.path,
                   VideoEditorReactNative.argExportedMeta : metaUrl?.path,
                   VideoEditorReactNative.argExportedAudioMeta: audioMetaJSON,
                 ]
-              
+
                 if let savedDraftId {
                   exportData[VideoEditorReactNative.argSavedDraftId] = savedDraftId
                 }
@@ -406,7 +410,7 @@ extension VideoEditorModule {
             if self.restoreLastVideoEditingSession == false {
                 self.videoEditorSDK?.clearSessionData()
             }
-          
+
             if self.featuresConfig?.releaseOnExport ?? true {
               self.videoEditorSDK = nil
             }
@@ -548,9 +552,13 @@ extension VideoEditorConfig {
         if !featuresConfig.cameraConfig.supportsMasks {
             self.recorderConfiguration.hideFeatures(.masks)
         }
-      
+
         if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
             self.videoTemplatesConfiguration.url = url
+        }
+
+        if let stringUrl = featuresConfig.templatesConfig?.termsOfUseUrl, let url = URL(string: stringUrl) {
+            self.videoTemplatesConfiguration.templateBuilderConfiguration.termsOfUseURL = url
         }
 
         var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
