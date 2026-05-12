@@ -136,6 +136,8 @@ extension VideoEditorReactNative {
 }
 
 extension VideoEditorConfig {
+    static let createVideoTemplatesFlow = "CREATE_VIDEO_TEMPLATES_FLOW"
+
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
     static let featuresConfigAudioBrowserSourceMubert = "mubert"
@@ -178,4 +180,3 @@ extension ExportData {
     static let exportDataWatermarkAlignmentBottomLeft = "bottomLeft"
     static let exportDataWatermarkAlignmentBottomRight = "bottomRight"
 }
-

@@ -77,6 +77,8 @@ struct CoverConfig: Codable {
 
 struct TemplatesConfig: Codable {
     let url: String?
+    let enableBuilder: Bool?
+    let termsOfUseUrl: String?
 }
 
 struct DraftsConfig: Codable {
@@ -135,4 +137,3 @@ struct VideoDurationConfig: Codable {
         )
     }
 }
-
