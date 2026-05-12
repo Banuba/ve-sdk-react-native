@@ -29,3 +29,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Supports Android Video Editor SDK 1.51.10
+
+## [0.49.0] - 2026-05-11
+
+### Added
+- Supports iOS Video Editor SDK 1.51.3
+- Introduce Templates Builder iOS
+
