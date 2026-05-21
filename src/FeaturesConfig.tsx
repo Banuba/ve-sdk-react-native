@@ -341,19 +341,23 @@ export class TemplatesConfig {
   url: string | null;
   enableBuilder: boolean | null;
   termsOfUseUrl: string | null;
+  secret: string | null;
 
   constructor({
     url = null,
     enableBuilder = null,
     termsOfUseUrl = null,
+    secret = null,
   }: {
     url: string | null;
     enableBuilder?: boolean | null;
     termsOfUseUrl?: string | null;
+    secret?: string | null;
   }) {
     this.url = url;
     this.enableBuilder = enableBuilder;
     this.termsOfUseUrl = termsOfUseUrl;
+    this.secret = secret;
   }
 }
 

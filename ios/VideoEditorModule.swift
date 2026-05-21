@@ -170,17 +170,38 @@ class VideoEditorModule: VideoEditor {
 
         self.currentController = controller
 
-        videoEditorSDK?.updateVideoEditorArgs([
-            VideoEditorConfig.createVideoTemplatesFlow: featuresConfig?.templatesConfig?.enableBuilder == true
-        ])
+        if featuresConfig?.templatesConfig?.enableBuilder == true {
+            videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
+                guard let self else { return }
+                if isValid {
+                    DispatchQueue.main.async {
+                        self.videoEditorSDK?.presentTemplatesCreator(
+                            from: controller,
+                            animated: true,
+                            completion: nil
+                        )
+                    }
+                } else {
+                    if self.restoreLastVideoEditingSession == false {
+                        self.videoEditorSDK?.clearSessionData()
+                    }
+                    self.videoEditorSDK = nil
+                    reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageLicenseRevoked, nil)
+                }
+            })
+        } else {
+            videoEditorSDK?.updateVideoEditorArgs([
+                VideoEditorConfig.createVideoTemplatesFlow: false
+            ])
 
-        let config = VideoEditorLaunchConfig(
-            entryPoint: .videoTemplates,
-            hostController: controller,
-            animated: true
-        )
+            let config = VideoEditorLaunchConfig(
+                entryPoint: .videoTemplates,
+                hostController: controller,
+                animated: true
+            )
 
-        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+            checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+        }
     }
 
     func openVideoEditorDrafts(
@@ -553,8 +574,12 @@ extension VideoEditorConfig {
             self.recorderConfiguration.hideFeatures(.masks)
         }
 
-        if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
-            self.videoTemplatesConfiguration.url = url
+        if let secret = featuresConfig.templatesConfig?.secret, !secret.isEmpty {
+            self.videoTemplatesConfiguration.catalogSource = .templateStore(
+                TemplateStoreConfiguration(clientSecret: secret)
+            )
+        } else if let stringUrl = featuresConfig.templatesConfig?.url, let url = URL(string: stringUrl + "/response.json") {
+            self.videoTemplatesConfiguration.catalogSource = .staticCatalog(url)
         }
 
         if let stringUrl = featuresConfig.templatesConfig?.termsOfUseUrl, let url = URL(string: stringUrl) {

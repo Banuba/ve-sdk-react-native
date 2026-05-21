@@ -7,7 +7,7 @@ import android.util.Log
 import android.os.Bundle
 import com.banuba.sdk.cameraui.data.PipConfig
 import com.banuba.sdk.core.ext.isFileUrl
-import com.banuba.sdk.core.license.BanubaVideoEditor
+import com.banuba.sdk.core.license.EditorSdk
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.data.DraftsHelper
 import com.banuba.sdk.export.data.ExportResult
@@ -411,7 +411,7 @@ class VideoEditorModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        val sdk = BanubaVideoEditor.initialize(token)
+        val sdk = EditorSdk.initialize(token)
 
         if (sdk == null) {
             // The SDK token is incorrect - empty or truncated
