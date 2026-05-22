@@ -86,6 +86,7 @@ internal const val FEATURES_CONFIG_COVER_CONFIG_SUPPORTS_COVER_SCREEN = "support
 
 internal const val FEATURES_CONFIG_TEMPLATES_CONFIG = "templatesConfig"
 internal const val FEATURES_CONFIG_TEMPLATES_CONFIG_URL = "url"
+internal const val FEATURES_CONFIG_TEMPLATES_CONFIG_SECRET = "secret"
 
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG = "draftsConfig"
 internal const val FEATURES_CONFIG_DRAFTS_CONFIG_OPTION = "option"

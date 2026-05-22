@@ -160,9 +160,8 @@ private fun JSONObject.extractTemplatesConfig(): TemplatesConfig? =
     try {
         this.optJSONObject(FEATURES_CONFIG_TEMPLATES_CONFIG)?.let { json ->
             TemplatesConfig(
-                url = json.optString(
-                    FEATURES_CONFIG_TEMPLATES_CONFIG_URL
-                ),
+                url = json.optString(FEATURES_CONFIG_TEMPLATES_CONFIG_URL),
+                secret = json.optString(FEATURES_CONFIG_TEMPLATES_CONFIG_SECRET).takeIf { it.isNotEmpty() },
             )
         }
     } catch (e: JSONException) {
