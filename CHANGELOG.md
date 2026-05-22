@@ -36,3 +36,8 @@ All notable changes to this project will be documented in this file.
 - Supports iOS Video Editor SDK 1.51.3
 - Introduce Templates Builder iOS
 
+## [0.50.0] - 2026-05-22
+
+### Added
+- Supports Video Editor SDK 1.52.0
+- Introduce Templates Store iOS and Android
