@@ -40,4 +40,3 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Supports Video Editor SDK 1.52.0
-- Introduce Templates Store iOS and Android
