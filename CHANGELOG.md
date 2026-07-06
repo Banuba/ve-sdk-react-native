@@ -40,3 +40,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Supports Video Editor SDK 1.52.0
+
+## [0.51.0] - 2026-07-06
+
+### Added
+- Supports Video Editor SDK 1.53.0
