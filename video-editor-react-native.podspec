@@ -17,11 +17,11 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
   s.resources = 'ios/Assets/*'
 
-  sdk_version = '1.53.0'
+  sdk_version = '1.53.1'
 
   ENABLE_FACE_AR = ENV['ENABLE_FACE_AR'] == 'true' || ENV['ENABLE_FACE_AR'].nil?
 
-  s.dependency 'BanubaARCloudSDK', sdk_version #optional
+  s.dependency 'BanubaARCloudSDK', '1.53.0' #optional
   s.dependency 'BanubaVideoEditorSDK', sdk_version
   s.dependency 'BanubaAudioBrowserSDK', sdk_version #optional
   if ENABLE_FACE_AR
