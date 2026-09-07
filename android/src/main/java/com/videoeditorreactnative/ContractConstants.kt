@@ -53,13 +53,9 @@ internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE = "source"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS = "params"
 
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_LOCAL = "local"
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT = "mubert"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_SOUNDSTRIPE = "soundstripe"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_BANUBA_MUSIC = "banubaMusic"
 internal const val FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED = "disabled"
-
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE = "mubertLicence"
-internal const val FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN = "mubertToken"
 
 internal const val FEATURES_CONFIG_CAMERA_CONFIG = "cameraConfig"
 internal const val FEATURES_CONFIG_CAMERA_CONFIG_SUPPORTS_BEAUTY = "supportsBeauty"

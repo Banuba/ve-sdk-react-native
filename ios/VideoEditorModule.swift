@@ -47,12 +47,13 @@ class VideoEditorModule: VideoEditor {
 
         config.applyFeatureConfig(featuresConfig)
 
-        videoEditorSDK = BanubaVideoEditor(
-            token: token,
-            arguments: [.useEditorV2 : featuresConfig.enableEditorV2],
-            configuration: config,
-            externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
-        )
+      videoEditorSDK = DispatchQueue.main.sync { BanubaVideoEditor(
+        token: token,
+        arguments: [.useEditorV2 : featuresConfig.enableEditorV2],
+        configuration: config,
+        externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
+      )
+      }
 
         if videoEditorSDK == nil {
             return false
@@ -318,7 +319,7 @@ class VideoEditorModule: VideoEditor {
 
 // MARK: - Export flow
 extension VideoEditorModule {
-    func exportVideo() {
+    @MainActor func exportVideo() {
 
         guard let exportData, let currentController else {
             print("❌ Export Config is not set")
@@ -383,7 +384,7 @@ extension VideoEditorModule {
         }
     }
 
-    private func completeExport(
+    @MainActor private func completeExport(
         videoUrls: [URL],
         metaUrl: URL?,
         previewUrl: URL,
@@ -454,7 +455,7 @@ extension VideoEditorModule {
         return topController
     }
 
-    func createProgressViewController() -> ProgressViewController {
+    @MainActor func createProgressViewController() -> ProgressViewController {
         let progressViewController = ProgressViewController.makeViewController()
         progressViewController.message = BNBLocalizedString("com.banuba.alert.progressView.exportingVideo")
         return progressViewController
@@ -464,25 +465,29 @@ extension VideoEditorModule {
 // MARK: - BanubaVideoEditorSDKDelegate
 extension VideoEditorModule: BanubaVideoEditorDelegate {
   func videoEditorDidCancel(_ videoEditor: BanubaVideoEditor) {
+    Task { @MainActor in
       videoEditor.dismissVideoEditor(animated: true) {
         // remove strong reference to video editor sdk instance
-          if self.restoreLastVideoEditingSession == false {
-              self.videoEditorSDK?.clearSessionData()
-          }
-          self.videoEditorSDK = nil
-          self.currentReject?(VideoEditorReactNative.errVideoExportCancel, VideoEditorReactNative.errMessageVideoExportCancel, nil)
+        if self.restoreLastVideoEditingSession == false {
+          self.videoEditorSDK?.clearSessionData()
+        }
+        self.videoEditorSDK = nil
+        self.currentReject?(VideoEditorReactNative.errVideoExportCancel, VideoEditorReactNative.errMessageVideoExportCancel, nil)
       }
+    }
   }
 
   func videoEditorDone(_ videoEditor: BanubaVideoEditor) {
+    Task { @MainActor in
       exportVideo()
+    }
   }
 
   func videoEditor(_ videoEditor: BanubaVideoEditor, didSaveDraft draft: ExternalDraft) {
       savedDraftId = draft.sequenceId
   }
 
-  func videoEditor(_ videoEditor: BanubaVideoEditor, shouldProcessMediaUrls urls: [URL]) -> Bool {
+  @MainActor func videoEditor(_ videoEditor: BanubaVideoEditor, shouldProcessMediaUrls urls: [URL]) -> Bool {
       guard let featuresConfig else {
           return true
       }
@@ -537,9 +542,6 @@ extension VideoEditorConfig {
             applyDisabledMusicConfig()
         }
 
-        if featuresConfig.audioBrowser.source == VideoEditorConfig.featuresConfigAudioBrowserSourceMubert {
-            addMubertParams(featuresConfig)
-        }
         if featuresConfig.enableEditorV2 {
             self.combinedGalleryConfiguration.visibleTabsInGallery = [GalleryMediaType.video, GalleryMediaType.photo]
         }
@@ -586,7 +588,7 @@ extension VideoEditorConfig {
             self.videoTemplatesConfiguration.templateBuilderConfiguration.termsOfUseURL = url
         }
 
-        var recordModes: [BanubaVideoEditorSDK.RecordButtonViewMode] = []
+        var recordModes: [BanubaVideoEditorSDK.RecordingMode] = []
         featuresConfig.cameraConfig.recordModes.forEach { mode in
             switch mode {
                 case VideoEditorConfig.featuresConfigCameraConfigRecordModeVideo:
@@ -638,23 +640,10 @@ extension VideoEditorConfig {
 
         self.featureConfiguration.isPhotosEditingEnabled = featuresConfig.editorConfig.supportPhotoEditing
 
-        // Make customization here
-
-        AudioBrowserConfig.shared.setPrimaryColor(#colorLiteral(red: 0.2350233793, green: 0.7372031212, blue: 0.7565478683, alpha: 1))
-
         var featureConfiguration = self.featureConfiguration
         featureConfiguration.supportsTrimRecordedVideo = true
         featureConfiguration.isVideoCoverSelectionEnabled = featuresConfig.coverConfig.supportsCoverScreen
         self.updateFeatureConfiguration(featureConfiguration: featureConfiguration)
-    }
-
-    private func addMubertParams(_ featuresConfig: FeaturesConfig){
-       guard let audioBrowserParams = featuresConfig.audioBrowser.params else { return }
-       guard let mubertLicence = audioBrowserParams.mubertLicence, let mubertToken = audioBrowserParams.mubertToken else { return }
-       BanubaAudioBrowser.setMubertKeys(
-           license: mubertLicence,
-           token: mubertToken
-       )
     }
 
     private mutating func applyDisabledMusicConfig(){

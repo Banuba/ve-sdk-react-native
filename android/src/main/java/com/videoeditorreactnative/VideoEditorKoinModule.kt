@@ -14,7 +14,7 @@ import com.banuba.sdk.veui.di.VeUiSdkKoinModule
 import com.banuba.sdk.arcloud.di.ArCloudKoinModule
 import com.banuba.sdk.audiobrowser.di.AudioBrowserKoinModule
 import com.banuba.sdk.arcloud.data.source.ArEffectsRepositoryProvider
-import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
+import com.banuba.sdk.audiobrowser.data.AudioBrowserMusicProvider
 import com.banuba.sdk.core.data.TrackData
 import com.banuba.sdk.core.ui.ContentFeatureProvider
 import com.banuba.sdk.playback.PlayerScaleType
@@ -30,7 +30,6 @@ import com.banuba.sdk.veui.domain.CoverProvider
 import com.banuba.sdk.veui.data.music.MusicEditorConfig
 import com.banuba.sdk.veui.data.templates.TemplatesConfig
 import com.banuba.sdk.veui.data.stickers.GifPickerConfigurations
-import com.banuba.sdk.audiobrowser.data.MubertApiConfig
 import com.banuba.sdk.core.domain.MediaNavigationProcessor
 import com.banuba.sdk.export.data.ExportResult
 import com.banuba.sdk.ve.flow.VideoCreationActivity
@@ -164,7 +163,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
     }
 
     when (featuresConfig.audioBrowser.source){
-      FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_MUBERT -> this.addMubertParams(featuresConfig)
       FEATURES_CONFIG_AUDIO_BROWSER_SOURCE_DISABLED -> this.applyDisabledMusicConfig(featuresConfig)
     }
 
@@ -299,41 +297,6 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
           }
         }
       }
-    }
-  }
-
-  private fun Module.addMubertParams(featuresConfig: FeaturesConfig) {
-    val paramsObject = featuresConfig.audioBrowser.params
-
-    if (paramsObject != null) {
-      try {
-        val paramsMap = paramsObject.keys().asSequence().associateWith { key ->
-          paramsObject.get(key)
-        }
-
-        val mubertLicence =
-          paramsMap[FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_LICENCE] as? String
-        val mubertToken =
-          paramsMap[FEATURES_CONFIG_AUDIO_BROWSER_PARAMS_MUBERT_TOKEN] as? String
-
-        if (mubertLicence != null && mubertToken != null) {
-          this.single {
-            MubertApiConfig(
-              mubertLicence = mubertLicence,
-              mubertToken = mubertToken
-            )
-          }
-        } else {
-          Log.w(TAG, "Missing parameters mubertLicence and mubertToken")
-          return
-        }
-      } catch (e: JSONException) {
-        Log.w(TAG, "Error parsing Params of AudioBrowser")
-        return
-      }
-    } else {
-      Log.w(TAG, "Missing Params in AudioBrowser")
-      return
     }
   }
 

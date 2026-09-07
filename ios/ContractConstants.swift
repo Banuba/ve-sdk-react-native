@@ -140,7 +140,6 @@ extension VideoEditorConfig {
 
     // Features config params
     static let featuresConfigAudioBrowserSourceSoundstripe = "soundstripe"
-    static let featuresConfigAudioBrowserSourceMubert = "mubert"
     static let featuresConfigAudioBrowserSourceLocal = "local"
     static let featuresConfigAudioBrowserSourceBanubaMusic = "banubaMusic"
     static let featuresConfigAudioBrowserSourceDisabled = "disabled"
