@@ -2,7 +2,7 @@ package com.videoeditorreactnative
 
 import com.banuba.sdk.core.data.TrackData
 import androidx.fragment.app.Fragment
-import com.banuba.sdk.audiobrowser.domain.AudioBrowserMusicProvider
+import com.banuba.sdk.audiobrowser.data.AudioBrowserMusicProvider
 import com.banuba.sdk.audiobrowser.soundstripe.SoundstripeProvider
 import com.banuba.sdk.audiobrowser.api.BanubaMusicProvider
 import com.banuba.sdk.veui.data.stickers.GifPickerMode
