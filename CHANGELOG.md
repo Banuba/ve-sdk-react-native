@@ -52,7 +52,13 @@ All notable changes to this project will be documented in this file.
 - Supports iOS Video Editor SDK 1.53.1
 - Supports Android Video Editor SDK 1.53.2
 
-## [0.52.0] - 2026-08-03
+## [0.53.0] - 2026-08-03
 
 ### Added
 - Supports Video Editor SDK 1.54.0
+
+## [0.54.0] - 2026-09-08
+
+### Added
+- Supports iOS Video Editor SDK 1.54.1
+- Supports Android Video Editor SDK 1.54.1
