@@ -48,6 +48,18 @@ class VideoEditorReactNative: NSObject {
         case VideoEditorReactNative.screenCamera:
             videoEditor.openVideoEditorDefault(fromViewController: controller, resolve, reject)
 
+        case VideoEditorReactNative.screenPip:
+            let videoSources = args[VideoEditorReactNative.inputParamVideoSources] as? Array<String>
+            guard let videoSource = videoSources?.first, let videoURL = URL(string: videoSource) else {
+                reject(VideoEditorReactNative.errInvalidParams, VideoEditorReactNative.errMessageInvalidPiPVideo, nil)
+                return
+            }
+
+            videoEditor.openVideoEditorPip(fromViewController: controller, videoSource: videoURL, resolve, reject)
+
+        case VideoEditorReactNative.screenCameraLayout:
+            videoEditor.openVideoEditorCameraLayout(fromViewController: controller, resolve, reject)
+
         case VideoEditorReactNative.screenTrimmer:
             let videoSources = args[VideoEditorReactNative.inputParamVideoSources] as? Array<String>
             if (videoSources == nil || videoSources!.isEmpty) {
@@ -103,7 +115,13 @@ class VideoEditorReactNative: NSObject {
     @objc(deleteDraft:resolver:rejecter:)
     func deleteDraft(draftId: String,  _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) -> Void {
       if let videoEditorSDK = videoEditor.videoEditorSDK {
-          guard videoEditorSDK.draftsService.removeExternalDraft(id: draftId) else {
+          // draftsService is @MainActor-isolated as of BanubaVideoEditorSDK 1.54.2; this bridge
+          // method isn't guaranteed to run on the main thread, so hop over explicitly - same
+          // pattern already used for BanubaVideoEditor(...) in VideoEditorModule.initVideoEditor.
+          let removed = DispatchQueue.main.sync {
+              videoEditorSDK.draftsService.removeExternalDraft(id: draftId)
+          }
+          guard removed else {
               reject(VideoEditorReactNative.errMissingDraftId, VideoEditorReactNative.errMessageInvalidDraftId, nil)
               return
           }
