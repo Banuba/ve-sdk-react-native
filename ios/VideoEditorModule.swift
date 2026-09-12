@@ -9,6 +9,10 @@ protocol VideoEditor {
 
     func openVideoEditorDefault(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
+    func openVideoEditorPip(fromViewController controller: UIViewController, videoSource: URL, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
+    func openVideoEditorCameraLayout(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
+
     func openVideoEditorTrimmer(fromViewController controller: UIViewController, videoSources: Array<URL>, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
 
     func openVideoEditorAiClipping(fromViewController controller: UIViewController, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock)
@@ -47,12 +51,15 @@ class VideoEditorModule: VideoEditor {
 
         config.applyFeatureConfig(featuresConfig)
 
-      videoEditorSDK = DispatchQueue.main.sync { BanubaVideoEditor(
-        token: token,
-        arguments: [.useEditorV2 : featuresConfig.enableEditorV2],
-        configuration: config,
-        externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
-      )
+      videoEditorSDK = DispatchQueue.main.sync {
+        let editor = BanubaVideoEditor(
+          token: token,
+          arguments: [.useEditorV2 : featuresConfig.enableEditorV2],
+          configuration: config,
+          externalViewControllerFactory: provideCustomViewFactory(featuresConfig: featuresConfig)
+        )
+        editor?.delegate = self
+        return editor
       }
 
         if videoEditorSDK == nil {
@@ -60,8 +67,6 @@ class VideoEditorModule: VideoEditor {
         }
 
         self.exportData = exportData
-
-        videoEditorSDK?.delegate = self
         return true
     }
 
@@ -92,6 +97,47 @@ class VideoEditorModule: VideoEditor {
             hostController: controller,
             animated: true
         )
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
+
+    func openVideoEditorPip(
+        fromViewController controller: UIViewController,
+        videoSource: URL,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .camera,
+            hostController: controller,
+            cameraLayout: .init(layout: .pipLeft, payload: .media(videoSource)),
+            animated: true
+        )
+
+        checkLicenseAndStartVideoEditor(with: config, resolve, reject)
+    }
+
+    func openVideoEditorCameraLayout(
+        fromViewController controller: UIViewController,
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        _ reject: @escaping RCTPromiseRejectBlock
+    ) {
+        self.currentResolve = resolve
+        self.currentReject = reject
+
+        self.currentController = controller
+
+        let config = VideoEditorLaunchConfig(
+            entryPoint: .camera,
+            hostController: controller,
+            cameraLayout: .init(layout: .blur, payload: .none),
+            animated: true
+        )
+
         checkLicenseAndStartVideoEditor(with: config, resolve, reject)
     }
 
@@ -172,28 +218,36 @@ class VideoEditorModule: VideoEditor {
         self.currentController = controller
 
         if featuresConfig?.templatesConfig?.enableBuilder == true {
-            videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
-                guard let self else { return }
-                if isValid {
-                    DispatchQueue.main.async {
-                        self.videoEditorSDK?.presentTemplatesCreator(
-                            from: controller,
-                            animated: true,
-                            completion: nil
-                        )
+            // getLicenseState is @MainActor-isolated as of BanubaVideoEditorSDK 1.54.2.
+            DispatchQueue.main.async { [weak self] in
+                self?.videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
+                    guard let self else { return }
+                    if isValid {
+                        DispatchQueue.main.async {
+                            self.videoEditorSDK?.presentTemplatesCreator(
+                                from: controller,
+                                animated: true,
+                                completion: nil
+                            )
+                        }
+                    } else {
+                        if self.restoreLastVideoEditingSession == false {
+                            DispatchQueue.main.async {
+                                self.videoEditorSDK?.clearSessionData()
+                            }
+                        }
+                        self.videoEditorSDK = nil
+                        reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageLicenseRevoked, nil)
                     }
-                } else {
-                    if self.restoreLastVideoEditingSession == false {
-                        self.videoEditorSDK?.clearSessionData()
-                    }
-                    self.videoEditorSDK = nil
-                    reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageLicenseRevoked, nil)
-                }
-            })
+                })
+            }
         } else {
-            videoEditorSDK?.updateVideoEditorArgs([
-                VideoEditorConfig.createVideoTemplatesFlow: false
-            ])
+            // updateVideoEditorArgs is @MainActor-isolated as of BanubaVideoEditorSDK 1.54.2.
+            DispatchQueue.main.async { [weak self] in
+                self?.videoEditorSDK?.updateVideoEditorArgs([
+                    VideoEditorConfig.createVideoTemplatesFlow: false
+                ])
+            }
 
             let config = VideoEditorLaunchConfig(
                 entryPoint: .videoTemplates,
@@ -235,7 +289,9 @@ class VideoEditorModule: VideoEditor {
 
         self.currentController = controller
 
-        guard let drafts = videoEditorSDK?.draftsService.getDrafts(), let draft = drafts.first(where: { $0.sequenceId == draftId }) else {
+        // draftsService is @MainActor-isolated as of BanubaVideoEditorSDK 1.54.2.
+        let drafts = DispatchQueue.main.sync { videoEditorSDK?.draftsService.getDrafts() }
+        guard let drafts, let draft = drafts.first(where: { $0.sequenceId == draftId }) else {
             reject(
                 VideoEditorReactNative.errMissingDraftId,
                 VideoEditorReactNative.errMessageInvalidDraftId,
@@ -294,25 +350,30 @@ class VideoEditorModule: VideoEditor {
 
         // Checking the license might take around 1 sec in the worst case.
         // Please optimize use if this method in your application for the best user experience
-        videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
-            guard let self else { return }
-            if isValid {
-                print("✅ The license is active")
-                DispatchQueue.main.async {
-                    self.videoEditorSDK?.presentVideoEditor(
-                        withLaunchConfiguration: config,
-                        completion: nil
-                    )
+        // getLicenseState is @MainActor-isolated as of BanubaVideoEditorSDK 1.54.2.
+        DispatchQueue.main.async { [weak self] in
+            self?.videoEditorSDK?.getLicenseState(completion: { [weak self] isValid in
+                guard let self else { return }
+                if isValid {
+                    print("✅ The license is active")
+                    DispatchQueue.main.async {
+                        self.videoEditorSDK?.presentVideoEditor(
+                            withLaunchConfiguration: config,
+                            completion: nil
+                        )
+                    }
+                } else {
+                    if self.restoreLastVideoEditingSession == false {
+                        DispatchQueue.main.async {
+                            self.videoEditorSDK?.clearSessionData()
+                        }
+                    }
+                    self.videoEditorSDK = nil
+                    print("❌ Use of SDK is restricted: the license is revoked or expired")
+                    reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageLicenseRevoked, nil)
                 }
-            } else {
-                if self.restoreLastVideoEditingSession == false {
-                    self.videoEditorSDK?.clearSessionData()
-                }
-                self.videoEditorSDK = nil
-                print("❌ Use of SDK is restricted: the license is revoked or expired")
-                reject(VideoEditorReactNative.errLicenseRevoked, VideoEditorReactNative.errMessageLicenseRevoked, nil)
-            }
-        })
+            })
+        }
     }
 }
 
@@ -342,7 +403,12 @@ extension VideoEditorModule {
 
         videoEditorSDK?.export(
             using: exportProvider.provideExportConfiguration(),
-            exportProgress: { [weak progressView] progress in progressView?.updateProgressView(with: Float(progress)) }
+            exportProgress: { [weak progressView] progress in
+                // updateProgressView is @MainActor-isolated (ProgressViewController is a UIViewController).
+                DispatchQueue.main.async {
+                    progressView?.updateProgressView(with: Float(progress))
+                }
+            }
         ) { [weak self] (error, errorPayload, coverImage) in
             // Export Callback
             DispatchQueue.main.async {

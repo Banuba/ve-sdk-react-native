@@ -231,6 +231,24 @@ export default class App extends Component<Record<string, never>, AppState> {
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
+                // iOS only (BanubaVideoEditorSDK 1.54.2+ Camera Layouts). `blur` needs no
+                // picked media, unlike PIP above, so it opens straight away.
+                const videoEditor = new VideoEditorPlugin();
+                videoEditor
+                    .openFromCameraLayout(LICENSE_TOKEN, this.featuresConfig)
+                    .then((response) => this.handleVideoExport(response))
+                    .catch((e) => this.handleSdkError(e));
+                  }
+                }
+              >
+              <Text style={styles.buttonText}>
+                Open Video Editor - Camera Layout (Blur)
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
                 launchImageLibrary(videoOptions, (response) => {
                   console.log('Response = ', response);
                   if (response.didCancel) {

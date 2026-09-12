@@ -60,6 +60,21 @@ export default class VideoEditorPlugin {
       : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
   }
 
+  openFromCameraLayout(
+    licenseToken: String,
+    featuresConfig: FeaturesConfig,
+    exportData?: ExportData | null
+  ): Promise<Map<String, String>> {
+    const inputParams = {
+      screen: 'cameraLayout',
+      featuresConfig: JSON.stringify(featuresConfig),
+      exportData: JSON.stringify(exportData),
+    };
+    return Platform.OS === 'ios'
+      ? NativeModules.VideoEditorReactNative.openVideoEditor(licenseToken, inputParams)
+      : VideoEditorModule.openVideoEditor(licenseToken, inputParams);
+  }
+
   openFromTrimmer(
     licenseToken: String,
     featuresConfig: FeaturesConfig,
