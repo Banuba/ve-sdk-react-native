@@ -62,3 +62,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Supports iOS Video Editor SDK 1.54.1
 - Supports Android Video Editor SDK 1.54.1
+
+## [0.55.0] - 2026-09-11
+
+### Added
+- Supports iOS Video Editor SDK 1.54.2
+- iOS PIP entry point (`openFromPip`) now works: migrated to the `cameraLayout` API that
+  replaces the removed `pipVideoItem` launch param
+- New `openFromCameraLayout` method (iOS only) to open the camera with a Camera Layout
+  preselected
