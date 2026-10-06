@@ -1,7 +1,7 @@
 {
   "name": "video-editor-react-native",
-  "version": "0.55.0",
-  "description": "Banuba Video Editor React Native plugin",
+  "version": "0.55.1",
+  "description": "Banuba Video Editor SDK for React Native — white-label video editing UI for iOS and Android: multi-track timeline, AI clipping, AI captions, AR face filters, background removal, trimming, music, stickers and text. Works offline.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -37,8 +37,19 @@
   },
   "keywords": [
     "react-native",
+    "video-editor",
+    "video-editor-sdk",
+    "video-editing",
+    "video-editing-sdk",
+    "ai-clipping",
+    "ai-captions",
+    "background-removal",
+    "ar-filters",
+    "face-filters",
+    "tiktok-like",
     "ios",
-    "android"
+    "android",
+    "banuba"
   ],
   "repository": {
     "type": "git",
