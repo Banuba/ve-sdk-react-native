@@ -695,6 +695,12 @@ extension VideoEditorConfig {
             })
         }
 
+        if !featuresConfig.editorConfig.supportsMaskEffects {
+            self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons = self.videoEditorViewConfiguration.toolsPanelConfiguration.buttons.filter({
+                    $0.identifier != .masks
+            })
+        }
+
         self.featureConfiguration.draftsConfig = featuresConfig.draftsConfig.value()
 
         if let gifPickerConfig = featuresConfig.gifPickerConfig {

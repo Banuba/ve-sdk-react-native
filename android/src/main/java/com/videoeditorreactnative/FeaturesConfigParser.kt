@@ -135,6 +135,10 @@ private fun JSONObject.extractEditorConfig(): EditorConfig =
                 supportsStickersOnVideo = json.optBoolean(
                     FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_STICKERS_ON_VIDEO
                 ),
+                supportsMaskEffects = json.optBoolean(
+                    FEATURES_CONFIG_EDITOR_CONFIG_SUPPORTS_MASK_EFFECTS,
+                    defaultEditorConfig.supportsMaskEffects
+                ),
             )
         }
     } catch (e: JSONException) {

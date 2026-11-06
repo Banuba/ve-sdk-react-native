@@ -228,7 +228,8 @@ private class SampleIntegrationVeKoinModule(featuresConfig: FeaturesConfig, expo
         supportsVoiceOver = featuresConfig.editorConfig.supportsVoiceOver,
         supportsAudioEditing = featuresConfig.editorConfig.supportsAudioEditing,
         supportPhotoEditing = featuresConfig.editorConfig.supportPhotoEditing,
-        supportsStickersOnVideo = featuresConfig.editorConfig.supportsStickersOnVideo
+        supportsStickersOnVideo = featuresConfig.editorConfig.supportsStickersOnVideo,
+        editorSupportsMaskEffects = featuresConfig.editorConfig.supportsMaskEffects
       )
     }
 
