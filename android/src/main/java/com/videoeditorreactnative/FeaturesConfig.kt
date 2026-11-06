@@ -86,7 +86,8 @@ internal data class EditorConfig(
     var supportsVoiceOver: Boolean,
     var supportsAudioEditing: Boolean,
     var supportPhotoEditing: Boolean,
-    var supportsStickersOnVideo: Boolean
+    var supportsStickersOnVideo: Boolean,
+    var supportsMaskEffects: Boolean
 )
 
 internal val defaultEditorConfig = EditorConfig(
@@ -97,6 +98,7 @@ internal val defaultEditorConfig = EditorConfig(
     supportsAudioEditing = true,
     supportPhotoEditing = false,
     supportsStickersOnVideo = true,
+    supportsMaskEffects = true,
 )
 
 internal data class CoverConfig(
