@@ -71,3 +71,10 @@ All notable changes to this project will be documented in this file.
   replaces the removed `pipVideoItem` launch param
 - New `openFromCameraLayout` method (iOS only) to open the camera with a Camera Layout
   preselected
+
+## [0.56.0] - 2026-11-09
+
+### Added
+- New `EditorConfig.supportsMaskEffects` option to hide masks in the editor on Android and iOS.
+  It is independent of `CameraConfig.supportsMasks`, which only controls masks on the camera screen,
+  default value is `true`.
