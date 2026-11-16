@@ -78,3 +78,8 @@ All notable changes to this project will be documented in this file.
 - New `EditorConfig.supportsMaskEffects` option to hide masks in the editor on Android and iOS.
   It is independent of `CameraConfig.supportsMasks`, which only controls masks on the camera screen,
   default value is `true`.
+
+## [0.57.0] - 2026-11-16
+
+### Added
+- Supports Video Editor SDK 1.55.0
